@@ -1,0 +1,58 @@
+import { latinToCyrillic } from '../src/lib/lang.ts';
+
+const samples = [
+  "Intellektual Salomatlik Platformasi",
+  "Farg'ona shahri",
+  "Farg'ona vodiysi",
+  "Salomatlik Skriningi",
+  "Mazkur tizim kardiologik xavflarni prognozlovchi yordamchi ilmiy portal bo'lib",
+  "yakuniy tashxis qo'yish shifokor nazorati ostida amalga oshirilishi shart",
+  "Noinfeksion kardiologik xavflarni prognozlash",
+  "Shifokor Maslahati",
+  "Yo'q",
+  "yo'q",
+  "yosh",
+  "Erkak",
+  "erkak",
+  "Bo'yi",
+  "Gipertoniya",
+  "komplayens",
+  "e'tibor",
+  "ma'no",
+  "ta'lim",
+  "Qo'qon shahri",
+  "Marg'ilon",
+  "Oltiariq tumani",
+  "jismoniy faollik",
+  "nosvoy",
+  "sog'lom",
+  "Dissertatsiya",
+  "Kardiologik",
+  "Arterial qon bosimi",
+  "Tuz iste'moli",
+  "Chiqish",
+  "Tizimga Kirish",
+  "Muhim Ogohlantirish (Medical Disclaimer)",
+  "PDF / Chop Etish",
+  "Salomatlik Kundaligi",
+  "Shifokor uchun Kardiologik Hisobot",
+  "O'rtacha qon bosimi",
+  "Dori ichish intizomi",
+  "Sun'iy Intellekt",
+  "prognozlovchi",
+  "yurak",
+  "yurak o'ynashi",
+  "bosh aylanishi",
+  "100%",
+  "mmHg",
+  "yechmoq",
+  "bekor",
+  "telefon",
+  "Maslahat: Farg'ona vodiysi profilaktika",
+];
+
+console.log('=== NEW TRANSLITERATION OUTPUT ===\n');
+for (const s of samples) {
+  console.log(`${s}`);
+  console.log(`  → ${latinToCyrillic(s)}\n`);
+}

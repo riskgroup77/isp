@@ -1,0 +1,17 @@
+export const FERGANA_REGIONS = [
+  "Farg'ona shahri",
+  "Marg'ilon shahri",
+  "Qo'qon shahri",
+  "Quva tumani",
+  "Rishton tumani",
+  "Oltiariq tumani",
+  "Beshariq tumani",
+  "Bag'dod tumani",
+  "Buvayda tumani",
+  "Dang'ara tumani",
+  "Uchko'prik tumani",
+  "Toshloq tumani",
+  "Yozyovon tumani",
+  "Quvasoy shahri",
+  "Farg'ona tumani",
+];
