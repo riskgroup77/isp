@@ -115,12 +115,12 @@ export default function AdminCreateUserPanel({
   };
 
   return (
-    <div className="fixed inset-0 z-[10003] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[10003] ios-overlay flex items-center justify-center p-4">
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden"
+        className="ios-card ios-modal max-w-lg w-full overflow-hidden animate-fadeIn"
         id="admin-create-user-panel"
       >
-        <div className="bg-slate-900 px-5 py-4 flex items-center justify-between text-white">
+        <div className="ios-header px-5 py-4 flex items-center justify-between text-white rounded-none">
           <div className="flex items-center gap-2">
             <UserPlus className="w-5 h-5 text-emerald-400" />
             <h3 className="text-sm font-black uppercase tracking-wide">

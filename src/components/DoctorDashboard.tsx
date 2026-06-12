@@ -46,6 +46,9 @@ import {
   predictRisk,
 } from '../lib/apiServices';
 import { useToast } from './ui/Toast';
+import AppShell from './ui/AppShell';
+import LanguageSwitcher from './ui/LanguageSwitcher';
+import ThemeToggle from './ui/ThemeToggle';
 
 interface DoctorDashboardProps {
   doctorUser: SafeUserProfile;
@@ -439,17 +442,18 @@ export default function DoctorDashboard({
   const regionsList = Array.from(new Set(patients.map(p => p.shaharTuman).filter(Boolean)));
 
   return (
+    <AppShell className="ios-app min-h-screen pb-12">
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-6" id="doctor-portal-root">
       
       {/* Upper info banner */}
-      <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="ios-header rounded-[var(--ios-radius-lg)] p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-indigo-600 rounded-xl">
-            <User className="w-8 h-8 text-indigo-10" />
+          <div className="p-3 ios-icon-wrap">
+            <User className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-indigo-800 text-indigo-250 px-2 py-0.5 rounded font-bold uppercase">
+              <span className="ios-badge ios-badge-accent">
                 {t("Vrach-Shifokor Kabineti", language)}
               </span>
               {doctorUser.tasdiqlangan ? (
@@ -462,8 +466,8 @@ export default function DoctorDashboard({
                 </span>
               )}
             </div>
-            <h2 className="text-2xl font-black text-slate-50 mt-1">{doctorUser.ism}</h2>
-            <p className="text-slate-300 text-xs mt-0.5 font-medium">
+            <h2 className="text-2xl font-bold ios-header-title mt-1 tracking-tight">{doctorUser.ism}</h2>
+            <p className="ios-header-muted text-xs mt-0.5 font-medium">
               💼 {doctorUser.mutaxassislik} • 🏥 {doctorUser.shifoxona}
             </p>
           </div>
@@ -471,42 +475,20 @@ export default function DoctorDashboard({
 
         <div className="flex flex-wrap items-center gap-2">
           {onLanguageChange && (
-            <div className="flex items-center gap-0.5 bg-slate-800/90 p-0.5 rounded-lg border border-slate-700/60 shadow">
-              <button
-                type="button"
-                onClick={() => onLanguageChange('lotin')}
-                className={`px-2 py-1 text-[10px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'lotin'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                }`}
-              >
-                Lotin
-              </button>
-              <button
-                type="button"
-                onClick={() => onLanguageChange('kirill')}
-                className={`px-2 py-1 text-[10px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'kirill'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                }`}
-              >
-                Кирилл
-              </button>
-            </div>
+            <LanguageSwitcher language={language} onChange={onLanguageChange} />
           )}
+          <ThemeToggle language={language} />
           <button
             type="button"
             onClick={fetchPatients}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg border border-slate-700 cursor-pointer text-slate-200 flex items-center gap-1.5"
+            className="ios-btn ios-btn-secondary ios-btn-sm"
           >
             {t("Sinxron yig'ish", language)}
           </button>
           <button
             type="button"
             onClick={onLogout}
-            className="px-4 py-2 bg-red-600/90 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-sm cursor-pointer"
+            className="ios-btn ios-btn-danger ios-btn-sm"
           >
             {t("Chiqish", language)}
           </button>
@@ -515,7 +497,7 @@ export default function DoctorDashboard({
 
       {/* WARNING OVERLAY IF NOT VERIFIED BY ADMIN */}
       {!doctorUser.tasdiqlangan && (
-        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-xl p-5 text-amber-900 space-y-2">
+        <div className="ios-alert ios-alert-warn p-5 space-y-2">
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-6 h-6 text-amber-600 shrink-0" />
             <h3 className="font-extrabold text-sm uppercase tracking-wide">{t("Hisobingiz hali faollashtirilmagan", language)}</h3>
@@ -530,7 +512,7 @@ export default function DoctorDashboard({
       )}
 
       {errorMsg && (
-        <div className="p-4 bg-red-100 border border-red-300 rounded-xl text-xs text-red-800">
+        <div className="ios-alert ios-alert-error text-xs">
           ⚠️ {t(errorMsg, language)}
         </div>
       )}
@@ -540,7 +522,7 @@ export default function DoctorDashboard({
         
         {/* PATIENTS SIDEBAR LIST */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white rounded-2xl border border-slate-200 p-4 space-y-4 shadow-sm">
+          <div className="ios-card ios-card-lg p-4 space-y-4">
             <h3 className="text-xs font-bold text-slate-750 uppercase tracking-widest border-b pb-2 flex items-center justify-between">
               <span>{t("Mening bemorlarim", language)}</span>
               <span className="font-mono bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded text-[10px]">
@@ -671,7 +653,7 @@ export default function DoctorDashboard({
         {/* ACTIVE PATIENT HEALTH RECORD SHEET (LARGE VIEW WITH WORKSPACE) */}
         <div className="lg:col-span-8">
           {activePatient ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6 shadow-sm animate-fadeIn" id="patient-record-sheet">
+            <div className="ios-card ios-card-lg p-6 space-y-6 animate-fadeIn" id="patient-record-sheet">
               
               {/* Patient header info */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-4">
@@ -1507,7 +1489,7 @@ export default function DoctorDashboard({
 
             </div>
           ) : (
-            <div className="bg-white rounded-2xl border border-slate-200 py-24 text-center space-y-3 text-slate-400 shadow-sm font-sans" id="no-active-patient-placeholder">
+            <div className="ios-card ios-card-lg py-24 text-center space-y-3 text-slate-400 font-sans" id="no-active-patient-placeholder">
               <Activity className="w-12 h-12 text-slate-300 mx-auto animate-pulse shrink-0" />
               <h3 className="font-extrabold text-sm text-slate-600 uppercase tracking-widest">Klinik Shaxsiy Karta Workspace</h3>
               <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
@@ -1524,5 +1506,6 @@ export default function DoctorDashboard({
       </div>
 
     </div>
+    </AppShell>
   );
 }

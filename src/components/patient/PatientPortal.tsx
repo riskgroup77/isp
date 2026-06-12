@@ -23,14 +23,15 @@ import {
   RefreshCw, 
   FileDown, 
   Search, 
-  Building2, 
   Sparkles, 
   Plus, 
   Trash2,
   AlertCircle,
   Bell,
   Volume2,
-  Pencil
+  Pencil,
+  Menu,
+  X
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -65,16 +66,23 @@ import {
   mapUiChatToApiHistory,
   markJournalIdsSynced,
   predictRisk,
+  deleteAllPatientScreenings,
+  deletePatientScreening,
+  syncFullScreeningHistory,
   syncNewJournalEntries,
 } from '../../lib/apiServices';
 import {
   normalizeScreeningHistory,
   toClientHistory,
+  isServerScreeningId,
   type ClientScreeningHistoryItem,
 } from '../../lib/screeningHistory';
 import type { SafeUserProfile } from '../../lib/auth';
 import { normalizeRiskResult } from '../../lib/riskResult';
 import { useToast } from '../ui/Toast';
+import AppShell from '../ui/AppShell';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
+import ThemeToggle from '../ui/ThemeToggle';
 
 // Default initial state
 const defaultQuestionnaire: QuestionnaireData = {
@@ -171,7 +179,7 @@ export default function PatientPortal({
   const [patientAdvices, setPatientAdvices] = useState<PatientAdvice[]>([]);
 
   // Navigation tabs
-  const [activeTab, setActiveTab] = useState<'screening' | 'innovations' | 'outcomes' | 'history' | 'journal' | 'advices'>('screening');
+  const [activeTab, setActiveTab] = useState<'screening' | 'history' | 'journal' | 'advices'>('screening');
   
   // Health Journal states
   const [journalEntries, setJournalEntries] = useState<HealthJournalEntry[]>([]);
@@ -362,6 +370,8 @@ export default function PatientPortal({
   
   // History list
   const [historyList, setHistoryList] = useState<ClientScreeningHistoryItem[]>([]);
+  const [deletingHistoryId, setDeletingHistoryId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const applyHydratedPatientData = (serverUser: UserProfile) => {
     const { history, journal } = applyServerPatientDataToLocal(serverUser);
@@ -512,11 +522,68 @@ export default function PatientPortal({
     localStorage.setItem('soglik_skrining_tarixi', JSON.stringify(updated));
   };
 
-  const deleteHistoryItem = (id: string, e: React.MouseEvent) => {
+  const deleteHistoryItem = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const updated = historyList.filter(item => item.id !== id);
-    setHistoryList(updated);
-    localStorage.setItem('soglik_skrining_tarixi', JSON.stringify(updated));
+
+    const confirmed = await showConfirm(
+      t("Ushbu skrining yozuvini arxivdan o'chirmoqchimisiz?", language)
+    );
+    if (!confirmed) return;
+
+    if (riskResult && historyList[0]?.id === id) {
+      setRiskResult(null);
+    }
+
+    setDeletingHistoryId(id);
+    try {
+      if (isServerScreeningId(id)) {
+        await deletePatientScreening(currentUser.id, id);
+      } else {
+        const updated = historyList.filter((item) => item.id !== id);
+        await syncFullScreeningHistory(currentUser.id, updated, currentUser);
+      }
+
+      const serverUser = await hydratePatientData(currentUser.id, currentUser);
+      applyHydratedPatientData(serverUser);
+      showToast(t("Skrining yozuvi o'chirildi.", language), 'success');
+    } catch (err) {
+      console.error('Failed to delete screening history item:', err);
+      const updated = historyList.filter((item) => item.id !== id);
+      setHistoryList(updated);
+      localStorage.setItem('soglik_skrining_tarixi', JSON.stringify(updated));
+      showToast(
+        t("Skrining yozuvini o'chirishda xatolik yuz berdi.", language),
+        'error'
+      );
+    } finally {
+      setDeletingHistoryId(null);
+    }
+  };
+
+  const clearAllHistory = async () => {
+    const confirmed = await showConfirm(
+      t("Haqiqatdan ham barcha skrining arxivini o'chirib yubormoqchimisiz?", language)
+    );
+    if (!confirmed) return;
+
+    setRiskResult(null);
+    setDeletingHistoryId('all');
+    try {
+      await deleteAllPatientScreenings(currentUser.id);
+      const serverUser = await hydratePatientData(currentUser.id, currentUser);
+      applyHydratedPatientData(serverUser);
+      showToast(t("Skrining arxivi tozalandi.", language), 'success');
+    } catch (err) {
+      console.error('Failed to clear screening history on server:', err);
+      setHistoryList([]);
+      localStorage.removeItem('soglik_skrining_tarixi');
+      showToast(
+        t("Skrining arxivini tozalashda xatolik yuz berdi.", language),
+        'error'
+      );
+    } finally {
+      setDeletingHistoryId(null);
+    }
   };
 
   const handleAddJournalEntry = (e: React.FormEvent) => {
@@ -812,11 +879,11 @@ export default function PatientPortal({
       ?.riskResult?.riskFoizi;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased pb-12">
+    <AppShell className="ios-app min-h-screen antialiased pb-12">
       
       {/* PUSH NOTIFICATION STYLE REMINDER MODAL */}
       {activeNotification && (
-        <div className="fixed bottom-5 right-5 sm:top-5 sm:bottom-auto z-[9999] max-w-sm w-full bg-slate-900 text-white rounded-2xl shadow-2xl border-4 border-indigo-500 overflow-hidden animate-bounce p-5 space-y-4" id="medication-alert-toast">
+        <div className="fixed bottom-5 right-5 sm:top-5 sm:bottom-auto z-[9999] max-w-sm w-full glass-dark-strong text-white rounded-[var(--ios-radius-lg)] shadow-2xl border border-[var(--ios-accent-border)] overflow-hidden p-5 space-y-4 animate-fadeIn" id="medication-alert-toast">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3 animate-pulse">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
@@ -913,7 +980,7 @@ export default function PatientPortal({
       
       {/* SHIFOKOR UCHUN KARDIOLOGIK HISOBOT MODAL (PDF / PRINT TAYYoR) */}
       {showDoctorReport && (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto print:p-0 print:bg-white print:absolute print:inset-0">
+        <div className="fixed inset-0 z-[9999] ios-overlay flex items-center justify-center p-4 overflow-y-auto print:p-0 print:bg-white print:absolute print:inset-0">
           <style dangerouslySetInnerHTML={{__html: `
             @media print {
               body {
@@ -939,7 +1006,7 @@ export default function PatientPortal({
             }
           `}} />
           
-          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh] print:max-h-full print:shadow-none print:rounded-none">
+          <div className="ios-card ios-modal max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh] print:max-h-full print:shadow-none print:rounded-none print:bg-white">
             
             {/* Header Controls (Hidden on Print) */}
             <div className="bg-slate-950 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 print:hidden shrink-0">
@@ -1147,8 +1214,8 @@ export default function PatientPortal({
       
       {/* DORINI TAHRIRLASH MODAL OYNASI */}
       {editingAlarm && (
-        <div className="fixed inset-0 z-[10000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200">
+        <div className="fixed inset-0 z-[10000] ios-overlay flex items-center justify-center p-4">
+          <div className="ios-card ios-modal max-w-sm w-full overflow-hidden">
             {/* Modal Header */}
             <div className="bg-indigo-950 text-white px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -1250,176 +1317,139 @@ export default function PatientPortal({
           </div>
         </div>
       )}
-      
-      {/* HEADER SECTION WITH DISSERTATION CONTEXT */}
-      <header className="bg-slate-900 text-white border-b border-primary-800 shadow-lg relative print:hidden">
-        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-red-600 rounded-xl shadow-inner text-white animate-pulse">
-                <Heart className="w-8 h-8" />
+
+      <div className="min-h-screen print:block">
+        {sidebarOpen && (
+          <button
+            type="button"
+            className="ios-sidebar-overlay lg:hidden print:hidden"
+            aria-label={t('Menyuni yopish', language)}
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        {/* SIDEBAR NAVIGATION */}
+        <aside
+          className={`ios-sidebar fixed top-0 left-0 z-50 h-screen w-64 flex flex-col print:hidden transition-transform duration-300 ease-out ${
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+          aria-label={t('Asosiy navigatsiya', language)}
+        >
+          <div className="p-4 border-b border-[var(--ios-nav-bar-border)] flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="p-2 ios-icon-wrap ios-icon-wrap-heart rounded-[var(--ios-radius-sm)] shrink-0">
+                <Heart className="w-5 h-5" />
               </div>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs bg-red-800 text-red-200 px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider">
-                    {t("Dissertatsiya Amaliy Modeli", language)}
-                  </span>
-                  <span className="text-xs bg-slate-700 text-slate-200 px-2.5 py-0.5 rounded-full">
-                    {t("Sana", language)}: 2026 {t("yil", language)}
-                  </span>
-                </div>
-                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mt-1 text-slate-50">
-                  {t("Intellektual Salomatlik Platformasi", language)}
-                </h1>
-                <p className="text-slate-300 text-xs md:text-sm max-w-2xl mt-1 leading-relaxed">
-                  {t("Xronik noinfeksion kasalliklar (XNIZ) riskini bashorat qilish, profilaktik maslahat va Farg'ona vodiysi aholisi nutritiv-xulq statusi monitoringi tizimi.", language)}
-                </p>
-              </div>
+              <span className="text-sm font-bold ios-header-title leading-tight truncate">
+                {t('Intellektual Salomatlik', language)}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(false)}
+              className="ios-theme-toggle shrink-0"
+              aria-label={t('Menyuni yopish', language)}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <nav className="flex-1 p-3 flex flex-col gap-1 overflow-y-auto" aria-label="Tabs">
+            <button
+              type="button"
+              onClick={() => setActiveTab('screening')}
+              className={`ios-sidebar-link ${activeTab === 'screening' ? 'ios-sidebar-link-active' : ''}`}
+              id="btn-tab-screening"
+            >
+              <Activity className="w-4 h-4 shrink-0" />
+              <span>{t('Salomatlik Skriningi', language)}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('history')}
+              className={`ios-sidebar-link ${activeTab === 'history' ? 'ios-sidebar-link-active' : ''}`}
+              id="btn-tab-history"
+            >
+              <Clock className="w-4 h-4 shrink-0" />
+              <span>{t('Arxiv Tarixi', language)}</span>
+              <span className="ios-sidebar-count">{historyList.length}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('journal')}
+              className={`ios-sidebar-link ${activeTab === 'journal' ? 'ios-sidebar-link-active' : ''}`}
+              id="btn-tab-journal"
+            >
+              <BookOpen className="w-4 h-4 shrink-0" />
+              <span>{t('Salomatlik Kundaligi', language)}</span>
+              <span className="ios-sidebar-count">{journalEntries.length}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('advices')}
+              className={`ios-sidebar-link ${activeTab === 'advices' ? 'ios-sidebar-link-active' : ''}`}
+              id="btn-tab-advices"
+            >
+              <Award className="w-4 h-4 shrink-0" />
+              <span>{t('Shifokor Maslahati', language)}</span>
+              <span className="ios-sidebar-count">{patientAdvices.length}</span>
+            </button>
+          </nav>
+        </aside>
+
+        <div
+          className={`flex flex-col min-w-0 transition-[padding-left] duration-300 ease-out ${
+            sidebarOpen ? 'lg:pl-64' : ''
+          }`}
+        >
+      {/* HEADER */}
+      <header className="ios-header relative print:hidden">
+        <div className="px-4 py-4 md:py-5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              {!sidebarOpen && (
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(true)}
+                  className="ios-theme-toggle shrink-0"
+                  aria-label={t('Menyuni ochish', language)}
+                >
+                  <Menu className="w-4 h-4" />
+                </button>
+              )}
+              <h1 className="text-lg md:text-2xl font-bold tracking-tight ios-header-title truncate">
+                {t("Intellektual Salomatlik Platformasi", language)}
+              </h1>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 self-stretch md:self-auto">
-              
-              {/* Language switcher */}
-              <div className="flex items-center gap-0.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700 self-center">
-                <button
-                  type="button"
-                  onClick={() => setLanguage('lotin')}
-                  className={`px-2 py-1 text-[9px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    language === 'lotin'
-                      ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                  }`}
-                >
-                  Lotin
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLanguage('kirill')}
-                  className={`px-2 py-1 text-[9px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    language === 'kirill'
-                      ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                  }`}
-                >
-                  Кирилл
-                </button>
-              </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <LanguageSwitcher
+                language={language}
+                onChange={setLanguage}
+              />
+              <ThemeToggle language={language} />
 
-              {/* Regional focus */}
-              <div className="flex items-center gap-2 bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-left">
-                <Building2 className="w-8 h-8 text-emerald-400 hidden sm:block shrink-0" />
-                <div>
-                  <h3 className="text-[10px] font-bold text-slate-300 uppercase tracking-widest leading-none">{t("Tadqiqot Hududi", language)}</h3>
-                  <p className="text-xs font-bold text-emerald-400 mt-1">{t("Farg'ona vodiysi XNIZ", language)}</p>
-                </div>
-              </div>
-
-              {/* Patient account tag */}
-              <div className="flex items-center gap-2.5 bg-indigo-950/60 p-2.5 rounded-xl border border-indigo-700/50">
-                <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-[11px] text-indigo-50 uppercase tracking-widest">
+              <div className="hidden sm:flex items-center gap-2 glass-dark p-2 rounded-[var(--ios-radius-sm)]">
+                <div className="w-7 h-7 rounded-lg ios-icon-wrap flex items-center justify-center font-bold text-[11px] uppercase tracking-widest">
                   {currentUser.ism.split(' ').map(n=>n[0]).slice(0, 2).join('')}
                 </div>
-                <div className="text-left min-w-0">
-                  <span className="block text-[8px] font-bold text-indigo-300 uppercase tracking-widest">Bemor</span>
-                  <span className="block font-extrabold text-xs text-indigo-50 truncate max-w-[110px]">{currentUser.ism}</span>
+                <div className="text-left min-w-0 max-w-[100px]">
+                  <span className="block text-[8px] font-bold ios-header-muted uppercase tracking-widest">Bemor</span>
+                  <span className="block font-semibold text-xs ios-header-title truncate">{currentUser.ism}</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="px-2.5 py-1 bg-red-600/80 hover:bg-red-600 text-white font-bold text-[9px] rounded-lg cursor-pointer hover:shadow transition"
-                >
-                  Chiqish
-                </button>
               </div>
 
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="ios-btn ios-btn-danger ios-btn-sm"
+              >
+                {t('Chiqish', language)}
+              </button>
             </div>
-
-          </div>
-        </div>
-
-        {/* TOP LEVEL NAVIGATION TABS */}
-        <div className="bg-slate-800 border-t border-slate-700">
-          <div className="max-w-7xl mx-auto px-4">
-            <nav className="flex flex-wrap -mb-px" aria-label="Tabs">
-              <button
-                onClick={() => { setActiveTab('screening'); }}
-                className={`py-3 md:py-4 px-4 font-semibold text-xs md:text-sm border-b-2 transition-all flex items-center gap-2 ${
-                  activeTab === 'screening'
-                    ? 'border-emerald-500 text-emerald-400 bg-slate-900/30'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-600'
-                }`}
-                id="btn-tab-screening"
-              >
-                <Activity className="w-4 h-4 text-emerald-500" />
-                {t('Salomatlik Skriningi', language)}
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('innovations'); }}
-                className={`py-3 md:py-4 px-4 font-semibold text-xs md:text-sm border-b-2 transition-all flex items-center gap-2 ${
-                  activeTab === 'innovations'
-                    ? 'border-emerald-500 text-emerald-400 bg-slate-900/30'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-600'
-                }`}
-                id="btn-tab-innovations"
-              >
-                <Award className="w-4 h-4 text-emerald-500" />
-                {t("To'rtta Ilmiy Yangilik", language)}
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('outcomes'); }}
-                className={`py-3 md:py-4 px-4 font-semibold text-xs md:text-sm border-b-2 transition-all flex items-center gap-2 ${
-                  activeTab === 'outcomes'
-                    ? 'border-emerald-500 text-emerald-400 bg-slate-900/30'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-600'
-                }`}
-                id="btn-tab-outcomes"
-              >
-                <FileText className="w-4 h-4 text-emerald-500" />
-                {t("Amaliy Natijalar & Ta'lim", language)}
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('history'); }}
-                className={`py-3 md:py-4 px-4 font-semibold text-xs md:text-sm border-b-2 transition-all flex items-center gap-2 ${
-                  activeTab === 'history'
-                    ? 'border-emerald-500 text-emerald-400 bg-slate-900/30'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-600'
-                }`}
-                id="btn-tab-history"
-              >
-                <Clock className="w-4 h-4 text-emerald-500" />
-                {t('Arxiv Tarixi', language)} ({historyList.length})
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('journal'); }}
-                className={`py-3 md:py-4 px-4 font-semibold text-xs md:text-sm border-b-2 transition-all flex items-center gap-2 ${
-                  activeTab === 'journal'
-                    ? 'border-emerald-500 text-emerald-400 bg-slate-900/30'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-600'
-                }`}
-                id="btn-tab-journal"
-              >
-                <BookOpen className="w-4 h-4 text-emerald-500" />
-                {t('Salomatlik Kundaligi', language)} ({journalEntries.length})
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('advices'); }}
-                className={`py-3 md:py-4 px-4 font-semibold text-xs md:text-sm border-b-2 transition-all flex items-center gap-2 ${
-                  activeTab === 'advices'
-                    ? 'border-emerald-500 text-emerald-400 bg-slate-900/30'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-600'
-                }`}
-                id="btn-tab-advices"
-              >
-                <Award className="w-4 h-4 text-emerald-500" />
-                {t('Shifokor Maslahati', language)} ({patientAdvices.length})
-              </button>
-            </nav>
           </div>
         </div>
       </header>
@@ -1430,7 +1460,6 @@ export default function PatientPortal({
           <div>
             <h2 className="text-xl font-bold uppercase">{t("INTELLEKTUAL SALOMATLIK PORTALI - KARTASI", language)}</h2>
             <p className="text-xs">{t("Farg'ona viloyati XNIZ erta aniqlash va profilaktik yo'riqnomalar model tizimi", language)}</p>
-            <p className="text-xs">{t("Dissertatsiya amaliy tadbiq etilish natijasi", language)}</p>
           </div>
           <div className="text-right">
             <p className="text-sm font-bold">{t("Vaqt", language)}: {new Date().toLocaleString()}</p>
@@ -1441,7 +1470,7 @@ export default function PatientPortal({
       </div>
 
       {/* CORE WORKSPACE LIMITS CONTAINER */}
-      <main className="max-w-7xl mx-auto px-4 mt-6" id="patient-main-print-surface">
+      <main className="w-full px-4 md:px-6 mt-6" id="patient-main-print-surface">
         {errorMsg && (
           <div className="bg-red-50 border-l-4 border-red-500 text-red-800 p-4 rounded-r-lg mb-6 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
@@ -1454,13 +1483,13 @@ export default function PatientPortal({
 
         {/* TAB 1: SCREENING & ASSESSMENT ENGINE */}
         {activeTab === 'screening' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="space-y-6">
             
-            {/* LEFT INPUT SECTION - 5 columns */}
-            <div className="lg:col-span-12 xl:col-span-5 space-y-6 print:hidden">
+            {/* INPUT SECTION — to'liq kenglik */}
+            <div className="w-full space-y-6 print:hidden">
               
               {/* TWO CHANNEL SWITCHER CONTAINER */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div className="ios-card shadow-sm overflow-hidden">
                 <div className="p-1.5 bg-slate-100 flex gap-1">
                   <button
                     onClick={() => setIntakeMode('standard')}
@@ -1880,14 +1909,14 @@ export default function PatientPortal({
 
             </div>
 
-            {/* RIGHT OUTCOME ANALYSIS DASHBOARD - 7 columns */}
-            <div className="lg:col-span-12 xl:col-span-7 space-y-6">
+            {/* NATIJA — faqat tahlil bo'lganda */}
+            {riskResult && (
+            <div className="w-full space-y-6">
 
-              {riskResult ? (
                 <div className="space-y-6">
                   
                   {/* TRAFFIC LIGHT & KEY METRICS HERO */}
-                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                  <div className="ios-card shadow-sm overflow-hidden relative">
                     
                     {/* Top zone band */}
                     <div className={`h-3 w-full ${
@@ -2002,7 +2031,7 @@ export default function PatientPortal({
                         <AlertTriangle className="w-6 h-6 text-amber-700 shrink-0 mt-0.5" />
                         <div>
                           <h4 className="font-extrabold text-xs uppercase tracking-wider text-amber-900">
-                            Tibbiyot pedagog va shifokorlar uchun Komplayens tahlili (4-Yangilik)
+                            {t("Komplayens tahlili", language)}
                           </h4>
                           <p className="text-sm text-amber-950 font-bold mt-1.5 leading-relaxed bg-white/60 p-3 rounded border border-amber-200">
                             {translateContent(riskResult.shaxsiyTavsiyalar?.komplayensTahlili?.maslahat ?? '', language)}
@@ -2013,7 +2042,7 @@ export default function PatientPortal({
                   )}
 
                   {/* FACTOR GINI BAR DIAGRAM (Gini Importance & Dynamic Features) */}
-                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                  <div className="ios-card shadow-sm p-6 space-y-4">
                     <div className="border-b pb-3 flex items-center justify-between">
                       <div>
                         <h3 className="font-extrabold text-sm uppercase tracking-wider text-slate-900">Tahlil qilingan xavf omillari (Gini ahamiyati)</h3>
@@ -2056,13 +2085,13 @@ export default function PatientPortal({
                   </div>
 
                   {/* SHAXSIYLASHTIRILGAN PROFILAKTIK MASLAHAT QURILMASI */}
-                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                  <div className="ios-card shadow-sm p-6 space-y-6">
                     <div className="border-b pb-3">
                       <h3 className="font-extrabold text-sm uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                         <CheckCircle className="w-4.5 h-4.5 text-emerald-600" />
                         Shaxsiylashtirilgan tibbiy-profilaktik va parhez rejasi
                       </h3>
-                      <p className="text-xs text-slate-500">Fergana Valley nutritiv mezonlari (3-ilmiy yangilik) asosidagi tavsiyalar to'plami</p>
+                      <p className="text-xs text-slate-500">{t("Farg'ona vodiysi nutritiv mezonlari asosidagi shaxsiy tavsiyalar", language)}</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2124,7 +2153,7 @@ export default function PatientPortal({
                     {/* INTERACTIVE WHAT-IF RISK ELIMINATION CALCULATOR - Dissertation Outcome */}
                     <div className="bg-slate-100 p-5 rounded-xl border border-slate-200/80 space-y-4 print:hidden">
                       <div className="border-b pb-2">
-                        <span className="text-[9px] bg-indigo-600 text-white px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Dissertatsiya Amaliyoti</span>
+                        <span className="text-[9px] bg-indigo-600 text-white px-1.5 py-0.5 rounded font-bold uppercase shrink-0">{t("Simulyator", language)}</span>
                         <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider mt-1">
                           Interaktiv Harakatlarni Prognozlash Simulyatori ("Nima Bo'lardi-Agar" model)
                         </h4>
@@ -2229,7 +2258,7 @@ export default function PatientPortal({
                       )}
                     </div>
 
-                    {/* PERSONALIZED HEALTH ADVISOR CHAT (Innovation 3 & 4 Extended Dynamic AI Intervention) */}
+                    {/* PERSONALIZED HEALTH ADVISOR CHAT */}
                     <div className="bg-slate-900 text-slate-100 rounded-xl p-6 border border-slate-800 space-y-4 print:hidden animate-fadeIn shadow-lg">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                         <div className="flex items-center gap-2">
@@ -2241,7 +2270,7 @@ export default function PatientPortal({
                               Sun'iy Intellekt Shaxsiy Kardiolog Maslahatchisi
                             </h4>
                             <p className="text-[10px] text-slate-400">
-                              Dissertatsiya ommaviy profilaktika modeliga asoslangan tezkor muloqot
+                              {t("Shaxsiy profilaktika va kardiologik maslahat", language)}
                             </p>
                           </div>
                         </div>
@@ -2335,223 +2364,41 @@ export default function PatientPortal({
                   </div>
 
                 </div>
-              ) : (
-                
-                /* EMPTY PLACEHOLDER - NO RESULTS GENERATED */
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center flex flex-col items-center justify-center space-y-4 h-full min-h-[500px]">
-                  <div className="p-4 bg-emerald-50 rounded-full text-emerald-600">
-                    <Activity className="w-16 h-16 text-emerald-500 animate-bounce" />
-                  </div>
-                  <h3 className="text-xl font-extrabold text-slate-800">Tahlil va Klinik Tashxisni boshlang!</h3>
-                  <p className="text-sm text-slate-500 max-w-md leading-relaxed">
-                    Chap tarafdagi standart so'rovnomadagi o'z ko'rsatkichlaringizni to'ldirib yuboring, yoki erkin matnda o'zingizni qanday his qilayotganingizni yozib AI ga tahlil qildiring. Keyin <b>"Riskini Baholash"</b> tugmasini bosib ilmiy prognozni oling.
-                  </p>
-                  <div className="flex gap-2.5 mt-2">
-                    <span className="text-xs bg-slate-100 text-slate-600 px-2 line-clamp-1 py-1 rounded">Dissertatsiya versiyasi: 2.0 (Vodiy aholisi uchun maxsus)</span>
-                  </div>
-                </div>
-
-              )}
 
             </div>
+            )}
 
           </div>
         )}
 
-        {/* TAB 2: THE 4 SCIENTIFIC INNOVATIONS DETAILS */}
-        {activeTab === 'innovations' && (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 space-y-8">
-            
-            <div className="border-b pb-4">
-              <span className="text-xs font-bold text-emerald-700 uppercase bg-emerald-100 px-3 py-1 rounded-full">Ilmiy Metodologiya</span>
-              <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Dissertatsiya Ishidagi To'rtta Ilmiy Yangilik va Uni Veb-Integratsiyalash</h2>
-              <p className="text-slate-500 text-xs md:text-sm mt-1 leading-relaxed">
-                Ushbu intellektual salomatlik portali dissertatsiya tadqiqotlarining amaliyotga keng joriy etilishidagi asosiy raqamli instrument hisoblanadi. Tizim quyidagi ilmiy yangiliklarga asoslangan:
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
-
-              {/* INNOVATION 1 */}
-              <div className="border border-slate-200 rounded-xl p-5 bg-slate-50 space-y-3 shadow-inner">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] bg-indigo-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase">Yangilik 1</span>
-                  <span className="text-xs text-indigo-700 font-semibold">Baholash Mezonlari</span>
-                </div>
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide border-b pb-1.5">
-                  Pedagogik tabaqalashtirilgan va tibbiy kompetensiya baholash integratsiyasi
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  <b>Rasmiy formulasi:</b> Muassasada oliy tibbiy ta'lim shifokorlarining boshqariluvchi risklarni baholash voha aholisi orasida sog'lom turmush tarzini shakllantirish bo'yicha kasbiy tayyorgarligi integrativ pedagogik modeli yaratildi.
-                </p>
-                <div className="bg-indigo-100/50 p-2.5 rounded border border-indigo-200">
-                  <h5 className="text-[11px] font-bold text-indigo-900 uppercase">Tizimdagi amaliy aksi (Joriy):</h5>
-                  <p className="text-[11px] text-indigo-800 mt-1 leading-relaxed">
-                    Tizim shifokorlar, o'qituvchilar va talabalar uchun dars simulyatsiyasi sifatida xizmat qila oladi. Har bir talaba kiritgan so'rovnoma dinamikasi uning amaliy diagnostika ko'nikmalarini tizimli verifikatsiya qiladi.
-                  </p>
-                </div>
-              </div>
-
-              {/* INNOVATION 2 */}
-              <div className="border border-slate-200 rounded-xl p-5 bg-slate-50 space-y-3 shadow-inner">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] bg-emerald-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase">Yangilik 2</span>
-                  <span className="text-xs text-emerald-700 font-semibold">Tashkiliy-Huquqiy</span>
-                </div>
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide border-b pb-1.5">
-                  Normativ-Huquqiy mezonlar va ish joyi profilaktika vositalari
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  <b>Rasmiy formulasi:</b> Xodim va aholi orasida profilaktik savodxonlikni oshirish, risklar muntazam monitoringi hamda ish joyidagi tibbiy muhitni barqarorlashtirish asoratlari monitoringini ilmiy takomillashtirish.
-                </p>
-                <div className="bg-emerald-100/50 p-2.5 rounded border border-emerald-200">
-                  <h5 className="text-[11px] font-bold text-emerald-950 uppercase">Tizimdagi amaliy aksi (Joriy):</h5>
-                  <p className="text-[11px] text-emerald-900 mt-1 leading-relaxed">
-                    Portalda aholi o'rtasidagi profilaktik ko'riklar me'yori uchun "Skrininglar Tarixi" va milliy normativ qonunchilik qo'llanmalari yuklatilgan amaliy tarqibot bo'limi joriy etildi.
-                  </p>
-                </div>
-              </div>
-
-              {/* INNOVATION 3 */}
-              <div className="border border-slate-200 rounded-xl p-5 bg-slate-50 space-y-3 shadow-inner">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] bg-amber-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase">Yangilik 3</span>
-                  <span className="text-xs text-amber-700 font-semibold">Nutritiv & Regional</span>
-                </div>
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide border-b pb-1.5">
-                  Farg'ona vodiysi Nutritiv status va tabaqalashtirilgan so'rovnoma modeli
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  <b>Rasmiy formulasi:</b> Farg'ona vodiysi aholisining nutritiv maqomi (ayniqsa unli sho'r taomlar iste'moli, nosvoy kabi zararlar), jismoniy-tibbiy harakatchanligi moyilligini guruhli baholash so'rovnoma-prognostik modeli ilk bor asoslandi.
-                </p>
-                <div className="bg-amber-100/50 p-2.5 rounded border border-amber-200">
-                  <h5 className="text-[11px] font-bold text-amber-900 uppercase">Tizimdagi amaliy aksi (Joriy):</h5>
-                  <p className="text-[11px] text-amber-800 mt-1 leading-relaxed">
-                    Xavf riskini hisoblash algoritmi faqat umumiy jadvalga tayanmasdan, milliy vodiy taomlari kabi omillar mantiqiy og'irlik koeffitsiyentlari bilan kengaytirilib, Farg'ona shaharlari kesimida modellashtirilgan.
-                  </p>
-                </div>
-              </div>
-
-              {/* INNOVATION 4 */}
-              <div className="border border-slate-200 rounded-xl p-5 bg-slate-50 space-y-3 shadow-inner">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] bg-red-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase">Yangilik 4</span>
-                  <span className="text-xs text-red-700 font-semibold">Tibbiyot Xodimlari Statusi</span>
-                </div>
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide border-b pb-1.5">
-                  Oliy tibbiyot muassasasi xodimlari orasidagi Komplayens nomutanosibligi
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  <b>Rasmiy formulasi:</b> Tibbiyot pedagog-olimlarining yuqori nazariy bilimlari bo'lishiga qaramasdan, ularning shaxsiy hayotdagi tibbiy komplayensi nomutanosibligi isbotlandi va ularni sog'lomlashtirish algoritmi yaratildi.
-                </p>
-                <div className="bg-red-100/50 p-2.5 rounded border border-red-200">
-                  <h5 className="text-[11px] font-bold text-red-950 uppercase">Tizimdagi amaliy aksi (Joriy):</h5>
-                  <p className="text-[11px] text-red-900 mt-1 leading-relaxed">
-                    Ushbu portalda "Tibbiyot xodimiman" chek-boksi yoqilganda 'Ziddiyatli komplayens model' faollashadi. Nazariya va amaliyot o'rtasidagi farq aniqlanib, shifokorlarga zudlik bilan shaxsiy o'zi uchun ogohlantirish beriladi.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        )}
-
-        {/* TAB 3: PRACTICAL OUTCOMES & DOCUMENTATION */}
-        {activeTab === 'outcomes' && (
-          <div className="space-y-6">
-            
-            {/* AMALIY BILIM TESTI - Savodxonlik Oshirish */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
-              <h2 className="text-xl font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-2">
-                <BookOpen className="text-emerald-600" />
-                Aholi va Tibbiyot xodimlari uchun profilaktik bilim sinovi (Komplayens)
-              </h2>
-              <p className="text-xs text-slate-500">
-                Savodxonlikni oshirish uchun tuzilgan ilmiy asoslangan tezkor bilim testlari (2-ilmiy yangilik)
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
-                  <h4 className="text-xs font-bold uppercase text-slate-700">1-Savol: Vodiyda arterial gipertoniyani asoratisiz davolash uchun tuz miqdori me'yori qancha?</h4>
-                  <ul className="text-xs space-y-1.5">
-                    <li className="p-1.5 bg-red-50 text-red-900 rounded border border-red-200">✗ Yo'g'e, hamma palovga istagancha tuz solish kerak (Odatiy xato!)</li>
-                    <li className="p-1.5 bg-emerald-50 text-emerald-900 rounded border border-emerald-200 font-bold">✓ Kuniga 5 grammdan (choy qoshiq minimal) kam bo'lishi kerak.</li>
-                    <li className="p-1.5 bg-slate-100 rounded">✗ Parhezda tuz shart emas.</li>
-                  </ul>
-                  <p className="text-[11px] text-slate-500 italic pt-1">Gini ta'sir koeffitsiyenti: 8.5 (eng dominant biologik sababchilardan biri)</p>
-                </div>
-
-                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
-                  <h4 className="text-xs font-bold uppercase text-slate-700">2-Savol: Nosvoy tamakisi qon tomir arterial bosimiga qanday ta'sir qiladi?</h4>
-                  <ul className="text-xs space-y-1.5">
-                    <li className="p-1.5 bg-emerald-50 text-emerald-900 rounded border border-emerald-200 font-bold">✓ Qon tomirlarini zudlik bilan toraytirib, spazm va kardiologik yuqori bosimni keltirib chiqaradi.</li>
-                    <li className="p-1.5 bg-slate-100 rounded">✗ Hech qanday ta'siri yo'q, xalq tabobati (Zararli mistika!)</li>
-                    <li className="p-1.5 bg-slate-100 rounded">✗ Uyquni yaxshilaydi.</li>
-                  </ul>
-                  <p className="text-[11px] text-slate-500 italic pt-1">Gini ta'sir koeffitsiyenti: 9.0 (Nosvoy biologik zarar bo'yicha chekish bilan teng)</p>
-                </div>
-              </div>
-            </div>
-
-            {/* FERGANA REGION CAMPAIGN CHRONOLOGY & DATES */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
-              <h2 className="text-xl font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-2">
-                <Globe className="text-emerald-600" />
-                Farg'ona Viloyatida jamoaviy chora-tadbirlar rejasi (Amaliy Natija)
-              </h2>
-              <p className="text-xs text-slate-500">
-                Pedagoglar va poliklinikalar uchun tasdiqlangan ilmiy-tashkiliy profilaktika oyliklari jadvali (2026 yil rejalari)
-              </p>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left border-collapse border border-slate-200">
-                  <thead className="bg-slate-100">
-                    <tr>
-                      <th className="border border-slate-200 p-2.5 font-bold uppercase text-slate-700">Tadbir nomi</th>
-                      <th className="border border-slate-200 p-2.5 font-bold uppercase text-slate-700">Hududi</th>
-                      <th className="border border-slate-200 p-2.5 font-bold uppercase text-slate-700">Maqsadli Aholisi</th>
-                      <th className="border border-slate-200 p-2.5 font-bold uppercase text-slate-700">Mas'ullar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="hover:bg-slate-50">
-                      <td className="border border-slate-200 p-2 text-slate-900 font-semibold">Tibbiyot pedagoglari o'rtasida somatik skrining oyligi</td>
-                      <td className="border border-slate-200 p-2 text-slate-700">Oliy tibbiyot o'quv yurtlari (Farg'ona)</td>
-                      <td className="border border-slate-200 p-2 text-slate-600">Amaliyot shifokorlari va professor xodimlari</td>
-                      <td className="border border-slate-200 p-2 text-emerald-700 font-bold">Dissertatsiya olimlari va guruh</td>
-                    </tr>
-                    <tr className="hover:bg-slate-50">
-                      <td className="border border-slate-200 p-2 text-slate-900 font-semibold">"Yog'siz va Tuzsiz Hafta" - Nuritv o'zgarishlar so'rovi</td>
-                      <td className="border border-slate-200 p-2 text-slate-700">Marg'ilon, Qo'qon, Quvasoy sh.</td>
-                      <td className="border border-slate-200 p-2 text-slate-600">Bozor oziq-ovqat va umumiy oshxonalar aholisi</td>
-                      <td className="border border-slate-200 p-2 text-indigo-700 font-bold">Sog'lom turmush tarzi targ'ibotchilari</td>
-                    </tr>
-                    <tr className="hover:bg-slate-50">
-                      <td className="border border-slate-200 p-2 text-slate-900 font-semibold">Gipertonik risklarni erta aniqlash poliklinika ko'riklari</td>
-                      <td className="border border-slate-200 p-2 text-slate-700">Oltiariq, Rishton, Quva tumani</td>
-                      <td className="border border-slate-200 p-2 text-slate-600">Aholining keng xotin-qizlar va erkaklar qatlami</td>
-                      <td className="border border-slate-200 p-2 text-emerald-700 font-bold">Oila shifokorlari</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </div>
-        )}
-
-        {/* TAB 4: ARCHIVE HISTORY LIST (USING LOCALSTORAGE) */}
+        {/* TAB: ARCHIVE HISTORY LIST (USING LOCALSTORAGE) */}
         {activeTab === 'history' && (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 space-y-6">
-            <div className="border-b pb-4 flex justify-between items-center">
+          <div className="ios-card shadow-sm p-6 md:p-8 space-y-6">
+            <div className="border-b border-[var(--ios-frost-border)] pb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
               <div>
-                <h2 className="text-xl font-extrabold text-slate-900 uppercase">Salomatlik Skrininglari Arxiv Tarixi</h2>
-                <p className="text-xs text-slate-500">Shaxsiy brauzeringizda saqlangan oxirgi kardiologik diagnostikalar tarixi (Maksimum 30 ta)</p>
+                <h2 className="text-xl font-extrabold uppercase">
+                  {t('Salomatlik Skrininglari Arxiv Tarixi', language)}
+                </h2>
+                <p className="text-xs text-slate-500">
+                  {t('Shaxsiy brauzeringizda saqlangan oxirgi kardiologik diagnostikalar tarixi (Maksimum 30 ta)', language)}
+                </p>
               </div>
-              <span className="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded font-bold font-mono">
-                Jami arxiv: {historyList.length} ta
-              </span>
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="ios-badge ios-badge-accent font-mono">
+                  {t('Jami arxiv', language)}: {historyList.length}
+                </span>
+                {historyList.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={clearAllHistory}
+                    disabled={deletingHistoryId !== null}
+                    className="ios-btn ios-btn-danger ios-btn-sm"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    {t("Barchasini o'chirish", language)}
+                  </button>
+                )}
+              </div>
             </div>
 
             {historyList.length > 0 ? (
@@ -2593,11 +2440,16 @@ export default function PatientPortal({
                         </div>
 
                         <button
+                          type="button"
                           onClick={(e) => deleteHistoryItem(item.id, e)}
-                          className="p-2.5 hover:bg-red-100 text-slate-400 hover:text-red-600 rounded-lg transition-all"
-                          title="O'chirish"
+                          disabled={deletingHistoryId === item.id}
+                          className="ios-btn ios-btn-danger ios-btn-sm shrink-0"
+                          title={t("O'chirish", language)}
                         >
-                          <Trash2 className="w-4.5 h-4.5" />
+                          <Trash2 className="w-3.5 h-3.5" />
+                          {deletingHistoryId === item.id
+                            ? t('Kutilmoqda...', language)
+                            : t("O'chirish", language)}
                         </button>
                       </div>
                     </div>
@@ -2625,7 +2477,7 @@ export default function PatientPortal({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               
               {/* average BP card */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+              <div className="ios-card shadow-sm p-5 flex items-center justify-between">
                 <div>
                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide">O'rtacha qon bosimi</h3>
                   <p className="text-xl font-extrabold text-slate-800 mt-1">
@@ -2650,7 +2502,7 @@ export default function PatientPortal({
               </div>
 
               {/* average pulse card */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+              <div className="ios-card shadow-sm p-5 flex items-center justify-between">
                 <div>
                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide">O'rtacha puls</h3>
                   <p className="text-xl font-extrabold text-slate-800 mt-1">
@@ -2669,7 +2521,7 @@ export default function PatientPortal({
               </div>
 
               {/* medication compliance card */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+              <div className="ios-card shadow-sm p-5 flex items-center justify-between">
                 <div>
                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide">Dori ichish intizomi</h3>
                   <p className="text-xl font-extrabold text-slate-800 mt-1">
@@ -2695,7 +2547,7 @@ export default function PatientPortal({
               </div>
 
               {/* active cardiac alerts card */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+              <div className="ios-card shadow-sm p-5 flex items-center justify-between">
                 <div>
                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide">Ogohlantirishlar</h3>
                   <p className="text-xl font-extrabold text-slate-800 mt-1">
@@ -2725,7 +2577,7 @@ export default function PatientPortal({
             </div>
 
             {/* 1.5 INTERACTIVE HEALTH CHART */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+            <div className="ios-card shadow-sm p-6 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                 <div>
                   <h3 className="text-base font-extrabold text-slate-800 uppercase flex items-center gap-2">
@@ -2836,7 +2688,7 @@ export default function PatientPortal({
               {/* LEFT COLUMN: FORM */}
               <div className="lg:col-span-12 xl:col-span-5 space-y-6">
                 
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5">
+                <div className="ios-card shadow-sm p-6 space-y-5">
                   <div className="border-b pb-3">
                     <h3 className="text-lg font-extrabold text-slate-800 uppercase flex items-center gap-2">
                       <Plus className="w-5 h-5 text-emerald-600" />
@@ -3142,7 +2994,7 @@ export default function PatientPortal({
               <div className="lg:col-span-12 xl:col-span-7 space-y-6">
 
                 {/* DORI ESLATMALARI VA PUSH NOTIFICATION TIZIMI */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-205 p-6 space-y-5">
+                <div className="ios-card shadow-sm p-6 space-y-5">
                   <div className="border-b pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                       <h3 className="text-lg font-extrabold text-slate-800 uppercase flex items-center gap-2">
@@ -3304,7 +3156,7 @@ export default function PatientPortal({
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                <div className="ios-card shadow-sm p-6 space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-3">
                     <div>
                       <h3 className="text-lg font-extrabold text-slate-800 uppercase flex items-center gap-2">
@@ -3509,7 +3361,7 @@ export default function PatientPortal({
         )}
 
         {activeTab === 'advices' && (
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-6 shadow-sm">
+          <div className="ios-card ios-card-lg p-6 space-y-6 shadow-sm">
             <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest border-b pb-3 flex items-center gap-2">
               <Award className="w-5 h-5 text-indigo-600" />
               <span>Shifokorlaringiz Klinik Tavsiyalari va Retseptlari ({patientAdvices.length})</span>
@@ -3560,13 +3412,15 @@ export default function PatientPortal({
       </div>
 
       {/* FOOTER & DISCLAIMER */}
-      <footer className="max-w-7xl mx-auto px-4 mt-12 border-t border-slate-200 pt-6 text-center text-slate-500 space-y-3 print:hidden">
+      <footer className="ios-footer max-w-7xl mx-auto px-4 mt-12 border-t pt-6 text-center space-y-3 print:hidden">
         <p className="text-xs">
           {t("© 2026 Intellektual Salomatlik Axborot Tizimi. Farg'ona Vodiysi profiling va kardiologik so'nggi ma'lumotlar bazasi zaxirasi.", language)}
         </p>
         <MedicalDisclaimer language={language} variant="card" className="max-w-4xl mx-auto" />
       </footer>
-    </div>
+        </div>
+      </div>
+    </AppShell>
   );
 }
 

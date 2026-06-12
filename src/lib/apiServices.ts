@@ -4,6 +4,7 @@ import {
   mapApiAdvice,
   mapApiPatientBundle,
   mapApiUserToProfile,
+  mapHistoryItemToApiScreening,
   mapJournalEntryToApi,
   mapProfileToApi,
   mapQuestionnaireToApiScreening,
@@ -111,6 +112,40 @@ export async function syncNewScreenings(
 ): Promise<UserProfile> {
   const payload: SyncPayload = {
     screenings: questionnaires.map(mapQuestionnaireToApiScreening),
+  };
+  if (profile) {
+    payload.profile = mapProfileToApi(profile);
+  }
+  return syncPatientData(userId, payload);
+}
+
+/** Bitta skrining yozuvini serverdan o'chirish */
+export async function deletePatientScreening(
+  userId: string,
+  screeningId: string
+): Promise<void> {
+  await apiJson(
+    `/api/patients/${encodeURIComponent(userId)}/sync/screenings/${encodeURIComponent(screeningId)}`,
+    { method: 'DELETE' }
+  );
+}
+
+/** Bemorning barcha skrining arxivini serverdan o'chirish */
+export async function deleteAllPatientScreenings(userId: string): Promise<void> {
+  await apiJson(
+    `/api/patients/${encodeURIComponent(userId)}/sync/screenings`,
+    { method: 'DELETE' }
+  );
+}
+
+/** Arxivdan o'chirgandan keyin qolgan skrininglarni serverga yozish */
+export async function syncFullScreeningHistory(
+  userId: string,
+  items: ClientScreeningHistoryItem[],
+  profile?: SafeUserProfile
+): Promise<UserProfile> {
+  const payload: SyncPayload = {
+    screenings: items.map(mapHistoryItemToApiScreening),
   };
   if (profile) {
     payload.profile = mapProfileToApi(profile);
@@ -308,7 +343,7 @@ export function applyServerPatientDataToLocal(
 } {
   const history =
     user.soglik_skrining_tarixi?.map((item, idx) => ({
-      id: `hist-server-${idx}-${item.sana}`,
+      id: item.id || `hist-server-${idx}-${item.sana}`,
       date: item.sana,
       data: item.data,
       result: item.riskResult,

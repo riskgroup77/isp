@@ -104,9 +104,9 @@ export default function AdminEditUserPanel({
   };
 
   return (
-    <div className="fixed inset-0 z-[10003] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[10003] ios-overlay flex items-center justify-center p-4">
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden"
+        className="ios-card ios-modal max-w-lg w-full overflow-hidden animate-fadeIn"
         id="admin-edit-user-panel"
       >
         <div className="bg-indigo-900 px-5 py-4 flex items-center justify-between text-white">

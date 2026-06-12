@@ -58,6 +58,14 @@ export function toClientHistory(items: ScreeningHistoryItem[]): ClientScreeningH
   }));
 }
 
+/** Serverda saqlangan skrining ID (mahalliy vaqtinchalik ID emas) */
+export function isServerScreeningId(id: string): boolean {
+  if (!id || id.startsWith('hist')) return false;
+  // saveToHistory: Math.random().toString(36).substr(2, 9)
+  if (/^[a-z0-9]{9}$/i.test(id)) return false;
+  return true;
+}
+
 export function toServerHistory(
   items: ClientScreeningHistoryItem[] | ScreeningHistoryItem[]
 ): ScreeningHistoryItem[] {

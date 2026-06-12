@@ -86,6 +86,13 @@ export interface HealthJournalEntry {
 
 export type UserRole = 'admin' | 'shifokor' | 'foydalanuvchi';
 
+export interface ScreeningHistoryEntry {
+  id?: string;
+  riskResult: RiskAnalysisResult;
+  data: QuestionnaireData;
+  sana: string;
+}
+
 export interface UserProfile {
   id: string;
   login: string;
@@ -99,7 +106,7 @@ export interface UserProfile {
   jins?: 'erkak' | 'ayol';
   boy?: number;
   vazn?: number;
-  soglik_skrining_tarixi?: { riskResult: RiskAnalysisResult; data: QuestionnaireData; sana: string }[];
+  soglik_skrining_tarixi?: ScreeningHistoryEntry[];
   soglik_kundaligi?: HealthJournalEntry[];
   // Doctor fields (shifokor)
   mutaxassislik?: string;

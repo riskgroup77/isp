@@ -44,6 +44,18 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const toastClass = (type: ToastType) => {
+    if (type === 'success') return 'ios-toast ios-toast-success';
+    if (type === 'error') return 'ios-toast ios-toast-error';
+    return 'ios-toast ios-toast-info';
+  };
+
+  const iconClass = (type: ToastType) => {
+    if (type === 'success') return 'text-emerald-600';
+    if (type === 'error') return 'text-red-500';
+    return 'text-[var(--ios-text-secondary)]';
+  };
+
   return (
     <ToastContext.Provider value={{ showToast, showConfirm }}>
       {children}
@@ -52,22 +64,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-2 rounded-xl border px-4 py-3 shadow-lg text-sm animate-fadeIn ${
-              toast.type === 'success'
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
-                : toast.type === 'error'
-                  ? 'bg-red-50 border-red-200 text-red-900'
-                  : 'bg-slate-900 border-slate-700 text-white'
-            }`}
+            className={`pointer-events-auto flex items-start gap-2.5 px-4 py-3 text-sm ${toastClass(toast.type)}`}
           >
             {toast.type === 'success' && (
-              <CheckCircle className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+              <CheckCircle className={`w-4 h-4 shrink-0 mt-0.5 ${iconClass(toast.type)}`} />
             )}
             {toast.type === 'error' && (
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
+              <AlertCircle className={`w-4 h-4 shrink-0 mt-0.5 ${iconClass(toast.type)}`} />
             )}
             {toast.type === 'info' && (
-              <Info className="w-4 h-4 shrink-0 mt-0.5 text-slate-300" />
+              <Info className={`w-4 h-4 shrink-0 mt-0.5 ${iconClass(toast.type)}`} />
             )}
             <p className="flex-1 leading-relaxed">{toast.message}</p>
             <button
@@ -75,7 +81,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               onClick={() =>
                 setToasts((prev) => prev.filter((t) => t.id !== toast.id))
               }
-              className="text-current opacity-60 hover:opacity-100"
+              className="text-current opacity-50 hover:opacity-100 transition-opacity"
             >
               <X className="w-4 h-4" />
             </button>
@@ -84,21 +90,21 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       </div>
 
       {confirmState && (
-        <div className="fixed inset-0 z-[10002] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 border border-slate-200">
-            <p className="text-sm text-slate-700 leading-relaxed">{confirmState.message}</p>
+        <div className="fixed inset-0 z-[10002] ios-overlay flex items-center justify-center p-4">
+          <div className="ios-card ios-modal max-w-md w-full p-6 space-y-4 animate-fadeIn">
+            <p className="text-sm text-slate-600 leading-relaxed">{confirmState.message}</p>
             <div className="flex gap-3 justify-end">
               <button
                 type="button"
                 onClick={() => closeConfirm(false)}
-                className="px-4 py-2 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700"
+                className="ios-btn ios-btn-frost ios-btn-sm"
               >
                 Bekor qilish
               </button>
               <button
                 type="button"
                 onClick={() => closeConfirm(true)}
-                className="px-4 py-2 text-xs font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white"
+                className="ios-btn ios-btn-danger ios-btn-sm"
               >
                 Tasdiqlash
               </button>

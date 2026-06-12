@@ -18,6 +18,9 @@ import { t } from '../lib/lang';
 import MedicalDisclaimer from './MedicalDisclaimer';
 import { mapApiUserToProfile } from '../lib/apiMappers';
 import { loginUser, registerPatient } from '../lib/apiServices';
+import AppShell from './ui/AppShell';
+import LanguageSwitcher from './ui/LanguageSwitcher';
+import ThemeToggle from './ui/ThemeToggle';
 
 interface AuthScreenProps {
   onAuthSuccess: (user: UserProfile, token: string) => void;
@@ -144,59 +147,37 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
   };
 
   return (
-    <div className="max-w-md mx-auto my-8 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" id="auth-container">
-      
+    <AppShell className="flex items-center justify-center px-4 py-8 min-h-screen">
+      <div className="max-w-md w-full ios-auth-card" id="auth-container">
+
       {/* Header card banner */}
-      <div className="bg-slate-900 p-6 text-white text-center space-y-3 relative">
-        {onLanguageChange && (
-          <div className="flex justify-center mb-1">
-            <div className="flex items-center gap-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/60 shadow">
-              <button
-                type="button"
-                onClick={() => onLanguageChange('lotin')}
-                className={`px-2.5 py-1 text-[9px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'lotin'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                }`}
-              >
-                Lotin
-              </button>
-              <button
-                type="button"
-                onClick={() => onLanguageChange('kirill')}
-                className={`px-2.5 py-1 text-[9px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'kirill'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                }`}
-              >
-                Кирилл
-              </button>
-            </div>
-          </div>
-        )}
-        <div className="absolute top-3 right-3 animate-pulse">
-          <Sparkles className="w-5 h-5 text-emerald-400" />
+      <div className="ios-auth-header p-6 text-center space-y-3 relative">
+        <div className="flex justify-center items-center gap-2 mb-1">
+          {onLanguageChange && (
+            <LanguageSwitcher
+              language={language}
+              onChange={onLanguageChange}
+            />
+          )}
+          <ThemeToggle language={language} />
         </div>
-        <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto text-white shadow">
-          <Heart className="w-6 h-6 shrink-0" />
+        <div className="absolute top-3 right-3 opacity-80">
+          <Sparkles className="w-5 h-5 text-[var(--ios-accent)]" />
         </div>
-        <h2 className="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wide leading-relaxed">
+        <div className="w-14 h-14 ios-icon-wrap ios-icon-wrap-heart rounded-full mx-auto">
+          <Heart className="w-7 h-7 shrink-0" />
+        </div>
+        <h2 className="text-xs sm:text-sm font-semibold ios-header-muted tracking-wide leading-relaxed px-2">
           {t("Noinfeksion kardiologik xavflarni prognozlash va monitoring qilish milliy-ilmiy ko'p rolli portali", language)}
         </h2>
       </div>
 
       {/* Tabs list triggers */}
-      <div className="flex border-b border-slate-100">
+      <div className="ios-tab-bar">
         <button
           type="button"
           onClick={() => { setMode('login'); resetMessages(); }}
-          className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
-            mode === 'login'
-              ? 'border-emerald-500 text-emerald-600 bg-emerald-50/20'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
-          }`}
+          className={`ios-tab-btn ${mode === 'login' ? 'ios-tab-btn-active' : ''}`}
           id="tab-auth-login"
         >
           {t("Tizimga Kirish", language)}
@@ -204,11 +185,7 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
         <button
           type="button"
           onClick={() => { setMode('register'); setRol('foydalanuvchi'); resetMessages(); }}
-          className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
-            mode === 'register'
-              ? 'border-emerald-500 text-emerald-600 bg-emerald-50/20'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
-          }`}
+          className={`ios-tab-btn ${mode === 'register' ? 'ios-tab-btn-active' : ''}`}
           id="tab-auth-register"
         >
           {t("Ro'yxatdan O'tish", language)}
@@ -219,14 +196,14 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
         
         {/* Error/Success alerts */}
         {errorMsg && (
-          <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-3 rounded text-xs text-red-800 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+          <div className="mb-4 ios-alert ios-alert-error">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{t(errorMsg, language)}</span>
           </div>
         )}
         {successMsg && (
-          <div className="mb-4 bg-emerald-50 border-l-4 border-emerald-500 p-3 rounded text-xs text-emerald-800 flex items-center gap-2">
-            <Info className="w-4 h-4 text-emerald-500 shrink-0" />
+          <div className="mb-4 ios-alert ios-alert-success">
+            <Info className="w-4 h-4 shrink-0" />
             <span>{t(successMsg, language)}</span>
           </div>
         )}
@@ -237,7 +214,7 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
           
           {/* USERNAME / LOGIN */}
           <div>
-            <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">
+            <label className="ios-label">
               {t("Foydalanuvchi logini *", language)}
             </label>
             <div className="relative">
@@ -250,14 +227,14 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
                 required
-                className="w-full text-xs rounded border border-slate-300 pl-9 pr-3 py-2.5 bg-slate-50 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500/80 focus:border-emerald-500"
+                className="ios-input ios-input-icon text-xs"
               />
             </div>
           </div>
 
           {/* PAROL (Password) */}
           <div>
-            <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">
+            <label className="ios-label">
               {t("Maxfiy parol *", language)}
             </label>
             <div className="relative">
@@ -270,7 +247,7 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
                 value={parol}
                 onChange={(e) => setParol(e.target.value)}
                 required
-                className="w-full text-xs rounded border border-slate-300 pl-9 pr-3 py-2.5 bg-slate-50 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500/80 focus:border-emerald-500"
+                className="ios-input ios-input-icon text-xs"
               />
             </div>
           </div>
@@ -393,7 +370,7 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+            className="ios-btn ios-btn-primary ios-btn-lg ios-btn-block uppercase tracking-widest"
             id="btn-auth-submit"
           >
             <span>{loading ? t('Kuting, ulanish bormoqda...', language) : (mode === 'login' ? t('Tizimga Kirish', language) : t('Portalda Ro\'yxatdan O\'tish', language))}</span>
@@ -415,9 +392,9 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
             <button
               type="button"
               onClick={() => handleShortcutLogin('foydalanuvchi', 'foydalanuvchi123')}
-              className="p-2 border border-slate-205 rounded-xl text-left hover:bg-purple-50 transition hover:border-purple-305 group cursor-pointer"
+              className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
             >
-              <span className="block text-[8px] font-extrabold uppercase text-purple-600">{t("Bemor", language)} / {t("Birlamchi", language)}</span>
+              <span className="block text-[8px] font-extrabold uppercase text-[var(--ios-accent)]">{t("Bemor", language)} / {t("Birlamchi", language)}</span>
               <span className="block text-[11px] font-bold text-slate-800">{t("Sardor Salimov", language)}</span>
               <span className="block text-[8px] font-mono text-slate-400 mt-0.5">login: foydalanuvchi</span>
             </button>
@@ -426,9 +403,9 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
             <button
               type="button"
               onClick={() => handleShortcutLogin('shifokor', 'shifokor123')}
-              className="p-2 border border-slate-205 rounded-xl text-left hover:bg-indigo-50 transition hover:border-indigo-305 group cursor-pointer"
+              className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
             >
-              <span className="block text-[8px] font-extrabold uppercase text-indigo-600">{t("Shifokor", language)} / {t("Vodiydan", language)}</span>
+              <span className="block text-[8px] font-extrabold uppercase text-[var(--ios-accent)]">{t("Shifokor", language)} / {t("Vodiydan", language)}</span>
               <span className="block text-[11px] font-bold text-slate-800">{t("Dr. A. Qodirov", language)}</span>
               <span className="block text-[8px] font-mono text-slate-455 mt-0.5">login: shifokor</span>
             </button>
@@ -437,9 +414,9 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
             <button
               type="button"
               onClick={() => handleShortcutLogin('admin', 'admin123')}
-              className="p-2 border border-slate-205 rounded-xl text-left hover:bg-amber-50 transition hover:border-amber-305 group cursor-pointer"
+              className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
             >
-              <span className="block text-[8px] font-extrabold uppercase text-amber-600">{t("Administrator", language)}</span>
+              <span className="block text-[8px] font-extrabold uppercase text-[var(--ios-accent)]">{t("Administrator", language)}</span>
               <span className="block text-[11px] font-bold text-slate-800">System Admin</span>
               <span className="block text-[8px] font-mono text-slate-400 mt-0.5">login: admin</span>
             </button>
@@ -449,6 +426,7 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
         )}
       </div>
 
-    </div>
+      </div>
+    </AppShell>
   );
 }

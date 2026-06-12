@@ -25,6 +25,9 @@ import {
 import { useToast } from './ui/Toast';
 import AdminCreateUserPanel from './admin/AdminCreateUserPanel';
 import AdminEditUserPanel from './admin/AdminEditUserPanel';
+import AppShell from './ui/AppShell';
+import LanguageSwitcher from './ui/LanguageSwitcher';
+import ThemeToggle from './ui/ThemeToggle';
 
 interface AdminDashboardProps {
   adminUser: SafeUserProfile;
@@ -132,25 +135,26 @@ export default function AdminDashboard({
   });
 
   return (
+    <AppShell className="ios-app min-h-screen pb-12">
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-6" id="admin-portal-root">
       
       {/* Title & Banner */}
-      <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="ios-header rounded-[var(--ios-radius-lg)] p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-amber-600 rounded-xl">
-            <Settings className="w-8 h-8 text-amber-50" />
+          <div className="p-3 ios-icon-wrap">
+            <Settings className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-amber-800 text-amber-100 px-2.5 py-0.5 rounded font-black uppercase tracking-wider">
+              <span className="ios-badge ios-badge-accent">
                 {t("Administrator Boshqaruv Markazi", language)}
               </span>
-              <span className="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">
+              <span className="ios-badge ios-badge-glass font-mono">
                 System Active
               </span>
             </div>
-            <h2 className="text-2xl font-black text-slate-50 mt-1">{adminUser.ism} (Admin)</h2>
-            <p className="text-slate-300 text-xs mt-0.5">
+            <h2 className="text-2xl font-bold ios-header-title mt-1 tracking-tight">{adminUser.ism} (Admin)</h2>
+            <p className="ios-header-muted text-xs mt-0.5">
               ⚙️ {t("Platforma foydalanuvi profillarini boshqarish va vrach ruxsatnomalarini tasdiqlash bosh qismi.", language)}
             </p>
           </div>
@@ -158,49 +162,27 @@ export default function AdminDashboard({
 
         <div className="flex flex-wrap items-center gap-2">
           {onLanguageChange && (
-            <div className="flex items-center gap-0.5 bg-slate-800/90 p-0.5 rounded-lg border border-slate-700/60 shadow">
-              <button
-                type="button"
-                onClick={() => onLanguageChange('lotin')}
-                className={`px-2 py-1 text-[10px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'lotin'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                }`}
-              >
-                Lotin
-              </button>
-              <button
-                type="button"
-                onClick={() => onLanguageChange('kirill')}
-                className={`px-2 py-1 text-[10px] rounded font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'kirill'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/40'
-                }`}
-              >
-                Кирилл
-              </button>
-            </div>
+            <LanguageSwitcher language={language} onChange={onLanguageChange} />
           )}
+          <ThemeToggle language={language} />
           <button
             type="button"
             onClick={() => setShowCreatePanel(true)}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-xs font-bold rounded-lg cursor-pointer text-white flex items-center gap-1.5 shadow-sm"
+            className="ios-btn ios-btn-primary ios-btn-sm"
           >
             <UserPlus className="w-3.5 h-3.5" /> {t("Foydalanuvchi yaratish", language)}
           </button>
           <button
             type="button"
             onClick={fetchUsers}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg border border-slate-700 cursor-pointer text-slate-200 flex items-center gap-1.5"
+            className="ios-btn ios-btn-secondary ios-btn-sm"
           >
             <RefreshCw className="w-3.5 h-3.5" /> {t("Ma'lumotlarni yangilash", language)}
           </button>
           <button
             type="button"
             onClick={onLogout}
-            className="px-4 py-2 bg-red-600/90 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-sm cursor-pointer"
+            className="ios-btn ios-btn-danger ios-btn-sm"
           >
             {t("Chiqish", language)}
           </button>
@@ -208,10 +190,10 @@ export default function AdminDashboard({
       </div>
 
       {/* KPI Stats cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 ios-stagger">
         
         {/* Card 1: Total Users */}
-        <div className="bg-white rounded-xl border p-4 shadow-sm space-y-1">
+        <div className="ios-card p-4 space-y-1">
           <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Platforma Hisoblari</span>
           <div className="flex items-center justify-between">
             <span className="text-2xl font-black text-slate-800">{totalUsers}</span>
@@ -221,27 +203,27 @@ export default function AdminDashboard({
         </div>
 
         {/* Card 2: Patients */}
-        <div className="bg-white rounded-xl border p-4 shadow-sm space-y-1">
+        <div className="ios-card p-4 space-y-1">
           <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans">Jami Bemorlar (👤)</span>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-black text-purple-600">{totalPatients}</span>
-            <Activity className="w-5 h-5 text-purple-500 shrink-0" />
+            <span className="text-2xl font-black text-[var(--ios-accent)]">{totalPatients}</span>
+            <Activity className="w-5 h-5 text-[var(--ios-accent)] shrink-0 opacity-80" />
           </div>
           <span className="block text-[8px] text-slate-500 font-medium font-mono">foydalanuvchi roldagilar</span>
         </div>
 
         {/* Card 3: Total Doctors */}
-        <div className="bg-white rounded-xl border p-4 shadow-sm space-y-1">
+        <div className="ios-card p-4 space-y-1">
           <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Shifokorlar (🥼)</span>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-black text-indigo-600">{totalDoctors}</span>
-            <Award className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span className="text-2xl font-black text-[var(--ios-accent)]">{totalDoctors}</span>
+            <Award className="w-5 h-5 text-[var(--ios-accent)] shrink-0 opacity-80" />
           </div>
           <span className="block text-[8px] text-slate-500 font-medium font-mono">tibbi muassis xodimlari</span>
         </div>
 
         {/* Card 4: Unverified Doctors (Urgent Action!) */}
-        <div className="bg-white rounded-xl border p-4 shadow-sm space-y-1 ring-1 ring-amber-500/10 bg-amber-50/10">
+        <div className="ios-card p-4 space-y-1 border-[var(--ios-warn)]/20">
           <span className="block text-[10px] font-extrabold text-amber-600 uppercase tracking-widest">Tasdiqlanmagan Vrach</span>
           <div className="flex items-center justify-between">
             <span className="text-2xl font-black text-amber-600">{unverifiedDoctors.length} ta</span>
@@ -251,11 +233,11 @@ export default function AdminDashboard({
         </div>
 
         {/* Card 5: System Admins */}
-        <div className="bg-white rounded-xl border p-4 shadow-sm space-y-1">
+        <div className="ios-card p-4 space-y-1">
           <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tizim Adminlari</span>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-black text-emerald-600">{totalAdmins}</span>
-            <UserCheck className="w-5 h-5 text-emerald-500 shrink-0" />
+            <span className="text-2xl font-black text-[var(--ios-accent)]">{totalAdmins}</span>
+            <UserCheck className="w-5 h-5 text-[var(--ios-accent)] shrink-0 opacity-80" />
           </div>
           <span className="block text-[8px] text-slate-500 font-medium font-mono">boshqaruvchi ruxsatiga ega</span>
         </div>
@@ -263,7 +245,7 @@ export default function AdminDashboard({
       </div>
 
       {/* Main Table card */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      <div className="ios-card ios-card-lg overflow-hidden">
         
         {/* Table header control bar */}
         <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -472,5 +454,6 @@ export default function AdminDashboard({
       )}
 
     </div>
+    </AppShell>
   );
 }

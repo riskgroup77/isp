@@ -34,7 +34,7 @@ export default function MedicalDisclaimer({
   if (variant === 'auth') {
     return (
       <div
-        className={`rounded-xl border-2 border-amber-300 bg-amber-50 p-4 space-y-2 ${className}`}
+        className={`ios-alert ios-alert-warn rounded-[var(--ios-radius)] p-4 space-y-2 ${className}`}
         id="medical-disclaimer-auth"
         role="note"
         aria-label={getDisclaimerTitle(language)}
@@ -98,7 +98,7 @@ export default function MedicalDisclaimer({
   // card (default — footer va umumiy ko'rinish)
   return (
     <div
-      className={`bg-slate-200/50 p-4 rounded-lg text-[11px] leading-relaxed text-slate-600 border border-slate-300/60 ${className}`}
+      className={`ios-card p-4 text-[11px] leading-relaxed text-slate-600 ${className}`}
       id="medical-disclaimer-card"
       role="note"
     >

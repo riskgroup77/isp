@@ -7,8 +7,18 @@
       name="description"
       content="Intellektual Salomatlik Platformasi — Farg'ona vodiysi uchun kardiologik xavf prognozlash, skrining va salomatlik monitoring tizimi."
     />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#eef2f8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>Intellektual Salomatlik Platformasi</title>
+    <script>
+      (function () {
+        var t = localStorage.getItem('soglik_theme');
+        var theme = t === 'dark' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

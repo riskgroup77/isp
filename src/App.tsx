@@ -5,7 +5,9 @@
 
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import AuthScreen from './components/AuthScreen';
+import AppShell from './components/ui/AppShell';
 import { ToastProvider } from './components/ui/Toast';
+import { ThemeProvider } from './components/ui/ThemeProvider';
 import {
   clearAuthSession,
   getStoredUser,
@@ -23,9 +25,10 @@ const PatientPortal = lazy(() => import('./components/patient/PatientPortal'));
 
 function LoadingScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
-      <p className="text-sm font-semibold animate-pulse">Yuklanmoqda...</p>
-    </div>
+    <AppShell className="ios-loading">
+      <div className="ios-loading-ring" />
+      <p className="text-sm font-semibold tracking-wide ios-header-muted">Yuklanmoqda...</p>
+    </AppShell>
   );
 }
 
@@ -102,8 +105,10 @@ function AppRouter() {
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AppRouter />
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <AppRouter />
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

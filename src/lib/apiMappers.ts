@@ -1,6 +1,9 @@
 import type { SafeUserProfile } from './auth';
 import { normalizeRiskResult } from './riskResult';
-import type { ScreeningHistoryItem } from './screeningHistory';
+import type {
+  ClientScreeningHistoryItem,
+  ScreeningHistoryItem,
+} from './screeningHistory';
 import type {
   HealthJournalEntry,
   PatientAdvice,
@@ -148,6 +151,8 @@ export function mapApiScreeningToHistoryItem(
 
   const id =
     (raw.id as string) ||
+    (raw.screening_id as string) ||
+    (raw.screeningId as string) ||
     `hist-${index}-${Math.random().toString(36).slice(2, 9)}`;
 
   return { id, sana, data, riskResult };
@@ -201,6 +206,7 @@ export function mapApiPatientBundle(bundle: ApiPatientBundle): UserProfile {
     ...mapApiUserToProfile(bundle.user),
     parol: '',
     soglik_skrining_tarixi: screenings.map((s) => ({
+      id: s.id,
       riskResult: s.riskResult,
       data: s.data,
       sana: s.sana,
@@ -219,6 +225,19 @@ export function mapApiAdvice(advice: ApiAdviceResponse): PatientAdvice {
     matn: advice.matn,
     sana: advice.sana,
     vaqt: advice.vaqt,
+  };
+}
+
+/** To'liq arxiv yozuvini sync uchun API formatiga */
+export function mapHistoryItemToApiScreening(
+  item: ClientScreeningHistoryItem
+): Record<string, unknown> {
+  return {
+    ...mapQuestionnaireToApiScreening(item.data),
+    sana: item.date,
+    date: item.date,
+    riskResult: item.result,
+    result: item.result,
   };
 }
 
@@ -267,6 +286,7 @@ export function mapSyncResponseToUser(response: ApiSyncResponse): UserProfile {
     ...mapApiUserToProfile(response.user),
     parol: '',
     soglik_skrining_tarixi: mapApiScreeningsToHistory(response.screenings).map((s) => ({
+      id: s.id,
       riskResult: s.riskResult,
       data: s.data,
       sana: s.sana,
