@@ -23,6 +23,7 @@ import type {
   UserRole,
 } from '../types';
 import type { ClientScreeningHistoryItem } from './screeningHistory';
+import { normalizeRiskResult } from './riskResult';
 
 export interface AuthResponse {
   user: ApiUserResponse;
@@ -212,10 +213,11 @@ export async function deleteAdminUser(userId: string): Promise<void> {
 }
 
 export async function predictRisk(data: QuestionnaireData): Promise<RiskAnalysisResult> {
-  return apiJson<RiskAnalysisResult>('/api/predict-risk', {
+  const result = await apiJson<Partial<RiskAnalysisResult>>('/api/predict-risk', {
     method: 'POST',
     body: JSON.stringify(data),
   });
+  return normalizeRiskResult(result);
 }
 
 export async function analyzeComplaint(matn: string): Promise<TextAnalysisResponse> {

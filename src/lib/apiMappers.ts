@@ -1,4 +1,5 @@
 import type { SafeUserProfile } from './auth';
+import { normalizeRiskResult } from './riskResult';
 import type { ScreeningHistoryItem } from './screeningHistory';
 import type {
   HealthJournalEntry,
@@ -114,13 +115,13 @@ function pickQuestionnaire(raw: Record<string, unknown>): QuestionnaireData {
 
 function pickRiskResult(raw: Record<string, unknown>): RiskAnalysisResult | null {
   if (raw.riskResult && typeof raw.riskResult === 'object') {
-    return raw.riskResult as RiskAnalysisResult;
+    return normalizeRiskResult(raw.riskResult as Partial<RiskAnalysisResult>);
   }
   if (raw.result && typeof raw.result === 'object') {
-    return raw.result as RiskAnalysisResult;
+    return normalizeRiskResult(raw.result as Partial<RiskAnalysisResult>);
   }
 
-  const risk = {} as RiskAnalysisResult;
+  const risk: Partial<RiskAnalysisResult> = {};
   let hasRisk = false;
   for (const key of RISK_KEYS) {
     if (raw[key] !== undefined && raw[key] !== null) {
@@ -128,7 +129,7 @@ function pickRiskResult(raw: Record<string, unknown>): RiskAnalysisResult | null
       hasRisk = true;
     }
   }
-  return hasRisk ? risk : null;
+  return hasRisk ? normalizeRiskResult(risk) : null;
 }
 
 export function mapApiScreeningToHistoryItem(

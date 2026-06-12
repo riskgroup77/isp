@@ -73,6 +73,7 @@ import {
   type ClientScreeningHistoryItem,
 } from '../../lib/screeningHistory';
 import type { SafeUserProfile } from '../../lib/auth';
+import { normalizeRiskResult } from '../../lib/riskResult';
 import { useToast } from '../ui/Toast';
 
 // Default initial state
@@ -1979,7 +1980,7 @@ export default function PatientPortal({
                             <div className="bg-slate-100 p-2.5 rounded-lg flex flex-col justify-between">
                               <div>
                                 <span className="text-slate-500 uppercase text-[9px] font-bold">Farg'ona Aholi Statistikasi</span>
-                                <p className="text-sm font-extrabold text-slate-800 mt-0.5">Xavf darajasi: {riskResult.hududiyStatistika.hududXavfi}%</p>
+                                <p className="text-sm font-extrabold text-slate-800 mt-0.5">Xavf darajasi: {riskResult.hududiyStatistika?.hududXavfi ?? 0}%</p>
                               </div>
                               <span className="text-[9px] text-slate-500">Me'yor: &lt; 30%</span>
                             </div>
@@ -1992,7 +1993,7 @@ export default function PatientPortal({
                   </div>
 
                   {/* CLINICAL COMPLIANCE ANALYSIS (INNOVATION 4 DETAILED REPORT) */}
-                  {riskResult.shaxsiyTavsiyalar.komplayensTahlili.nomutanosiblikKuzatildimi && (
+                  {riskResult.shaxsiyTavsiyalar?.komplayensTahlili?.nomutanosiblikKuzatildimi && (
                     <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-300 shadow-sm relative overflow-hidden">
                       <div className="absolute right-0 top-0 transform translate-x-3 -translate-y-3 bg-amber-500 text-white font-mono font-bold text-[9px] px-3 py-1 rounded-full uppercase tracking-wider">
                         Pedagog-Somatik Ziddiyat
@@ -2004,7 +2005,7 @@ export default function PatientPortal({
                             Tibbiyot pedagog va shifokorlar uchun Komplayens tahlili (4-Yangilik)
                           </h4>
                           <p className="text-sm text-amber-950 font-bold mt-1.5 leading-relaxed bg-white/60 p-3 rounded border border-amber-200">
-                            {translateContent(riskResult.shaxsiyTavsiyalar.komplayensTahlili.maslahat, language)}
+                            {translateContent(riskResult.shaxsiyTavsiyalar?.komplayensTahlili?.maslahat ?? '', language)}
                           </p>
                         </div>
                       </div>
@@ -2022,7 +2023,7 @@ export default function PatientPortal({
                     </div>
 
                     <div className="space-y-3.5">
-                      {riskResult.faktorlar.map((factor, index) => (
+                      {(riskResult.faktorlar ?? []).map((factor, index) => (
                         <div key={index} className="space-y-1">
                           <div className="flex justify-between items-center text-xs">
                             <span className="font-bold text-slate-800">{translateContent(factor.nomi, language)}</span>
@@ -2068,7 +2069,7 @@ export default function PatientPortal({
                         <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-200">
                           <h4 className="text-xs font-extrabold uppercase text-emerald-900 tracking-wider mb-2">Nutritiv & Parhez (Tuz/Yog'/Non)</h4>
                           <ul className="space-y-2.5 text-xs text-emerald-950">
-                            {riskResult.shaxsiyTavsiyalar.ovqatlanish.map((o, idx) => (
+                            {(riskResult.shaxsiyTavsiyalar?.ovqatlanish ?? []).map((o, idx) => (
                               <li key={idx} className="flex gap-1.5 items-start">
                                 <span className="text-emerald-600 shrink-0 font-bold">•</span>
                                 <span>{translateContent(o, language)}</span>
@@ -2080,7 +2081,7 @@ export default function PatientPortal({
                         <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-200">
                           <h4 className="text-xs font-extrabold uppercase text-indigo-900 tracking-wider mb-2">Jismoniy harakat va kardiomashqlar</h4>
                           <ul className="space-y-2.5 text-xs text-indigo-950">
-                            {riskResult.shaxsiyTavsiyalar.jismoniyMashq.map((jm, idx) => (
+                            {(riskResult.shaxsiyTavsiyalar?.jismoniyMashq ?? []).map((jm, idx) => (
                               <li key={idx} className="flex gap-1.5 items-start">
                                 <span className="text-indigo-600 shrink-0 font-bold">•</span>
                                 <span>{translateContent(jm, language)}</span>
@@ -2095,7 +2096,7 @@ export default function PatientPortal({
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                           <h4 className="text-xs font-extrabold uppercase text-slate-800 tracking-wider mb-2">Klinik tekshiruvlar va uchrashuv rejasi</h4>
                           <ul className="space-y-2.5 text-xs text-slate-700">
-                            {riskResult.shaxsiyTavsiyalar.tibbiyReja.map((tr, idx) => (
+                            {(riskResult.shaxsiyTavsiyalar?.tibbiyReja ?? []).map((tr, idx) => (
                               <li key={idx} className="flex gap-1.5 items-start">
                                 <span className="text-indigo-600 shrink-0 font-bold">✓</span>
                                 <span>{translateContent(tr, language)}</span>
@@ -2108,7 +2109,7 @@ export default function PatientPortal({
                         <div className="bg-slate-900 text-slate-200 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
                           <div>
                             <span className="text-[10px] text-teal-400 font-bold uppercase tracking-widest">Keyingi profilaktik ko'rik</span>
-                            <p className="text-lg font-black mt-0.5">{riskResult.hududiyStatistika.tavsiyaEtilganSkriningKuni}</p>
+                            <p className="text-lg font-black mt-0.5">{riskResult.hududiyStatistika?.tavsiyaEtilganSkriningKuni ?? '—'}</p>
                             <p className="text-[10px] text-slate-400">Yarim yillik kardiomonitoring majburiyati</p>
                           </div>
                           <Clock className="w-10 h-10 text-teal-400 opacity-80" />
@@ -2560,7 +2561,7 @@ export default function PatientPortal({
                       key={item.id}
                       onClick={() => {
                         setFormData(item.data);
-                        setRiskResult(resObj);
+                        setRiskResult(normalizeRiskResult(resObj));
                         setActiveTab('screening');
                       }}
                       className="border border-slate-200 hover:border-emerald-500 rounded-xl p-4 bg-slate-50 hover:bg-emerald-50/20 transition-all cursor-pointer flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4"

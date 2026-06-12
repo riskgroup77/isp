@@ -1,4 +1,5 @@
 import type { QuestionnaireData, RiskAnalysisResult } from '../types';
+import { normalizeRiskResult } from './riskResult';
 
 /** Server va klientda bitta format */
 export interface ScreeningHistoryItem {
@@ -13,8 +14,9 @@ export function normalizeScreeningItem(
   index = 0
 ): ScreeningHistoryItem | null {
   const data = raw.data as QuestionnaireData | undefined;
-  const riskResult = (raw.riskResult || raw.result) as RiskAnalysisResult | undefined;
-  if (!data || !riskResult) return null;
+  const rawRisk = raw.riskResult || raw.result;
+  if (!data || !rawRisk || typeof rawRisk !== 'object') return null;
+  const riskResult = normalizeRiskResult(rawRisk as Partial<RiskAnalysisResult>);
 
   const sana =
     (raw.sana as string) ||
