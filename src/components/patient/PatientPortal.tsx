@@ -1974,7 +1974,7 @@ export default function PatientPortal({
                           <div className="grid grid-cols-2 gap-3 text-xs">
                             <div className="bg-slate-100 p-2.5 rounded-lg">
                               <span className="text-slate-500 uppercase text-[9px] font-bold">Sizning TMI ko'rsatkichingiz</span>
-                              <p className="text-base font-extrabold text-slate-800 mt-0.5">{riskResult.tmi.toFixed(1)} kg/m²</p>
+                              <p className="text-base font-extrabold text-slate-800 mt-0.5">{(riskResult.tmi ?? 0).toFixed(1)} kg/m²</p>
                               <span className="text-[10px] text-indigo-700 font-medium">{translateContent(riskResult.tmiKategoriya, language)}</span>
                             </div>
                             <div className="bg-slate-100 p-2.5 rounded-lg flex flex-col justify-between">
@@ -2023,17 +2023,19 @@ export default function PatientPortal({
                     </div>
 
                     <div className="space-y-3.5">
-                      {(riskResult.faktorlar ?? []).map((factor, index) => (
+                      {(riskResult.faktorlar ?? []).map((factor, index) => {
+                        const tasirKuchi = factor.tasirKuchi ?? 0;
+                        return (
                         <div key={index} className="space-y-1">
                           <div className="flex justify-between items-center text-xs">
-                            <span className="font-bold text-slate-800">{translateContent(factor.nomi, language)}</span>
+                            <span className="font-bold text-slate-800">{translateContent(factor.nomi ?? '', language)}</span>
                             <div className="flex items-center gap-1.5">
                               {factor.boshqariladimi ? (
                                 <span className="text-[9px] bg-emerald-100 text-emerald-800 px-1 rounded-full font-semibold uppercase tracking-wider">Boshqariladigan omil</span>
                               ) : (
                                 <span className="text-[9px] bg-slate-100 text-slate-500 px-1 rounded-full font-semibold uppercase tracking-wider">Nasliy omil</span>
                               )}
-                              <span className="font-mono font-black text-slate-900">{factor.tasirKuchi.toFixed(1)} / 10</span>
+                              <span className="font-mono font-black text-slate-900">{tasirKuchi.toFixed(1)} / 10</span>
                             </div>
                           </div>
                           
@@ -2041,14 +2043,15 @@ export default function PatientPortal({
                           <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden relative border border-slate-200/50">
                             <div 
                               className={`h-full rounded-full transition-all duration-1000 ${
-                                factor.tasirKuchi >= 7.5 ? 'bg-red-500' : (factor.tasirKuchi >= 5 ? 'bg-amber-500' : 'bg-emerald-500')
+                                tasirKuchi >= 7.5 ? 'bg-red-500' : (tasirKuchi >= 5 ? 'bg-amber-500' : 'bg-emerald-500')
                               }`} 
-                              style={{ width: `${factor.tasirKuchi * 10}%` }}
+                              style={{ width: `${Math.min(100, tasirKuchi * 10)}%` }}
                             />
                           </div>
-                          <p className="text-[11px] text-slate-500 italic mt-0.5">{translateContent(factor.tafsilot, language)}</p>
+                          <p className="text-[11px] text-slate-500 italic mt-0.5">{translateContent(factor.tafsilot ?? '', language)}</p>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
 

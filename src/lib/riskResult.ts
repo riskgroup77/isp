@@ -1,4 +1,14 @@
-import type { RiskAnalysisResult } from '../types';
+import type { FactorImportance, RiskAnalysisResult } from '../types';
+
+function normalizeFactor(raw: Partial<FactorImportance>): FactorImportance {
+  const tasirKuchi = Number(raw.tasirKuchi);
+  return {
+    nomi: raw.nomi ?? "Noma'lum omil",
+    tafsilot: raw.tafsilot ?? '',
+    tasirKuchi: Number.isFinite(tasirKuchi) ? tasirKuchi : 0,
+    boshqariladimi: raw.boshqariladimi ?? false,
+  };
+}
 
 const EMPTY_RISK: RiskAnalysisResult = {
   tmi: 0,
@@ -49,7 +59,11 @@ export function normalizeRiskResult(
       ...EMPTY_RISK.hududiyStatistika,
       ...raw.hududiyStatistika,
     },
-    faktorlar: Array.isArray(raw.faktorlar) ? raw.faktorlar : [],
+    faktorlar: Array.isArray(raw.faktorlar)
+      ? raw.faktorlar.map((f) =>
+          normalizeFactor(f as Partial<FactorImportance>)
+        )
+      : [],
     shaxsiyTavsiyalar: {
       kritikOmillar: shaxsiy?.kritikOmillar ?? [],
       ovqatlanish: shaxsiy?.ovqatlanish ?? [],
