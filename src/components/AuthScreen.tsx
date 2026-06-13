@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { UserProfile, UserRole } from '../types';
 import { t } from '../lib/lang';
-import MedicalDisclaimer from './MedicalDisclaimer';
 import { mapApiUserToProfile } from '../lib/apiMappers';
 import { loginUser, registerPatient } from '../lib/apiServices';
 import AppShell from './ui/AppShell';
@@ -208,7 +207,6 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
           </div>
         )}
 
-        <MedicalDisclaimer language={language} variant="auth" className="mb-4" />
 
         <form onSubmit={handleAuthSubmit} className="space-y-4">
           
