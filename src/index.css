@@ -883,11 +883,156 @@ body {
   background: rgba(15, 23, 42, 0.25);
 }
 
-/* ─── Auth register steps ─── */
-#auth-container .ios-input {
-  padding: 0.5rem 0.65rem;
-  font-size: 0.8125rem;
+/* ─── Auth screen polish ─── */
+#auth-container .ios-tab-bar {
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.35);
 }
+
+#auth-container .ios-tab-btn {
+  flex: 1;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ios-text-muted);
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  transition:
+    color 0.2s var(--ios-ease),
+    background 0.2s var(--ios-ease),
+    box-shadow 0.2s var(--ios-ease);
+}
+
+#auth-container .ios-tab-btn:hover {
+  color: var(--ios-text-primary);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+#auth-container .ios-tab-btn:focus,
+#auth-container .ios-tab-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+#auth-container .ios-tab-btn-active {
+  color: var(--ios-accent) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(59, 130, 246, 0.12) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 4px 12px rgba(59, 130, 246, 0.1) !important;
+}
+
+#auth-container .ios-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ios-text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+#auth-container .ios-auth-field {
+  display: block;
+}
+
+#auth-container .ios-auth-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  transition:
+    border-color 0.2s var(--ios-ease),
+    box-shadow 0.2s var(--ios-ease),
+    background 0.2s var(--ios-ease);
+}
+
+#auth-container .ios-auth-input-wrap:focus-within {
+  border-color: var(--ios-accent-border);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 0 0 3px var(--ios-accent-muted);
+}
+
+#auth-container .ios-auth-field-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+#auth-container .ios-auth-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0.55rem 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--ios-text-primary);
+  font-family: inherit;
+}
+
+#auth-container .ios-auth-input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+#auth-container .ios-auth-input:-webkit-autofill,
+#auth-container .ios-auth-input:-webkit-autofill:hover,
+#auth-container .ios-auth-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.98) inset;
+  -webkit-text-fill-color: var(--ios-text-primary);
+  transition: background-color 9999s ease-out 0s;
+}
+
+#auth-container .ios-auth-input-wrap-select {
+  padding-right: 0.5rem;
+}
+
+#auth-container .ios-auth-select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 1.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.15rem center;
+}
+
+#auth-container .ios-auth-form .ios-btn {
+  margin-top: 0.25rem;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  letter-spacing: normal;
+  text-transform: none;
+  outline: none;
+}
+
+#auth-container .ios-auth-form .ios-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 16px rgba(74, 158, 255, 0.35),
+    0 0 0 3px var(--ios-accent-muted);
+}
+
+/* ─── Auth register steps ─── */
 
 .ios-register-steps {
   display: flex;
@@ -944,21 +1089,15 @@ body {
 }
 
 .ios-register-panel {
-  background: var(--ios-accent-muted);
-  border: 1px solid var(--ios-accent-border);
-  border-radius: var(--ios-radius-sm);
-  padding: 0.75rem;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.14);
+  border-radius: 14px;
+  padding: 0.875rem;
   animation: ios-slide-up 0.35s var(--ios-ease) both;
 }
 
-#auth-container .ios-label {
+#auth-container .ios-register-panel .ios-label {
   font-size: 0.6875rem;
-  margin-bottom: 0.25rem;
-}
-
-#auth-container .ios-tab-btn {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
 }
 
 /* ─── Print overrides ─── */

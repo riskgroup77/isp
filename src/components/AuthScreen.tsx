@@ -297,39 +297,37 @@ export default function AuthScreen({
             </div>
           )}
 
-          <form onSubmit={handleAuthSubmit} className="space-y-3">
+          <form onSubmit={handleAuthSubmit} className="ios-auth-form space-y-3.5">
             {showLoginFields && (
               <>
-                <div>
+                <div className="ios-auth-field">
                   <label className="ios-label">{t("Foydalanuvchi logini *", language)}</label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                      <User className="w-4 h-4" />
-                    </span>
+                  <div className="ios-auth-input-wrap">
+                    <User className="ios-auth-field-icon" aria-hidden="true" />
                     <input
                       type="text"
                       placeholder={t("Masalan: Sardor2026", language)}
                       value={login}
                       onChange={(e) => setLogin(e.target.value)}
                       required={mode === 'login'}
-                      className="ios-input ios-input-icon"
+                      className="ios-auth-input"
+                      autoComplete="username"
                     />
                   </div>
                 </div>
 
-                <div>
+                <div className="ios-auth-field">
                   <label className="ios-label">{t("Maxfiy parol *", language)}</label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                      <LockKeyhole className="w-4 h-4" />
-                    </span>
+                  <div className="ios-auth-input-wrap">
+                    <LockKeyhole className="ios-auth-field-icon" aria-hidden="true" />
                     <input
                       type="password"
-                      placeholder="********"
+                      placeholder="••••••••"
                       value={parol}
                       onChange={(e) => setParol(e.target.value)}
                       required={mode === 'login'}
-                      className="ios-input ios-input-icon"
+                      className="ios-auth-input"
+                      autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                     />
                   </div>
                 </div>
@@ -337,90 +335,103 @@ export default function AuthScreen({
             )}
 
             {showStep1Fields && (
-              <div className="animate-fadeIn">
+              <div className="ios-auth-field animate-fadeIn">
                 <label className="ios-label">{t("Ism va Sharifingiz *", language)}</label>
-                <input
-                  type="text"
-                  placeholder={t("Masalan: Qodirov Sardorbek", language)}
-                  value={ism}
-                  onChange={(e) => setIsm(e.target.value)}
-                  className="ios-input"
-                />
+                <div className="ios-auth-input-wrap">
+                  <input
+                    type="text"
+                    placeholder={t("Masalan: Qodirov Sardorbek", language)}
+                    value={ism}
+                    onChange={(e) => setIsm(e.target.value)}
+                    className="ios-auth-input"
+                    autoComplete="name"
+                  />
+                </div>
               </div>
             )}
 
             {showStep2Fields && rol === 'foydalanuvchi' && (
               <div className="ios-register-panel space-y-3 animate-fadeIn">
-                <div className="flex items-center gap-1.5 text-[var(--ios-accent)]">
-                  <Activity className="w-3.5 h-3.5 shrink-0" />
-                  <span className="text-[11px] font-bold uppercase tracking-wide">
+                <div className="flex items-center gap-1.5 text-[var(--ios-accent)] pb-0.5">
+                  <Activity className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  <span className="text-xs font-semibold">
                     {t("Klinik ma'lumotlar", language)}
                   </span>
                 </div>
 
-                <div>
+                <div className="ios-auth-field">
                   <label className="ios-label flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5" />
+                    <MapPin className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden="true" />
                     {t("Siz yashaydigan Hudud", language)}
                   </label>
-                  <select
-                    value={shaharTuman}
-                    onChange={(e) => setShaharTuman(e.target.value)}
-                    className="ios-input ios-select"
-                  >
+                  <div className="ios-auth-input-wrap ios-auth-input-wrap-select">
+                    <select
+                      value={shaharTuman}
+                      onChange={(e) => setShaharTuman(e.target.value)}
+                      className="ios-auth-input ios-auth-select"
+                    >
                     {FERGANA_REGIONS.map((reg) => (
                       <option key={reg} value={reg}>{t(reg, language)}</option>
                     ))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="ios-label">{t("Yoshingiz (yillarda)", language)}</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="120"
-                      value={yosh}
-                      onChange={(e) => setYosh(e.target.value)}
-                      className="ios-input"
-                    />
-                  </div>
-                  <div>
-                    <label className="ios-label">{t("Jins", language)}</label>
-                    <select
-                      value={jins}
-                      onChange={(e) => setJins(e.target.value as 'erkak' | 'ayol')}
-                      className="ios-input ios-select"
-                    >
-                      <option value="erkak">{t("Erkak", language)}</option>
-                      <option value="ayol">{t("Ayol", language)}</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="ios-label">{t("Bo'y", language)} (sm)</label>
-                    <input
-                      type="number"
-                      min="50"
-                      max="250"
-                      value={boy}
-                      onChange={(e) => setBoy(e.target.value)}
-                      className="ios-input font-mono"
-                    />
+                  <div className="ios-auth-field">
+                    <label className="ios-label">{t("Yoshingiz (yillarda)", language)}</label>
+                    <div className="ios-auth-input-wrap">
+                      <input
+                        type="number"
+                        min="1"
+                        max="120"
+                        value={yosh}
+                        onChange={(e) => setYosh(e.target.value)}
+                        className="ios-auth-input"
+                      />
+                    </div>
                   </div>
-                  <div>
+                  <div className="ios-auth-field">
+                    <label className="ios-label">{t("Jins", language)}</label>
+                    <div className="ios-auth-input-wrap ios-auth-input-wrap-select">
+                      <select
+                        value={jins}
+                        onChange={(e) => setJins(e.target.value as 'erkak' | 'ayol')}
+                        className="ios-auth-input ios-auth-select"
+                      >
+                      <option value="erkak">{t("Erkak", language)}</option>
+                      <option value="ayol">{t("Ayol", language)}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="ios-auth-field">
+                    <label className="ios-label">{t("Bo'y", language)} (sm)</label>
+                    <div className="ios-auth-input-wrap">
+                      <input
+                        type="number"
+                        min="50"
+                        max="250"
+                        value={boy}
+                        onChange={(e) => setBoy(e.target.value)}
+                        className="ios-auth-input font-mono tabular-nums"
+                      />
+                    </div>
+                  </div>
+                  <div className="ios-auth-field">
                     <label className="ios-label">{t("Vazn", language)} (kg)</label>
-                    <input
-                      type="number"
-                      min="20"
-                      max="300"
-                      value={vazn}
-                      onChange={(e) => setVazn(e.target.value)}
-                      className="ios-input font-mono"
-                    />
+                    <div className="ios-auth-input-wrap">
+                      <input
+                        type="number"
+                        min="20"
+                        max="300"
+                        value={vazn}
+                        onChange={(e) => setVazn(e.target.value)}
+                        className="ios-auth-input font-mono tabular-nums"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
