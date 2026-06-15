@@ -48,7 +48,6 @@ import {
 import { useToast } from './ui/Toast';
 import AppShell from './ui/AppShell';
 import LanguageSwitcher from './ui/LanguageSwitcher';
-import ThemeToggle from './ui/ThemeToggle';
 
 interface DoctorDashboardProps {
   doctorUser: SafeUserProfile;
@@ -475,9 +474,8 @@ export default function DoctorDashboard({
 
         <div className="flex flex-wrap items-center gap-2">
           {onLanguageChange && (
-            <LanguageSwitcher language={language} onChange={onLanguageChange} />
+            <LanguageSwitcher language={language} onChange={onLanguageChange} variant="light" />
           )}
-          <ThemeToggle language={language} />
           <button
             type="button"
             onClick={fetchPatients}

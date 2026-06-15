@@ -19,7 +19,6 @@ import { mapApiUserToProfile } from '../lib/apiMappers';
 import { loginUser, registerPatient } from '../lib/apiServices';
 import AppShell from './ui/AppShell';
 import LanguageSwitcher from './ui/LanguageSwitcher';
-import ThemeToggle from './ui/ThemeToggle';
 
 interface AuthScreenProps {
   onAuthSuccess: (user: UserProfile, token: string) => void;
@@ -156,9 +155,9 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
             <LanguageSwitcher
               language={language}
               onChange={onLanguageChange}
+              variant="light"
             />
           )}
-          <ThemeToggle language={language} />
         </div>
         <div className="absolute top-3 right-3 opacity-80">
           <Sparkles className="w-5 h-5 text-[var(--ios-accent)]" />

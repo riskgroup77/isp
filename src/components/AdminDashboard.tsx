@@ -27,7 +27,6 @@ import AdminCreateUserPanel from './admin/AdminCreateUserPanel';
 import AdminEditUserPanel from './admin/AdminEditUserPanel';
 import AppShell from './ui/AppShell';
 import LanguageSwitcher from './ui/LanguageSwitcher';
-import ThemeToggle from './ui/ThemeToggle';
 
 interface AdminDashboardProps {
   adminUser: SafeUserProfile;
@@ -162,9 +161,8 @@ export default function AdminDashboard({
 
         <div className="flex flex-wrap items-center gap-2">
           {onLanguageChange && (
-            <LanguageSwitcher language={language} onChange={onLanguageChange} />
+            <LanguageSwitcher language={language} onChange={onLanguageChange} variant="light" />
           )}
-          <ThemeToggle language={language} />
           <button
             type="button"
             onClick={() => setShowCreatePanel(true)}

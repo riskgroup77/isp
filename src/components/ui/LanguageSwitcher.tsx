@@ -11,7 +11,7 @@ interface LanguageSwitcherProps {
 export default function LanguageSwitcher({
   language,
   onChange,
-  variant = 'dark',
+  variant = 'light',
   className = '',
 }: LanguageSwitcherProps) {
   return (

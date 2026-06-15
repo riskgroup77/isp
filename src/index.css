@@ -1,84 +1,7 @@
 @import "tailwindcss";
 
 /* ─── iOS 26 Liquid / Frosted Glass Design System ─── */
-:root,
-[data-theme="dark"] {
-  --ios-bg-deep: #070b14;
-  --ios-bg-mid: #0f1628;
-  --ios-bg-gradient-end: #0a1020;
-  --ios-mesh-a: rgba(56, 120, 210, 0.22);
-  --ios-mesh-b: rgba(72, 168, 196, 0.16);
-  --ios-mesh-c: rgba(120, 90, 200, 0.1);
-
-  --ios-accent: #4a9eff;
-  --ios-accent-hover: #6bb0ff;
-  --ios-accent-muted: rgba(74, 158, 255, 0.14);
-  --ios-accent-border: rgba(74, 158, 255, 0.35);
-
-  --ios-glass-bg: rgba(255, 255, 255, 0.07);
-  --ios-glass-bg-hover: rgba(255, 255, 255, 0.1);
-  --ios-glass-border: rgba(255, 255, 255, 0.14);
-  --ios-glass-highlight: rgba(255, 255, 255, 0.22);
-  --ios-glass-strong-bg: rgba(255, 255, 255, 0.1);
-  --ios-glass-strong-border: rgba(255, 255, 255, 0.18);
-
-  --ios-frost-bg: rgba(255, 255, 255, 0.78);
-  --ios-frost-bg-soft: rgba(255, 255, 255, 0.62);
-  --ios-frost-border: rgba(255, 255, 255, 0.55);
-  --ios-frost-shadow: 0 8px 32px rgba(15, 23, 42, 0.08), 0 2px 8px rgba(15, 23, 42, 0.04);
-
-  --ios-header-bg: rgba(15, 22, 40, 0.72);
-  --ios-header-border: rgba(255, 255, 255, 0.08);
-  --ios-nav-bar-bg: rgba(10, 16, 30, 0.65);
-  --ios-nav-bar-border: rgba(255, 255, 255, 0.06);
-  --ios-overlay-bg: rgba(7, 11, 20, 0.55);
-  --ios-auth-header-bg: rgba(12, 18, 32, 0.75);
-  --ios-auth-card-bg: rgba(255, 255, 255, 0.82);
-  --ios-auth-card-border: rgba(255, 255, 255, 0.6);
-
-  --ios-text-primary: #e8edf5;
-  --ios-text-secondary: #94a3b8;
-  --ios-text-muted: #64748b;
-  --ios-text-on-dark: rgba(255, 255, 255, 0.92);
-  --ios-text-on-dark-muted: rgba(255, 255, 255, 0.62);
-  --ios-text-on-card: #0f172a;
-
-  --ios-footer-text: rgba(255, 255, 255, 0.5);
-  --ios-footer-border: rgba(255, 255, 255, 0.1);
-  --ios-loading-text: rgba(255, 255, 255, 0.8);
-  --ios-loading-ring: rgba(255, 255, 255, 0.15);
-
-  --ios-toast-info-bg: rgba(20, 28, 48, 0.85);
-  --ios-toast-info-border: rgba(255, 255, 255, 0.12);
-  --ios-toast-info-text: rgba(255, 255, 255, 0.92);
-
-  --ios-tab-bar-bg: rgba(255, 255, 255, 0.04);
-  --ios-tab-bar-border: rgba(255, 255, 255, 0.08);
-  --ios-badge-glass-bg: rgba(255, 255, 255, 0.1);
-  --ios-badge-glass-border: rgba(255, 255, 255, 0.12);
-
-  --ios-radius: 20px;
-  --ios-radius-sm: 14px;
-  --ios-radius-lg: 28px;
-  --ios-radius-pill: 999px;
-
-  --ios-blur: 28px;
-  --ios-blur-strong: 40px;
-
-  --ios-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ios-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
-
-  --ios-danger: #ef4444;
-  --ios-danger-soft: rgba(239, 68, 68, 0.12);
-  --ios-success: #22c55e;
-  --ios-success-soft: rgba(34, 197, 94, 0.12);
-  --ios-warn: #f59e0b;
-  --ios-warn-soft: rgba(245, 158, 11, 0.12);
-
-  color-scheme: dark;
-}
-
-[data-theme="light"] {
+:root {
   --ios-bg-deep: #eef2f8;
   --ios-bg-mid: #e4eaf4;
   --ios-bg-gradient-end: #dce4f0;
@@ -132,6 +55,24 @@
   --ios-tab-bar-border: rgba(15, 23, 42, 0.06);
   --ios-badge-glass-bg: rgba(15, 23, 42, 0.05);
   --ios-badge-glass-border: rgba(15, 23, 42, 0.08);
+
+  --ios-radius: 20px;
+  --ios-radius-sm: 14px;
+  --ios-radius-lg: 28px;
+  --ios-radius-pill: 999px;
+
+  --ios-blur: 28px;
+  --ios-blur-strong: 40px;
+
+  --ios-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ios-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+
+  --ios-danger: #ef4444;
+  --ios-danger-soft: rgba(239, 68, 68, 0.12);
+  --ios-success: #22c55e;
+  --ios-success-soft: rgba(34, 197, 94, 0.12);
+  --ios-warn: #f59e0b;
+  --ios-warn-soft: rgba(245, 158, 11, 0.12);
 
   color-scheme: light;
 }

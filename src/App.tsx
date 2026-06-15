@@ -7,7 +7,6 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import AuthScreen from './components/AuthScreen';
 import AppShell from './components/ui/AppShell';
 import { ToastProvider } from './components/ui/Toast';
-import { ThemeProvider } from './components/ui/ThemeProvider';
 import {
   clearAuthSession,
   getStoredUser,
@@ -105,10 +104,8 @@ function AppRouter() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <AppRouter />
-      </ToastProvider>
-    </ThemeProvider>
+    <ToastProvider>
+      <AppRouter />
+    </ToastProvider>
   );
 }

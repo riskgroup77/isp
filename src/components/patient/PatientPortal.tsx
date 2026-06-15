@@ -82,7 +82,6 @@ import { normalizeRiskResult } from '../../lib/riskResult';
 import { useToast } from '../ui/Toast';
 import AppShell from '../ui/AppShell';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
-import ThemeToggle from '../ui/ThemeToggle';
 
 // Default initial state
 const defaultQuestionnaire: QuestionnaireData = {
@@ -1429,8 +1428,8 @@ export default function PatientPortal({
               <LanguageSwitcher
                 language={language}
                 onChange={setLanguage}
+                variant="light"
               />
-              <ThemeToggle language={language} />
 
               <div className="hidden sm:flex items-center gap-2 glass-dark p-2 rounded-[var(--ios-radius-sm)]">
                 <div className="w-7 h-7 rounded-lg ios-icon-wrap flex items-center justify-center font-bold text-[11px] uppercase tracking-widest">
