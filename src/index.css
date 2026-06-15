@@ -883,6 +883,84 @@ body {
   background: rgba(15, 23, 42, 0.25);
 }
 
+/* ─── Auth register steps ─── */
+#auth-container .ios-input {
+  padding: 0.5rem 0.65rem;
+  font-size: 0.8125rem;
+}
+
+.ios-register-steps {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.ios-register-step-dot {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border: 2px solid var(--ios-frost-border);
+  color: var(--ios-text-muted);
+  background: var(--ios-frost-bg-soft);
+  flex-shrink: 0;
+  transition: all 0.3s var(--ios-ease);
+}
+
+.ios-register-step-dot-active {
+  border-color: var(--ios-accent);
+  background: var(--ios-accent-muted);
+  color: var(--ios-accent);
+}
+
+.ios-register-step-line {
+  flex: 1;
+  height: 2px;
+  border-radius: 99px;
+  background: var(--ios-frost-border);
+  transition: background 0.3s var(--ios-ease);
+}
+
+.ios-register-step-line-active {
+  background: var(--ios-accent);
+}
+
+.ios-register-step-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--ios-text-muted);
+}
+
+.ios-register-step-labels span.active {
+  color: var(--ios-accent);
+}
+
+.ios-register-panel {
+  background: var(--ios-accent-muted);
+  border: 1px solid var(--ios-accent-border);
+  border-radius: var(--ios-radius-sm);
+  padding: 0.75rem;
+  animation: ios-slide-up 0.35s var(--ios-ease) both;
+}
+
+#auth-container .ios-label {
+  font-size: 0.6875rem;
+  margin-bottom: 0.25rem;
+}
+
+#auth-container .ios-tab-btn {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+}
+
 /* ─── Print overrides ─── */
 @media print {
   .ios-shell,

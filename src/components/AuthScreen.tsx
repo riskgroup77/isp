@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  Heart, 
-  User, 
-  Lock, 
-  ChevronRight, 
-  Building2, 
-  MapPin, 
-  Activity, 
-  Award,
+import {
+  Heart,
+  User,
+  ChevronRight,
+  ChevronLeft,
+  Activity,
   Sparkles,
   LockKeyhole,
   Info,
-  AlertCircle
+  AlertCircle,
+  MapPin,
 } from 'lucide-react';
 import { UserProfile, UserRole } from '../types';
 import { t } from '../lib/lang';
@@ -43,26 +41,26 @@ const FERGANA_REGIONS = [
   "Toshloq tumani",
   "Yozyovon tumani",
   "Quvasoy shahri",
-  "Farg'ona tumani"
+  "Farg'ona tumani",
 ];
 
-export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLanguageChange }: AuthScreenProps) {
+export default function AuthScreen({
+  onAuthSuccess,
+  language = 'lotin',
+  onLanguageChange,
+}: AuthScreenProps) {
   const [mode, setMode] = useState<'login' | 'register'>('login');
+  const [registerStep, setRegisterStep] = useState<1 | 2>(1);
   const [login, setLogin] = useState('');
   const [parol, setParol] = useState('');
   const [ism, setIsm] = useState('');
   const [rol, setRol] = useState<UserRole>('foydalanuvchi');
-  
-  // Patient fields
+
   const [shaharTuman, setShaharTuman] = useState("Farg'ona shahri");
   const [yosh, setYosh] = useState('45');
   const [jins, setJins] = useState<'erkak' | 'ayol'>('erkak');
   const [boy, setBoy] = useState('172');
   const [vazn, setVazn] = useState('75');
-
-  // Doctor fields
-  const [mutaxassislik, setMutaxassislik] = useState('Kardiolog, Ilmiy xodim');
-  const [shifoxona, setShifoxona] = useState("Farg'ona viloyat kardiologiya dispanseri");
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -73,11 +71,58 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
     setSuccessMsg(null);
   };
 
+  const resetRegisterFlow = () => {
+    setRegisterStep(1);
+    resetMessages();
+  };
+
+  const validateRegisterStep1 = (): boolean => {
+    if (!login.trim() || !parol.trim()) {
+      setErrorMsg("Iltimos, login va maxfiy so'zni kiriting.");
+      return false;
+    }
+    if (!ism.trim()) {
+      setErrorMsg("To'liq ism-sharifingizni kiriting.");
+      return false;
+    }
+    return true;
+  };
+
+  const validateRegisterStep2 = (): boolean => {
+    const yoshNum = parseInt(yosh, 10);
+    const boyNum = parseInt(boy, 10);
+    const vaznNum = parseInt(vazn, 10);
+    if (!yosh || yoshNum < 1 || yoshNum > 120) {
+      setErrorMsg("Yosh 1 dan 120 gacha bo'lishi kerak.");
+      return false;
+    }
+    if (!boy || boyNum < 50 || boyNum > 250) {
+      setErrorMsg("Bo'y 50–250 sm oralig'ida bo'lishi kerak.");
+      return false;
+    }
+    if (!vazn || vaznNum < 20 || vaznNum > 300) {
+      setErrorMsg("Vazn 20–300 kg oralig'ida bo'lishi kerak.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleRegisterNext = () => {
+    resetMessages();
+    if (validateRegisterStep1()) {
+      setRegisterStep(2);
+    }
+  };
+
+  const handleRegisterBack = () => {
+    resetMessages();
+    setRegisterStep(1);
+  };
+
   const handleShortcutLogin = (demoLogin: string, demoParol: string) => {
     resetMessages();
     setLogin(demoLogin);
     setParol(demoParol);
-    // Submit login directly
     submitLogin(demoLogin, demoParol);
   };
 
@@ -90,8 +135,43 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
         const user = mapApiUserToProfile(data.user) as UserProfile;
         onAuthSuccess(user, data.accessToken);
       }
-    } catch (err: any) {
-      setErrorMsg(err.message || "Tizim ulanishida ulanish xatosi.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Tizim ulanishida ulanish xatosi.";
+      setErrorMsg(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitRegister = async () => {
+    if (!validateRegisterStep1() || !validateRegisterStep2()) return;
+
+    setLoading(true);
+    try {
+      const data = await registerPatient({
+        login: login.trim(),
+        parol: parol.trim(),
+        ism: ism.trim(),
+        shaharTuman,
+        yosh: parseInt(yosh, 10) || 40,
+        jins,
+        boy: parseInt(boy, 10) || 170,
+        vazn: parseInt(vazn, 10) || 70,
+      });
+
+      if (data.accessToken && data.user) {
+        const user = mapApiUserToProfile(data.user) as UserProfile;
+        onAuthSuccess(user, data.accessToken);
+        return;
+      }
+
+      setSuccessMsg("Hisob muvaffaqiyatli yaratildi! Kirish bo'limidan kiring.");
+      setMode('login');
+      resetRegisterFlow();
+      setParol('');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Ulanish xatosi.";
+      setErrorMsg(message);
     } finally {
       setLoading(false);
     }
@@ -101,328 +181,355 @@ export default function AuthScreen({ onAuthSuccess, language = 'lotin', onLangua
     e.preventDefault();
     resetMessages();
 
-    if (!login.trim() || !parol.trim()) {
-      setErrorMsg("Iltimos, login va maxfiy so'zni kiriting.");
+    if (mode === 'login') {
+      if (!login.trim() || !parol.trim()) {
+        setErrorMsg("Iltimos, login va maxfiy so'zni kiriting.");
+        return;
+      }
+      await submitLogin(login, parol);
       return;
     }
 
-    if (mode === 'login') {
-      await submitLogin(login, parol);
-    } else {
-      // REGISTER
-      if (!ism.trim()) {
-        setErrorMsg("To'liq ism-sharifingizni kiriting.");
-        return;
-      }
-      setLoading(true);
-      try {
-        const data = await registerPatient({
-          login: login.trim(),
-          parol: parol.trim(),
-          ism: ism.trim(),
-          shaharTuman: shaharTuman,
-          yosh: parseInt(yosh) || 40,
-          jins: jins,
-          boy: parseInt(boy) || 170,
-          vazn: parseInt(vazn) || 70,
-        });
-
-        if (data.accessToken && data.user) {
-          const user = mapApiUserToProfile(data.user) as UserProfile;
-          onAuthSuccess(user, data.accessToken);
-          return;
-        }
-
-        setSuccessMsg("Hisob muvaffaqiyatli yaratildi! Kirish bo'limidan kiring.");
-        setMode('login');
-        setParol('');
-      } catch (err: any) {
-        setErrorMsg(err.message || "Ulanish xatosi.");
-      } finally {
-        setLoading(false);
-      }
+    if (registerStep === 1) {
+      handleRegisterNext();
+      return;
     }
+
+    await submitRegister();
   };
+
+  const showLoginFields = mode === 'login' || (mode === 'register' && registerStep === 1);
+  const showStep1Fields = mode === 'register' && registerStep === 1;
+  const showStep2Fields = mode === 'register' && registerStep === 2;
 
   return (
     <AppShell className="flex items-center justify-center px-4 py-8 min-h-screen">
-      <div className="max-w-md w-full ios-auth-card" id="auth-container">
+      <div className="max-w-sm w-full ios-auth-card" id="auth-container">
+        <div className="ios-auth-header p-4 text-center space-y-2 relative">
+          <div className="flex justify-center items-center gap-2">
+            {onLanguageChange && (
+              <LanguageSwitcher
+                language={language}
+                onChange={onLanguageChange}
+                variant="light"
+              />
+            )}
+          </div>
+          <div className="absolute top-2.5 right-2.5 opacity-80">
+            <Sparkles className="w-4 h-4 text-[var(--ios-accent)]" />
+          </div>
+          <div className="w-11 h-11 ios-icon-wrap ios-icon-wrap-heart rounded-full mx-auto flex items-center justify-center">
+            <Heart className="w-5 h-5 shrink-0" />
+          </div>
+          <h1 className="text-sm sm:text-base font-bold ios-header-title px-2">
+            {t("Intellektual Salomatlik Platformasi", language)}
+          </h1>
+          <p className="text-[11px] ios-header-muted px-2 leading-snug">
+            {t("Kardiologik xavf prognozlash va salomatlik monitoringi", language)}
+          </p>
+        </div>
 
-      {/* Header card banner */}
-      <div className="ios-auth-header p-6 text-center space-y-3 relative">
-        <div className="flex justify-center items-center gap-2 mb-1">
-          {onLanguageChange && (
-            <LanguageSwitcher
-              language={language}
-              onChange={onLanguageChange}
-              variant="light"
-            />
+        <div className="ios-tab-bar">
+          <button
+            type="button"
+            onClick={() => {
+              setMode('login');
+              resetRegisterFlow();
+            }}
+            className={`ios-tab-btn ${mode === 'login' ? 'ios-tab-btn-active' : ''}`}
+            id="tab-auth-login"
+          >
+            {t("Tizimga Kirish", language)}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMode('register');
+              setRol('foydalanuvchi');
+              resetRegisterFlow();
+            }}
+            className={`ios-tab-btn ${mode === 'register' ? 'ios-tab-btn-active' : ''}`}
+            id="tab-auth-register"
+          >
+            {t("Ro'yxatdan O'tish", language)}
+          </button>
+        </div>
+
+        <div className="p-4">
+          {errorMsg && (
+            <div className="mb-4 ios-alert ios-alert-error">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{t(errorMsg, language)}</span>
+            </div>
           )}
-        </div>
-        <div className="absolute top-3 right-3 opacity-80">
-          <Sparkles className="w-5 h-5 text-[var(--ios-accent)]" />
-        </div>
-        <div className="w-14 h-14 ios-icon-wrap ios-icon-wrap-heart rounded-full mx-auto">
-          <Heart className="w-7 h-7 shrink-0" />
-        </div>
-        <h2 className="text-xs sm:text-sm font-semibold ios-header-muted tracking-wide leading-relaxed px-2">
-          {t("Noinfeksion kardiologik xavflarni prognozlash va monitoring qilish milliy-ilmiy ko'p rolli portali", language)}
-        </h2>
-      </div>
-
-      {/* Tabs list triggers */}
-      <div className="ios-tab-bar">
-        <button
-          type="button"
-          onClick={() => { setMode('login'); resetMessages(); }}
-          className={`ios-tab-btn ${mode === 'login' ? 'ios-tab-btn-active' : ''}`}
-          id="tab-auth-login"
-        >
-          {t("Tizimga Kirish", language)}
-        </button>
-        <button
-          type="button"
-          onClick={() => { setMode('register'); setRol('foydalanuvchi'); resetMessages(); }}
-          className={`ios-tab-btn ${mode === 'register' ? 'ios-tab-btn-active' : ''}`}
-          id="tab-auth-register"
-        >
-          {t("Ro'yxatdan O'tish", language)}
-        </button>
-      </div>
-
-      <div className="p-6">
-        
-        {/* Error/Success alerts */}
-        {errorMsg && (
-          <div className="mb-4 ios-alert ios-alert-error">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{t(errorMsg, language)}</span>
-          </div>
-        )}
-        {successMsg && (
-          <div className="mb-4 ios-alert ios-alert-success">
-            <Info className="w-4 h-4 shrink-0" />
-            <span>{t(successMsg, language)}</span>
-          </div>
-        )}
-
-
-        <form onSubmit={handleAuthSubmit} className="space-y-4">
-          
-          {/* USERNAME / LOGIN */}
-          <div>
-            <label className="ios-label">
-              {t("Foydalanuvchi logini *", language)}
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <User className="w-4 h-4" />
-              </span>
-              <input
-                type="text"
-                placeholder={t("Masalan: Sardor2026", language)}
-                value={login}
-                onChange={(e) => setLogin(e.target.value)}
-                required
-                className="ios-input ios-input-icon text-xs"
-              />
+          {successMsg && (
+            <div className="mb-4 ios-alert ios-alert-success">
+              <Info className="w-4 h-4 shrink-0" />
+              <span>{t(successMsg, language)}</span>
             </div>
-          </div>
+          )}
 
-          {/* PAROL (Password) */}
-          <div>
-            <label className="ios-label">
-              {t("Maxfiy parol *", language)}
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <LockKeyhole className="w-4 h-4" />
-              </span>
-              <input
-                type="password"
-                placeholder="********"
-                value={parol}
-                onChange={(e) => setParol(e.target.value)}
-                required
-                className="ios-input ios-input-icon text-xs"
-              />
-            </div>
-          </div>
-
-          {/* ADDITIONAL FIELDS FOR REGISTER ONLY */}
           {mode === 'register' && (
-            <div className="space-y-4 border-t border-dashed border-slate-200 pt-4 animate-fadeIn">
-              
-              {/* FULL NAME */}
-              <div>
-                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">
-                  {t("Ism va Sharifingiz *", language)}
-                </label>
+            <div className="mb-3">
+              <div className="ios-register-steps">
+                <div
+                  className={`ios-register-step-dot ${registerStep >= 1 ? 'ios-register-step-dot-active' : ''}`}
+                >
+                  1
+                </div>
+                <div
+                  className={`ios-register-step-line ${registerStep >= 2 ? 'ios-register-step-line-active' : ''}`}
+                />
+                <div
+                  className={`ios-register-step-dot ${registerStep >= 2 ? 'ios-register-step-dot-active' : ''}`}
+                >
+                  2
+                </div>
+              </div>
+              <div className="ios-register-step-labels">
+                <span className={registerStep === 1 ? 'active' : ''}>
+                  {t("Asosiy ma'lumotlar", language)}
+                </span>
+                <span className={registerStep === 2 ? 'active' : ''}>
+                  {t("Klinik ma'lumotlar", language)}
+                </span>
+              </div>
+            </div>
+          )}
+
+          <form onSubmit={handleAuthSubmit} className="space-y-3">
+            {showLoginFields && (
+              <>
+                <div>
+                  <label className="ios-label">{t("Foydalanuvchi logini *", language)}</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                      <User className="w-4 h-4" />
+                    </span>
+                    <input
+                      type="text"
+                      placeholder={t("Masalan: Sardor2026", language)}
+                      value={login}
+                      onChange={(e) => setLogin(e.target.value)}
+                      required={mode === 'login'}
+                      className="ios-input ios-input-icon"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="ios-label">{t("Maxfiy parol *", language)}</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                      <LockKeyhole className="w-4 h-4" />
+                    </span>
+                    <input
+                      type="password"
+                      placeholder="********"
+                      value={parol}
+                      onChange={(e) => setParol(e.target.value)}
+                      required={mode === 'login'}
+                      className="ios-input ios-input-icon"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {showStep1Fields && (
+              <div className="animate-fadeIn">
+                <label className="ios-label">{t("Ism va Sharifingiz *", language)}</label>
                 <input
                   type="text"
                   placeholder={t("Masalan: Qodirov Sardorbek", language)}
                   value={ism}
                   onChange={(e) => setIsm(e.target.value)}
-                  className="w-full text-xs rounded border border-slate-300 p-2.5 bg-slate-50 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="ios-input"
                 />
               </div>
+            )}
 
-              {/* ROLE SELECTION */}
-              <div>
-                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">
-                  {t("Portal Tizimidagi Rolingiz", language)}
-                </label>
-                <div className="bg-emerald-50 border border-emerald-200/80 rounded-xl p-3 flex items-center justify-between">
-                  <span className="text-xs font-bold text-emerald-800">{t("Bemor (Foydalanuvchi) 👤", language)}</span>
-                  <span className="text-[9px] bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full">{t("Faqat Bemor", language)}</span>
+            {showStep2Fields && rol === 'foydalanuvchi' && (
+              <div className="ios-register-panel space-y-3 animate-fadeIn">
+                <div className="flex items-center gap-1.5 text-[var(--ios-accent)]">
+                  <Activity className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-[11px] font-bold uppercase tracking-wide">
+                    {t("Klinik ma'lumotlar", language)}
+                  </span>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1 leading-normal">
-                  {t("Xavfsizlikni ta'minlash maqsadida mustaqil ravishda faqat Bemor bo'lib ro'yxatdan o'tish imkoniyati mavjud. Shifokor va Admin hisoblari tizim ma'muriyati orqali taqdim etiladi.", language)}
-                </p>
+
+                <div>
+                  <label className="ios-label flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                    {t("Siz yashaydigan Hudud", language)}
+                  </label>
+                  <select
+                    value={shaharTuman}
+                    onChange={(e) => setShaharTuman(e.target.value)}
+                    className="ios-input ios-select"
+                  >
+                    {FERGANA_REGIONS.map((reg) => (
+                      <option key={reg} value={reg}>{t(reg, language)}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="ios-label">{t("Yoshingiz (yillarda)", language)}</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="120"
+                      value={yosh}
+                      onChange={(e) => setYosh(e.target.value)}
+                      className="ios-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="ios-label">{t("Jins", language)}</label>
+                    <select
+                      value={jins}
+                      onChange={(e) => setJins(e.target.value as 'erkak' | 'ayol')}
+                      className="ios-input ios-select"
+                    >
+                      <option value="erkak">{t("Erkak", language)}</option>
+                      <option value="ayol">{t("Ayol", language)}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="ios-label">{t("Bo'y", language)} (sm)</label>
+                    <input
+                      type="number"
+                      min="50"
+                      max="250"
+                      value={boy}
+                      onChange={(e) => setBoy(e.target.value)}
+                      className="ios-input font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="ios-label">{t("Vazn", language)} (kg)</label>
+                    <input
+                      type="number"
+                      min="20"
+                      max="300"
+                      value={vazn}
+                      onChange={(e) => setVazn(e.target.value)}
+                      className="ios-input font-mono"
+                    />
+                  </div>
+                </div>
               </div>
+            )}
 
-              {/* CONDITIONAL SUB-FORMS */}
-              {rol === 'foydalanuvchi' && (
-                <div className="bg-slate-55 p-3 rounded-xl border border-slate-200/80 space-y-3">
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-2 border-b pb-1">
-                     {t("Klinik & Nutritiv boshlang'ich kadr", language)}
-                  </p>
+            {mode === 'login' && (
+              <button
+                type="submit"
+                disabled={loading}
+                className="ios-btn ios-btn-primary ios-btn-block"
+                id="btn-auth-submit"
+              >
+                <span>
+                  {loading ? t('Kuting, ulanish bormoqda...', language) : t('Tizimga Kirish', language)}
+                </span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wide mb-1">
-                        {t("Siz yashaydigan Hudud", language)}
-                      </label>
-                      <select
-                        value={shaharTuman}
-                        onChange={(e) => setShaharTuman(e.target.value)}
-                        className="w-full text-[10px] rounded border border-slate-300 p-1.5 focus:outline-none bg-white text-slate-800"
-                      >
-                        {FERGANA_REGIONS.map((reg) => (
-                          <option key={reg} value={reg}>{t(reg, language)}</option>
-                        ))}
-                      </select>
-                    </div>
+            {mode === 'register' && registerStep === 1 && (
+              <button
+                type="button"
+                onClick={handleRegisterNext}
+                disabled={loading}
+                className="ios-btn ios-btn-primary ios-btn-block"
+                id="btn-register-next"
+              >
+                <span>{t('Keyingi', language)}</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
 
-                    <div>
-                      <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wide mb-1">
-                        {t("Yoshingiz (yillarda)", language)}
-                      </label>
-                      <input
-                        type="number"
-                        value={yosh}
-                        onChange={(e) => setYosh(e.target.value)}
-                        className="w-full text-[10px] rounded border border-slate-300 p-1.5 focus:outline-none bg-white text-slate-800"
-                      />
-                    </div>
-                  </div>
+            {mode === 'register' && registerStep === 2 && (
+              <div className="flex gap-2 pt-0.5">
+                <button
+                  type="button"
+                  onClick={handleRegisterBack}
+                  disabled={loading}
+                  className="ios-btn ios-btn-frost ios-btn-sm flex-1"
+                  id="btn-register-back"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>{t('Orqaga', language)}</span>
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="ios-btn ios-btn-primary ios-btn-sm flex-[2]"
+                  id="btn-auth-submit"
+                >
+                  <span>
+                    {loading
+                      ? t('Kuting...', language)
+                      : t("Ro'yxatdan O'tish", language)}
+                  </span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </form>
 
-                  <div className="grid grid-cols-3 gap-2">
-                    <div>
-                      <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wide mb-1">
-                        {t("Jins", language)}
-                      </label>
-                      <select
-                        value={jins}
-                        onChange={(e) => setJins(e.target.value as any)}
-                        className="w-full text-[10px] rounded border border-slate-300 p-1.5 focus:outline-none bg-white text-slate-800"
-                      >
-                        <option value="erkak">{t("Erkak", language)}</option>
-                        <option value="ayol">{t("Ayol", language)}</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wide mb-1">
-                        {t("Bo'y", language)} (sm)
-                      </label>
-                      <input
-                        type="number"
-                        value={boy}
-                        onChange={(e) => setBoy(e.target.value)}
-                        className="w-full text-[10px] rounded border border-slate-300 p-1.5 focus:outline-none bg-white text-slate-800 font-mono"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wide mb-1">
-                        {t("Vazn", language)} (kg)
-                      </label>
-                      <input
-                        type="number"
-                        value={vazn}
-                        onChange={(e) => setVazn(e.target.value)}
-                        className="w-full text-[10px] rounded border border-slate-300 p-1.5 focus:outline-none bg-white text-slate-800 font-mono"
-                      />
-                    </div>
-                  </div>
-
-                </div>
-              )}
-
+          {IS_DEV && (
+            <div className="mt-8 border-t border-slate-200 pt-5 space-y-3">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center flex items-center justify-center gap-1">
+                <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                {t("Sinov uchun tezkor rolli kirishlar (Demo)", language)}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleShortcutLogin('foydalanuvchi', 'foydalanuvchi123')}
+                  className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
+                >
+                  <span className="block text-[10px] font-bold uppercase text-[var(--ios-accent)]">
+                    {t("Bemor", language)}
+                  </span>
+                  <span className="block text-sm font-bold text-slate-800">
+                    {t("Sardor Salimov", language)}
+                  </span>
+                  <span className="block text-[10px] font-mono text-slate-400 mt-0.5">login: foydalanuvchi</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleShortcutLogin('shifokor', 'shifokor123')}
+                  className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
+                >
+                  <span className="block text-[10px] font-bold uppercase text-[var(--ios-accent)]">
+                    {t("Shifokor", language)}
+                  </span>
+                  <span className="block text-sm font-bold text-slate-800">
+                    {t("Dr. A. Qodirov", language)}
+                  </span>
+                  <span className="block text-[10px] font-mono text-slate-400 mt-0.5">login: shifokor</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleShortcutLogin('admin', 'admin123')}
+                  className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
+                >
+                  <span className="block text-[10px] font-bold uppercase text-[var(--ios-accent)]">
+                    {t("Administrator", language)}
+                  </span>
+                  <span className="block text-sm font-bold text-slate-800">System Admin</span>
+                  <span className="block text-[10px] font-mono text-slate-400 mt-0.5">login: admin</span>
+                </button>
+              </div>
             </div>
           )}
-
-          {/* SUBMIT BUTTON */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="ios-btn ios-btn-primary ios-btn-lg ios-btn-block uppercase tracking-widest"
-            id="btn-auth-submit"
-          >
-            <span>{loading ? t('Kuting, ulanish bormoqda...', language) : (mode === 'login' ? t('Tizimga Kirish', language) : t('Portalda Ro\'yxatdan O\'tish', language))}</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-
-        </form>
-
-        {/* DEMO ACCOUNTS — faqat development rejimida */}
-        {IS_DEV && (
-        <div className="mt-8 border-t border-slate-200 pt-5 space-y-3">
-          <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider text-center flex items-center justify-center gap-1">
-            <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            {t("Sinov uchun tezkor rolli kirishlar (Demo)", language)}
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            
-            {/* patient shortcut button */}
-            <button
-              type="button"
-              onClick={() => handleShortcutLogin('foydalanuvchi', 'foydalanuvchi123')}
-              className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
-            >
-              <span className="block text-[8px] font-extrabold uppercase text-[var(--ios-accent)]">{t("Bemor", language)} / {t("Birlamchi", language)}</span>
-              <span className="block text-[11px] font-bold text-slate-800">{t("Sardor Salimov", language)}</span>
-              <span className="block text-[8px] font-mono text-slate-400 mt-0.5">login: foydalanuvchi</span>
-            </button>
-
-            {/* doctor shortcut button */}
-            <button
-              type="button"
-              onClick={() => handleShortcutLogin('shifokor', 'shifokor123')}
-              className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
-            >
-              <span className="block text-[8px] font-extrabold uppercase text-[var(--ios-accent)]">{t("Shifokor", language)} / {t("Vodiydan", language)}</span>
-              <span className="block text-[11px] font-bold text-slate-800">{t("Dr. A. Qodirov", language)}</span>
-              <span className="block text-[8px] font-mono text-slate-455 mt-0.5">login: shifokor</span>
-            </button>
-
-            {/* admin shortcut button */}
-            <button
-              type="button"
-              onClick={() => handleShortcutLogin('admin', 'admin123')}
-              className="p-3 ios-card text-left hover:scale-[1.02] transition-transform cursor-pointer"
-            >
-              <span className="block text-[8px] font-extrabold uppercase text-[var(--ios-accent)]">{t("Administrator", language)}</span>
-              <span className="block text-[11px] font-bold text-slate-800">System Admin</span>
-              <span className="block text-[8px] font-mono text-slate-400 mt-0.5">login: admin</span>
-            </button>
-
-          </div>
         </div>
-        )}
-      </div>
-
       </div>
     </AppShell>
   );
