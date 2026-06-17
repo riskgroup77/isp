@@ -37,6 +37,12 @@ function parseApiError(data: unknown, status: number): string {
   }
   if (typeof record.error === 'string') return record.error;
   if (typeof record.message === 'string') return record.message;
+  if (status === 504) {
+    return "Server javob bermadi (504 Gateway Timeout). Anketa saqlash va AI tahlil juda uzoq davom etdi — bu backend yoki proxy timeout muammosi.";
+  }
+  if (status === 502) {
+    return "Server vaqtincha ishlamayapti (502). Keyinroq qayta urinib ko'ring.";
+  }
   return `So'rov muvaffaqiyatsiz (${status})`;
 }
 
@@ -56,14 +62,24 @@ export async function apiFetch(
     }
   }
 
-  const response = await fetch(resolveApiUrl(path), { ...options, headers });
+  try {
+    const response = await fetch(resolveApiUrl(path), { ...options, headers });
 
-  if (response.status === 401 && !options.skipAuth) {
-    clearAuthSession();
-    window.dispatchEvent(new CustomEvent('soglik:auth-expired'));
+    if (response.status === 401 && !options.skipAuth) {
+      clearAuthSession();
+      window.dispatchEvent(new CustomEvent('soglik:auth-expired'));
+    }
+
+    return response;
+  } catch (err) {
+    const msg =
+      err instanceof Error && err.message.includes('Failed to fetch')
+        ? "Tarmoq xatosi: serverga ulanib bo'lmadi yoki ulanish vaqt tugadi (timeout)."
+        : err instanceof Error
+          ? err.message
+          : "Tarmoq xatosi";
+    throw new ApiError(msg, 0);
   }
-
-  return response;
 }
 
 export async function apiJson<T>(

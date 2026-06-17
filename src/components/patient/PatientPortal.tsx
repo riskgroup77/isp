@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -52,6 +52,7 @@ import {
   MedicationAlarm,
   UserProfile,
 } from '../../types';
+import Anketa2025Form from './Anketa2025Form';
 import MedicalDisclaimer from '../MedicalDisclaimer';
 import { translateContent } from '../../lib/disclaimer';
 import { t, type AppLanguage } from '../../lib/lang';
@@ -854,8 +855,6 @@ export default function PatientPortal({
 
   const applyExtractedParamsAndCalculate = () => {
     if (!aiTextResult) return;
-    setIntakeMode('standard');
-    // Scroll or open risk calculations
     handleCalculateRisk(undefined, formData);
   };
 
@@ -889,7 +888,7 @@ export default function PatientPortal({
                 <Bell className="w-5 h-5 text-red-500" />
               </div>
               <div>
-                <span className="text-[10px] font-extrabold text-red-400 uppercase tracking-widest block font-mono">💊 DORI VAQTI BO'LDI!</span>
+                <span className="text-[10px] font-extrabold text-red-400 uppercase tracking-widest block font-mono">рџ’Љ DORI VAQTI BO'LDI!</span>
                 <h4 className="font-extrabold text-base text-slate-50">{activeNotification.nomi}</h4>
               </div>
             </div>
@@ -898,7 +897,7 @@ export default function PatientPortal({
               className="text-slate-400 hover:text-white font-black text-2xl leading-none transition"
               title="Yopish"
             >
-              ×
+              Г—
             </button>
           </div>
 
@@ -962,7 +961,7 @@ export default function PatientPortal({
               }}
               className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-2.5 rounded-xl text-center cursor-pointer transition shadow hover:scale-[1.02] active:scale-95"
             >
-              ✓ Ichdim (Tasdiqlash)
+              вњ“ Ichdim (Tasdiqlash)
             </button>
             <button
               onClick={() => {
@@ -971,7 +970,7 @@ export default function PatientPortal({
               }}
               className="bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs py-2.5 px-3 rounded-xl text-center cursor-pointer transition"
             >
-              Keyinroq ⏰
+              Keyinroq вЏ°
             </button>
           </div>
         </div>
@@ -1151,7 +1150,7 @@ export default function PatientPortal({
                               </span>
                             </td>
                             <td className="py-2.5 px-3 font-semibold">{e.puls}</td>
-                            <td className="py-2.5 px-3 font-mono">{e.glyukoza !== '' ? `${e.glyukoza}` : '—'}</td>
+                            <td className="py-2.5 px-3 font-mono">{e.glyukoza !== '' ? `${e.glyukoza}` : 'вЂ”'}</td>
                             <td className="py-2.5 px-3">
                               {e.alomatlar.length > 0 ? (
                                 <span className="bg-red-105 border border-red-200 text-red-800 font-extrabold text-[9px] px-1.5 py-0.5 rounded uppercase">
@@ -1178,10 +1177,10 @@ export default function PatientPortal({
                                   ))}
                                 </div>
                               ) : (
-                                <span className="text-slate-400">—</span>
+                                <span className="text-slate-400">вЂ”</span>
                               )}
                             </td>
-                            <td className="py-2.5 px-3 text-slate-500 italic max-w-xs truncate" title={e.qaydlar}>{e.qaydlar ? translateContent(e.qaydlar, language) : "—"}</td>
+                            <td className="py-2.5 px-3 text-slate-500 italic max-w-xs truncate" title={e.qaydlar}>{e.qaydlar ? translateContent(e.qaydlar, language) : "вЂ”"}</td>
                           </tr>
                         );
                       })}
@@ -1190,7 +1189,7 @@ export default function PatientPortal({
                 </div>
               </div>
 
-              {/* Yuridik ogohlantirish — chop etishda tanlangan til (lotin/kirill) */}
+              {/* Yuridik ogohlantirish вЂ” chop etishda tanlangan til (lotin/kirill) */}
               <div className="pt-6 border-t-2 border-slate-900 space-y-4" id="medical-disclaimer-diagnostic-print">
                 <MedicalDisclaimer language={language} variant="diagnostic" />
                 <MedicalDisclaimer language={language} variant="print" className="rounded-lg" />
@@ -1309,7 +1308,7 @@ export default function PatientPortal({
                   type="submit"
                   className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-2.5 rounded-xl text-center cursor-pointer transition text-xs shadow"
                 >
-                  Saqlash ✓
+                  Saqlash вњ“
                 </button>
               </div>
             </form>
@@ -1453,7 +1452,7 @@ export default function PatientPortal({
         </div>
       </header>
 
-      {/* PRINT BANNER & INFO CONTROLLER — tanlangan til formatida */}
+      {/* PRINT BANNER & INFO CONTROLLER вЂ” tanlangan til formatida */}
       <div className="hidden print:block bg-white p-6 border-b-2 border-slate-950 mb-6 text-black">
         <div className="flex justify-between items-start border-b pb-4">
           <div>
@@ -1484,7 +1483,7 @@ export default function PatientPortal({
         {activeTab === 'screening' && (
           <div className="space-y-6">
             
-            {/* INPUT SECTION — to'liq kenglik */}
+            {/* INPUT SECTION вЂ” to'liq kenglik */}
             <div className="w-full space-y-6 print:hidden">
               
               {/* TWO CHANNEL SWITCHER CONTAINER */}
@@ -1556,7 +1555,7 @@ export default function PatientPortal({
                         ) : (
                           <>
                             <Sparkles className="w-4 h-4 text-emerald-400" />
-                            Matnni Semantik Tahlil Qilish →
+                            Matnni Semantik Tahlil Qilish в†’
                           </>
                         )}
                       </button>
@@ -1607,278 +1606,13 @@ export default function PatientPortal({
                   </div>
                 )}
 
-                {/* STANDARD INTAKE MODEL FORM */}
+                {/* Anketa — Standart So'rovnoma */}
                 {intakeMode === 'standard' && (
-                  <form onSubmit={handleCalculateRisk} className="p-5 space-y-5">
-                    
-                    {/* SECTION 1: Antropometriya & Regional */}
-                    <div>
-                      <h4 className="text-xs font-extrabold text-indigo-700 uppercase tracking-widest border-b pb-1 mb-3 flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-indigo-600" />
-                        1. Antropometriya va Hudud (Skrining)
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Yoshi</label>
-                          <input
-                            type="number"
-                            min="15"
-                            max="110"
-                            required
-                            value={formData.yosh}
-                            onChange={(e) => setFormData({ ...formData, yosh: parseInt(e.target.value) || 35 })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Jinsi</label>
-                          <select
-                            value={formData.jins}
-                            onChange={(e) => setFormData({ ...formData, jins: e.target.value as 'erkak' | 'ayol' })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          >
-                            <option value="erkak">Erkak</option>
-                            <option value="ayol">Ayol</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Bo'yi (sm)</label>
-                          <input
-                            type="number"
-                            min="100"
-                            max="230"
-                            required
-                            value={formData.boy}
-                            onChange={(e) => setFormData({ ...formData, boy: parseInt(e.target.value) || 170 })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Vazni (kg)</label>
-                          <input
-                            type="number"
-                            min="30"
-                            max="250"
-                            required
-                            value={formData.vazn}
-                            onChange={(e) => setFormData({ ...formData, vazn: parseInt(e.target.value) || 70 })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-3">
-                        <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Yashash hududi (Farg'ona)</label>
-                        <select
-                          value={formData.shaharTuman}
-                          onChange={(e) => setFormData({ ...formData, shaharTuman: e.target.value })}
-                          className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                        >
-                          {FERGANA_REGIONS.map((reg) => (
-                            <option key={reg} value={reg}>{reg}</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* SECTION 2: Klinik ko'rsatkichlar */}
-                    <div>
-                      <h4 className="text-xs font-extrabold text-emerald-700 uppercase tracking-widest border-b pb-1 mb-3 flex items-center gap-1.5">
-                        <Activity className="w-3.5 h-3.5 text-emerald-600" />
-                        2. Klinik ko'rsatkichlar
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Sistolik (Bosim - tepada)</label>
-                          <input
-                            type="number"
-                            min="80"
-                            max="240"
-                            required
-                            value={formData.sistolik}
-                            onChange={(e) => setFormData({ ...formData, sistolik: parseInt(e.target.value) || 120 })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Diastolik (Bosim - pastda)</label>
-                          <input
-                            type="number"
-                            min="40"
-                            max="140"
-                            required
-                            value={formData.diastolik}
-                            onChange={(e) => setFormData({ ...formData, diastolik: parseInt(e.target.value) || 80 })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Qondagi glyukoza (mmol/l)</label>
-                          <input
-                            type="number"
-                            step="0.1"
-                            min="1.0"
-                            max="30.0"
-                            placeholder="Ixtiyoriy (masalan: 5.2)"
-                            value={formData.glyukoza}
-                            onChange={(e) => setFormData({ ...formData, glyukoza: e.target.value === '' ? '' : parseFloat(e.target.value) })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">Xolesterin (mmol/l)</label>
-                          <input
-                            type="number"
-                            step="0.1"
-                            min="1.0"
-                            max="20.0"
-                            placeholder="Ixtiyoriy (masalan: 4.8)"
-                            value={formData.xolesterin}
-                            onChange={(e) => setFormData({ ...formData, xolesterin: e.target.value === '' ? '' : parseFloat(e.target.value) })}
-                            className="w-full text-xs rounded border border-slate-300 p-2 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* SECTION 3: Nutritiv Maqom va Xulq-atvor (Innovation 3) */}
-                    <div>
-                      <h4 className="text-xs font-extrabold text-amber-700 uppercase tracking-widest border-b pb-1 mb-3 flex items-center gap-1.5">
-                        <TrendingDown className="w-3.5 h-3.5 text-amber-600" />
-                        3. Nutritiv maqom va xulq-atvor (Vodiy)
-                      </h4>
-                      <div className="space-y-2 text-xs">
-                        <div>
-                          <label className="block font-semibold text-slate-700 mb-0.5">Tuz va sho'r ovqatlar qabul qilish</label>
-                          <select
-                            value={formData.tuzIstemi}
-                            onChange={(e) => setFormData({ ...formData, tuzIstemi: e.target.value as 'past' | 'ortacha' | 'yuqori' })}
-                            className="w-full text-xs rounded border border-slate-300 p-1.5 focus:outline-none"
-                          >
-                            <option value="past">Kam tuzli (Tuz qo'shmaydi)</option>
-                            <option value="ortacha">O'rtacha me'yorda</option>
-                            <option value="yuqori">Sho'r, doimiy qo'shimcha tuz soladi (Yuqori xavf)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block font-semibold text-slate-700 mb-0.5">Uglevod, non va xamirli taomlar</label>
-                          <select
-                            value={formData.shakarVaXamir}
-                            onChange={(e) => setFormData({ ...formData, shakarVaXamir: e.target.value as 'kam' | 'ortacha' | 'kop' })}
-                            className="w-full text-xs rounded border border-slate-300 p-1.5 focus:outline-none"
-                          >
-                            <option value="kam">Kamroq (xamir va konfet minimal)</option>
-                            <option value="ortacha">Muntazam vodiycha parhezda (non, choyxona oshi)</option>
-                            <option value="kop">Ko'p (shakarli choylar, xamir taomlar, oq non)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block font-semibold text-slate-700 mb-0.5">Jismoniy faollik</label>
-                          <select
-                            value={formData.jismoniyFaollik}
-                            onChange={(e) => setFormData({ ...formData, jismoniyFaollik: e.target.value as 'kam' | 'ortacha' | 'yuqori' })}
-                            className="w-full text-xs rounded border border-slate-300 p-1.5 focus:outline-none"
-                          >
-                            <option value="kam">Kam (asosan o'tirib ishlaydi/gipodinamiya)</option>
-                            <option value="ortacha">O'rtacha (har kuni bir oz yuradi)</option>
-                            <option value="yuqori">Faol (jadal sport, uzoq jismoniy mehnat)</option>
-                          </select>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-2 pt-1">
-                          <div>
-                            <label className="block font-semibold text-slate-700 mb-0.5">Chekish staji</label>
-                            <select
-                              value={formData.chekish}
-                              onChange={(e) => setFormData({ ...formData, chekish: e.target.value as 'yoq' | 'chekar_edi' | 'ha' })}
-                              className="w-full text-[11px] rounded border border-slate-300 p-1 focus:outline-none"
-                            >
-                              <option value="yoq">Hech qachon</option>
-                              <option value="chekar_edi">Tashlagan</option>
-                              <option value="ha">Faol chekuvchi</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="block font-semibold text-slate-700 mb-0.5">Nosvoy otish</label>
-                            <select
-                              value={formData.nosvoy}
-                              onChange={(e) => setFormData({ ...formData, nosvoy: e.target.value as 'yoq' | 'ha' })}
-                              className="w-full text-[11px] rounded border border-slate-300 p-1 focus:outline-none"
-                            >
-                              <option value="yoq">Yo'q</option>
-                              <option value="ha">Ha (odatiy odat)</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* SECTION 4: Nasliy oilaviy kasalliklar va Tibbiy xodim ko'rsatkichi (Innovation 4) */}
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-xs font-extrabold text-slate-700 uppercase tracking-widest border-b pb-1 mb-2">
-                          4. Nasliy kasalliklar moyilligi
-                        </h4>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          {AVAILABLE_DISEASES.map((dis) => (
-                            <label key={dis.id} className="flex items-center gap-1.5 cursor-pointer bg-slate-50 p-1.5 rounded border border-slate-200 hover:bg-slate-100">
-                              <input
-                                type="checkbox"
-                                checked={formData.oiladaKasallik.includes(dis.id)}
-                                onChange={() => handleDiseaseCheck(dis.id)}
-                                className="rounded text-emerald-600 focus:ring-emerald-500"
-                              />
-                              <span>{dis.label}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-
-
-                    </div>
-
-                    {/* SECTION 5: Sun'iy Intellekt Erkin Shikoyat Qismi */}
-                    <div className="bg-indigo-50/40 p-4 rounded-xl border border-indigo-150 space-y-2">
-                      <h4 className="text-xs font-extrabold text-indigo-900 uppercase tracking-widest border-b border-indigo-100 pb-1 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-pulse" />
-                        5. Erkin shikoyatlar (AI tahlili uchun)
-                      </h4>
-                      <div className="text-xs space-y-1">
-                        <label className="block font-semibold text-slate-700">
-                          Sizda qanday jismoniy, asabiy yoki kardiologik bezovtaliklar yoki dori ta'sirlari bor? (Erkin matnda kiriting):
-                        </label>
-                        <textarea
-                          rows={3}
-                          placeholder="Masalan: Boshim va vaqti-vaqti bilan ensa soham qattiq og'riyapti, nafas olganimda ko'kragim siqilyapti, kechalari uyqum yaxshi emas..."
-                          value={formData.erkinShikoyat || ''}
-                          onChange={(e) => setFormData({ ...formData, erkinShikoyat: e.target.value })}
-                          className="w-full text-xs rounded-lg border border-slate-300 p-2.5 focus:ring-1 focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 transition shadow-sm bg-white"
-                        />
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isCalculatingRisk}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md text-sm transition-all flex items-center justify-center gap-2"
-                      id="btn-calculate-risk"
-                    >
-                      {isCalculatingRisk ? (
-                        <>
-                          <RefreshCw className="w-5 h-5 animate-spin" />
-                          Hisoblanmoqda...
-                        </>
-                      ) : (
-                        <>
-                          <Heart className="w-5 h-5 text-red-300 animate-pulse" />
-                          SALOMATLIKNI VA AI RISKINI BAHOLASH →
-                        </>
-                      )}
-                    </button>
-                  </form>
+                  <div className="p-4 md:p-5">
+                    <Anketa2025Form user={currentUser} language={language} />
+                  </div>
                 )}
+
               </div>
 
               {/* STATISTICAL CONTEXT QUICK SIDE VIEW */}
@@ -1908,7 +1642,7 @@ export default function PatientPortal({
 
             </div>
 
-            {/* NATIJA — faqat tahlil bo'lganda */}
+            {/* NATIJA вЂ” faqat tahlil bo'lganda */}
             {riskResult && (
             <div className="w-full space-y-6">
 
@@ -2002,7 +1736,7 @@ export default function PatientPortal({
                           <div className="grid grid-cols-2 gap-3 text-xs">
                             <div className="bg-slate-100 p-2.5 rounded-lg">
                               <span className="text-slate-500 uppercase text-[9px] font-bold">Sizning TMI ko'rsatkichingiz</span>
-                              <p className="text-base font-extrabold text-slate-800 mt-0.5">{(riskResult.tmi ?? 0).toFixed(1)} kg/m²</p>
+                              <p className="text-base font-extrabold text-slate-800 mt-0.5">{(riskResult.tmi ?? 0).toFixed(1)} kg/mВІ</p>
                               <span className="text-[10px] text-indigo-700 font-medium">{translateContent(riskResult.tmiKategoriya, language)}</span>
                             </div>
                             <div className="bg-slate-100 p-2.5 rounded-lg flex flex-col justify-between">
@@ -2102,7 +1836,7 @@ export default function PatientPortal({
                           <ul className="space-y-2.5 text-xs text-emerald-950">
                             {(riskResult.shaxsiyTavsiyalar?.ovqatlanish ?? []).map((o, idx) => (
                               <li key={idx} className="flex gap-1.5 items-start">
-                                <span className="text-emerald-600 shrink-0 font-bold">•</span>
+                                <span className="text-emerald-600 shrink-0 font-bold">вЂў</span>
                                 <span>{translateContent(o, language)}</span>
                               </li>
                             ))}
@@ -2114,7 +1848,7 @@ export default function PatientPortal({
                           <ul className="space-y-2.5 text-xs text-indigo-950">
                             {(riskResult.shaxsiyTavsiyalar?.jismoniyMashq ?? []).map((jm, idx) => (
                               <li key={idx} className="flex gap-1.5 items-start">
-                                <span className="text-indigo-600 shrink-0 font-bold">•</span>
+                                <span className="text-indigo-600 shrink-0 font-bold">вЂў</span>
                                 <span>{translateContent(jm, language)}</span>
                               </li>
                             ))}
@@ -2129,7 +1863,7 @@ export default function PatientPortal({
                           <ul className="space-y-2.5 text-xs text-slate-700">
                             {(riskResult.shaxsiyTavsiyalar?.tibbiyReja ?? []).map((tr, idx) => (
                               <li key={idx} className="flex gap-1.5 items-start">
-                                <span className="text-indigo-600 shrink-0 font-bold">✓</span>
+                                <span className="text-indigo-600 shrink-0 font-bold">вњ“</span>
                                 <span>{translateContent(tr, language)}</span>
                               </li>
                             ))}
@@ -2140,7 +1874,7 @@ export default function PatientPortal({
                         <div className="bg-slate-900 text-slate-200 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
                           <div>
                             <span className="text-[10px] text-teal-400 font-bold uppercase tracking-widest">Keyingi profilaktik ko'rik</span>
-                            <p className="text-lg font-black mt-0.5">{riskResult.hududiyStatistika?.tavsiyaEtilganSkriningKuni ?? '—'}</p>
+                            <p className="text-lg font-black mt-0.5">{riskResult.hududiyStatistika?.tavsiyaEtilganSkriningKuni ?? 'вЂ”'}</p>
                             <p className="text-[10px] text-slate-400">Yarim yillik kardiomonitoring majburiyati</p>
                           </div>
                           <Clock className="w-10 h-10 text-teal-400 opacity-80" />
@@ -2313,28 +2047,28 @@ export default function PatientPortal({
                           onClick={() => { setChatInput("Farg'ona oshi (palov) ni qanday qilib sog'lomlashtirish mumkin?"); }}
                           className="text-[10px] bg-slate-800 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700 transition cursor-pointer"
                         >
-                          Palovni parhez qilish 🍲
+                          Palovni parhez qilish рџЌІ
                         </button>
                         <button
                           type="button"
                           onClick={() => { setChatInput("Nosvoyning yurak xurujiga va arterial qon tomir spazmiga bog'liqligini isbotlab bering."); }}
                           className="text-[10px] bg-slate-800 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700 transition cursor-pointer"
                         >
-                          Nosvoy biologik zarari 🚭
+                          Nosvoy biologik zarari рџљ­
                         </button>
                         <button
                           type="button"
                           onClick={() => { setChatInput("Kunda 5g dan kam tuz iste'mol qilishni qanday o'rgansam bo'ladi?"); }}
                           className="text-[10px] bg-slate-800 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700 transition cursor-pointer"
                         >
-                          Tuzdan kamaytirish siri 🧂
+                          Tuzdan kamaytirish siri рџ§‚
                         </button>
                         <button
                           type="button"
                           onClick={() => { setChatInput("Salomatlik komplayensimni va dori ichish intizomini qanday yaxshilayman?"); }}
                           className="text-[10px] bg-slate-800 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700 transition cursor-pointer"
                         >
-                          Shifokor Komplayensi 🩺
+                          Shifokor Komplayensi рџ©є
                         </button>
                       </div>
 
@@ -2844,9 +2578,9 @@ export default function PatientPortal({
                       </label>
                       <div className="grid grid-cols-2 gap-2 mt-1">
                         {[
-                          { id: 'ogriq', label: "Ko'krak og'rig'i ⚠️" },
-                          { id: 'nafas_qisilishi', label: "Nafas qisilishi 🫁" },
-                          { id: 'bosh_aylanishi', label: "Bosh aylanishi 🌀" },
+                          { id: 'ogriq', label: "Ko'krak og'rig'i вљ пёЏ" },
+                          { id: 'nafas_qisilishi', label: "Nafas qisilishi рџ«Ѓ" },
+                          { id: 'bosh_aylanishi', label: "Bosh aylanishi рџЊЂ" },
                           { id: 'yurak_oynashi', label: "Yurak o'ynashi" },
                           { id: 'shishlar', label: "Oyoqlarda shishlar" },
                           { id: 'holsizlik', label: "Kuchli holsizlik" }
@@ -2968,7 +2702,7 @@ export default function PatientPortal({
                       type="submit"
                       className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-lg shadow-sm transition-all cursor-pointer"
                     >
-                      Kundalikka Saqlash 💾
+                      Kundalikka Saqlash рџ’ѕ
                     </button>
 
                   </form>
@@ -3039,7 +2773,7 @@ export default function PatientPortal({
                                 <b className="text-slate-800 text-[13px]">{alarm.nomi}</b>
                                 <div className="text-[10px] text-slate-500 flex items-center gap-1.5 mt-0.5">
                                   <span>Dozasi: <b>{alarm.doza}</b></span>
-                                  <span>•</span>
+                                  <span>вЂў</span>
                                   <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-mono font-extrabold text-[9px]">{alarm.vaqt}</span>
                                 </div>
                               </div>
@@ -3149,7 +2883,7 @@ export default function PatientPortal({
                         }}
                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs py-2 rounded-lg transition-colors cursor-pointer text-center uppercase tracking-wider"
                       >
-                        Qo'shish 🔔
+                        Qo'shish рџ””
                       </button>
                     </div>
                   </div>
@@ -3219,9 +2953,9 @@ export default function PatientPortal({
                         // BP check
                         let bpCategory = { label: 'Normal', color: 'bg-emerald-50 text-emerald-800 border-emerald-300', score: 0 };
                         if (entry.sistolik >= 140 || entry.diastolik >= 90) {
-                          bpCategory = { label: 'Gipertoniya 🔴', color: 'bg-red-50 text-red-800 border-red-300 font-bold', score: 2 };
+                          bpCategory = { label: 'Gipertoniya рџ”ґ', color: 'bg-red-50 text-red-800 border-red-300 font-bold', score: 2 };
                         } else if (entry.sistolik >= 130 || entry.diastolik >= 80) {
-                          bpCategory = { label: 'Pre-gipertoniya 🟡', color: 'bg-amber-50 text-amber-800 border-amber-350', score: 1 };
+                          bpCategory = { label: 'Pre-gipertoniya рџџЎ', color: 'bg-amber-50 text-amber-800 border-amber-350', score: 1 };
                         }
 
                         const totalMedCount = entry.dorilar.length;
@@ -3239,7 +2973,7 @@ export default function PatientPortal({
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                               <div className="flex items-center gap-2">
                                 <span className="text-xs font-mono font-bold text-slate-800 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">
-                                  📅 {entry.sana} ({entry.vaqt})
+                                  рџ“… {entry.sana} ({entry.vaqt})
                                 </span>
                                 <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${bpCategory.color}`}>
                                   {bpCategory.label}
@@ -3263,19 +2997,19 @@ export default function PatientPortal({
                               <div>
                                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Yurak Puls</span>
                                 <span className="text-sm font-black text-slate-800 font-mono">
-                                  ❤️ {entry.puls} <span className="text-[10px] text-slate-500 font-sans">/daqiqa</span>
+                                  вќ¤пёЏ {entry.puls} <span className="text-[10px] text-slate-500 font-sans">/daqiqa</span>
                                 </span>
                               </div>
                               <div>
                                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Qondagi qand</span>
                                 <span className="text-sm font-bold text-slate-800 font-mono">
-                                  {entry.glyukoza ? `🩸 ${entry.glyukoza} mmol/l` : 'Kiritilmagan'}
+                                  {entry.glyukoza ? `рџ©ё ${entry.glyukoza} mmol/l` : 'Kiritilmagan'}
                                 </span>
                               </div>
                               <div>
                                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Sog'lom vazn</span>
                                 <span className="text-sm font-bold text-slate-800 font-mono">
-                                  ⚖️ {entry.vazn ? `${entry.vazn} kg` : 'Kiritilmagan'}
+                                  вљ–пёЏ {entry.vazn ? `${entry.vazn} kg` : 'Kiritilmagan'}
                                 </span>
                               </div>
                             </div>
@@ -3289,13 +3023,13 @@ export default function PatientPortal({
                                   <div className="flex flex-wrap gap-1">
                                     {entry.alomatlar.map(s => (
                                       <span key={s} className="text-[9px] bg-red-100 text-red-850 border border-red-200 px-2 py-0.5 rounded-full font-bold">
-                                        {s === 'ogriq' ? 'Ko\'krak og\'rig\'i ⚠️' : (s === 'nafas_qisilishi' ? 'Nafas qisishi 🫁' : (s === 'bosh_aylanishi' ? 'Bosh aylanishi 🌀' : (s === 'yurak_oynashi' ? 'Yurak o\'ynashi' : s)))}
+                                        {s === 'ogriq' ? 'Ko\'krak og\'rig\'i вљ пёЏ' : (s === 'nafas_qisilishi' ? 'Nafas qisishi рџ«Ѓ' : (s === 'bosh_aylanishi' ? 'Bosh aylanishi рџЊЂ' : (s === 'yurak_oynashi' ? 'Yurak o\'ynashi' : s)))}
                                       </span>
                                     ))}
                                   </div>
                                 ) : (
                                   <span className="text-[11px] text-emerald-600 font-medium block">
-                                    ✓ Hech qanday shikoyat yoki alomat yo'q
+                                    вњ“ Hech qanday shikoyat yoki alomat yo'q
                                   </span>
                                 )}
                               </div>
@@ -3317,7 +3051,7 @@ export default function PatientPortal({
                                           ? 'bg-emerald-100 text-emerald-805 font-semibold' 
                                           : 'bg-slate-100 text-slate-400 line-through'
                                       }`}>
-                                        {d.ichildi ? '✓' : '✗'} {d.nomi} ({d.doza})
+                                        {d.ichildi ? 'вњ“' : 'вњ—'} {d.nomi} ({d.doza})
                                       </span>
                                     ))}
                                   </div>
@@ -3380,7 +3114,7 @@ export default function PatientPortal({
                   <div key={ad.id} className="p-5 rounded-2xl border border-indigo-100 bg-indigo-50/15 space-y-3 shadow-sm relative">
                     <div className="flex items-center justify-between border-b pb-2 text-xs">
                       <div>
-                        <span className="font-black text-indigo-950 block">👨‍⚕️ {ad.shifokorIsm}</span>
+                        <span className="font-black text-indigo-950 block">рџ‘ЁвЂЌвљ•пёЏ {ad.shifokorIsm}</span>
                         <span className="text-[10px] text-slate-400 font-semibold">{ad.shifokorMutaxassislik}</span>
                       </div>
                       <span className="font-mono text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded border">
@@ -3393,8 +3127,8 @@ export default function PatientPortal({
                     </p>
 
                     <div className="flex items-center justify-between text-[10px] text-slate-400">
-                      <span>🏥 Farg'ona kardio-klaster markazi</span>
-                      <span className="text-emerald-600 font-bold">✓ Tasdiqlangan Retsept</span>
+                      <span>рџЏҐ Farg'ona kardio-klaster markazi</span>
+                      <span className="text-emerald-600 font-bold">вњ“ Tasdiqlangan Retsept</span>
                     </div>
                   </div>
                 ))}
@@ -3413,7 +3147,7 @@ export default function PatientPortal({
       {/* FOOTER & DISCLAIMER */}
       <footer className="ios-footer max-w-7xl mx-auto px-4 mt-12 border-t pt-6 text-center space-y-3 print:hidden">
         <p className="text-xs">
-          {t("© 2026 Intellektual Salomatlik Axborot Tizimi. Farg'ona Vodiysi profiling va kardiologik so'nggi ma'lumotlar bazasi zaxirasi.", language)}
+          {t("В© 2026 Intellektual Salomatlik Axborot Tizimi. Farg'ona Vodiysi profiling va kardiologik so'nggi ma'lumotlar bazasi zaxirasi.", language)}
         </p>
         <MedicalDisclaimer language={language} variant="card" className="max-w-4xl mx-auto" />
       </footer>

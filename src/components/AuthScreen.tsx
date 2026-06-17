@@ -131,9 +131,10 @@ export default function AuthScreen({
     setErrorMsg(null);
     try {
       const data = await loginUser(usrLogin, usrParol);
-      if (data.user && data.accessToken) {
+      const token = data.accessToken ?? (data as { token?: string }).token;
+      if (data.user && token) {
         const user = mapApiUserToProfile(data.user) as UserProfile;
-        onAuthSuccess(user, data.accessToken);
+        onAuthSuccess(user, token);
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Tizim ulanishida ulanish xatosi.";
@@ -159,9 +160,10 @@ export default function AuthScreen({
         vazn: parseInt(vazn, 10) || 70,
       });
 
-      if (data.accessToken && data.user) {
+      const token = data.accessToken ?? (data as { token?: string }).token;
+      if (token && data.user) {
         const user = mapApiUserToProfile(data.user) as UserProfile;
-        onAuthSuccess(user, data.accessToken);
+        onAuthSuccess(user, token);
         return;
       }
 

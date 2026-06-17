@@ -1,10 +1,19 @@
 import type { FactorImportance, RiskAnalysisResult } from '../types';
 
-function normalizeFactor(raw: Partial<FactorImportance>): FactorImportance {
+function normalizeFactor(
+  raw: Partial<FactorImportance>,
+  index = 0
+): FactorImportance {
   const tasirKuchi = Number(raw.tasirKuchi);
+  const nomiRaw = typeof raw.nomi === 'string' ? raw.nomi.trim() : '';
+  const tafsilotRaw = typeof raw.tafsilot === 'string' ? raw.tafsilot.trim() : '';
+  const nomi =
+    nomiRaw ||
+    (tafsilotRaw ? tafsilotRaw.slice(0, 80) : '') ||
+    `Noma'lum omil (${index + 1})`;
   return {
-    nomi: raw.nomi ?? "Noma'lum omil",
-    tafsilot: raw.tafsilot ?? '',
+    nomi,
+    tafsilot: tafsilotRaw || nomiRaw,
     tasirKuchi: Number.isFinite(tasirKuchi) ? tasirKuchi : 0,
     boshqariladimi: raw.boshqariladimi ?? false,
   };
@@ -60,8 +69,8 @@ export function normalizeRiskResult(
       ...raw.hududiyStatistika,
     },
     faktorlar: Array.isArray(raw.faktorlar)
-      ? raw.faktorlar.map((f) =>
-          normalizeFactor(f as Partial<FactorImportance>)
+      ? raw.faktorlar.map((f, index) =>
+          normalizeFactor(f as Partial<FactorImportance>, index)
         )
       : [],
     shaxsiyTavsiyalar: {

@@ -1,0 +1,2181 @@
+{
+  "version": "2025",
+  "title": "Anketa",
+  "totalQuestions": 147,
+  "questions": [
+    {
+      "id": 1,
+      "text": "Jinsingiz",
+      "options": [
+        "Erkak",
+        "Ayol"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 2,
+      "text": "Yoshingiz",
+      "options": [
+        "29 yoshgacha",
+        "30–39 yosh",
+        "40–49 yosh",
+        "50–59 yosh",
+        "60 yosh va undan katta"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 3,
+      "text": "Oilaviy ahvolingiz",
+      "options": [
+        "Bo'ydoq",
+        "Uylangan / turmush qurgan",
+        "Ajrashgan",
+        "Beva qolgan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 4,
+      "text": "Farzandlar soni",
+      "options": [
+        "Bolalar yo'q",
+        "Bitta",
+        "Ikkita",
+        "Uch yoki undan ortiq"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 5,
+      "text": "Doimiy yashash joyingiz",
+      "options": [
+        "Shaharda",
+        "Qishloqda"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 6,
+      "text": "Ish joyingiz",
+      "options": [
+        "sanoat korxonasi",
+        "qishloq xo'jaligi",
+        "umumiy ovqatlanish va savdo",
+        "ta'lim muassasalari",
+        "qurilish tashkiloti",
+        "tibbiyot muassasalari",
+        "Boshqa (ko'rsating): _____________________"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 7,
+      "text": "Ishlayotgan lavozimingiz",
+      "options": [
+        "Talaba, o'quvchi",
+        "Xizmat qiluvchi",
+        "Ishchi",
+        "Nafaqada",
+        "Ishsiz",
+        "O'qituvchi",
+        "Nogiron"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 8,
+      "text": "Mexnat faoliyatining turi",
+      "options": [
+        "me'yorlashgan mexnat",
+        "me'yorlashmagan mexnat",
+        "zararli omillar bilan bog'liq mexnat",
+        "zararli omillar bilan bog'liq bo'lmagan mexnat"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 9,
+      "text": "Mehnat faoliyati asosan qaysi holatda amalga oshiriladi?",
+      "options": [
+        "o'tirgan xolatda",
+        "Tik turgan xolatda",
+        "aralash",
+        "avtomatlashtirilgan",
+        "avtomatlashtirilmagan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 10,
+      "text": "Sizning mexnat tartibingiz",
+      "options": [
+        "to'liqmas ish kuni",
+        "1-smenada",
+        "2-smenada",
+        "Boshqa: _____________________"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 11,
+      "text": "Ish tajribangiz",
+      "options": [
+        "3 yilgacha",
+        "4–10 yil",
+        "11–20 yil",
+        "20 yildan ortiq"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 12,
+      "text": "Bir kishi boshiga oilaning oylik daromadi",
+      "options": [
+        "Yashash minimumidan kam",
+        "Yashash minimumiga teng",
+        "Yashash minimumidan yuqori"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 13,
+      "text": "Sizning yashash sharoitingiz",
+      "options": [
+        "O'zingizga tegishli alohida kvartira (uy)",
+        "Umumiy kvartirada o'z xonangiz",
+        "Ijaraga olingan turar joy"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 14,
+      "text": "Siz yashayotgan joyda bir kishiga to'g'ri keladigan yashash maydoni",
+      "options": [
+        "6 m² dan kam",
+        "6–12 m²",
+        "12 m² dan ortiq"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 15,
+      "text": "“Sog'lom turmush tarzi” tushunchasi bilan tanishmisiz?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 16,
+      "text": "Sog'lom turmush tarzini tavsiflovchi asosiy elementlar (bir nechta javob tanlash mumkin)",
+      "options": [
+        "Sog'lom ovqatlanish",
+        "Yomon odatlardan voz kechish (chekish, alkogol va boshqalar)",
+        "Jismoniy mashqlar va sport, jismoniy faol dam olish, chiniqtirish",
+        "Sog'lom turmush rejimi, mehnat va dam olish muvozanatini saqlash",
+        "Psixologik qulaylik",
+        "Moddiy farovonlik",
+        "Yuqoridagilarning barchasi"
+      ],
+      "section": "Umumiy qism",
+      "type": "multiple_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 17,
+      "text": "Siz kundalik hayotingizda ushbu sog'lom turmush tarzi elementlariga amal qilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Qisman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 18,
+      "text": "Sizni sog'lom turmush tarziga undaydigan asosiy istak",
+      "options": [
+        "Sog'lom bo'lish",
+        "Yaxshi ko'rinish",
+        "Samarali ishlash",
+        "Uzoq yashash"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 19,
+      "text": "Agar sog'lom turmush tarzini olib bormasangiz, buning sababi",
+      "options": [
+        "Xohlamayman",
+        "Bu nimani anglatishini aniq tushunmayman",
+        "Xohlayman, lekin amalga oshira olmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 20,
+      "text": "Ishda va uyda sog'lig'ingizga ta'sir etuvchi ekologik omillar haqida ma'lumotingiz bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 21,
+      "text": "Sizning sog'lig'ingizga ta'sir qilishi mumkin bo'lgan irsiy omillar haqida ma'lumotingiz bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 22,
+      "text": "Sizningcha, sog'lig'ingizga g'amxo'rlik qilishi kerak",
+      "options": [
+        "O'zim",
+        "Menga xizmat ko'rsatuvchi tibbiyot xodimlari",
+        "Oila a'zolarim",
+        "Ish joyim (korxona yoki muassasa) ma'muriyati",
+        "Yuqoridagilarning barchasi"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 23,
+      "text": "Salomatlik va unga ta'sir etuvchi omillar haqida ma'lumotni qayerdan olgansiz?",
+      "options": [
+        "Mutaxassislikni o'rganish jarayonida",
+        "Tibbiy muassasaga murojaat qilganda",
+        "Maxsus adabiyotlardan",
+        "Ommaviy axborot vositalaridan (gazeta, jurnal, TV, radio, internet)",
+        "Qarindoshlar, do'stlar yoki tanishlardan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 24,
+      "text": "JSSTning sog'lom ovqatlanish bo'yicha tavsiyalari haqida tasavvuringiz bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 25,
+      "text": "Kasbiy bilimingiz JSSTning sog'lom ovqatlanish bo'yicha tavsiyalariga mos keladimi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Qisman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 26,
+      "text": "Tana massasi indeksini qanday hisoblashni bilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 27,
+      "text": "JSST ma'lumotlariga ko'ra, ayollar uchun kunlik xavfsiz spirt iste'moli (spirt, ml)",
+      "options": [
+        "12,5 ml",
+        "25,0 ml",
+        "50,0 ml"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 28,
+      "text": "JSST ma'lumotlariga ko'ra, erkaklar uchun kunlik xavfsiz spirt iste'moli (spirt, ml)",
+      "options": [
+        "12,5 ml",
+        "25,0 ml",
+        "50,0 ml"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 29,
+      "text": "sigaretalar sog'liq uchun zararli deb hisoblaysizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 30,
+      "text": "Aholi orasida chekishga qarshi kurash zarurmi?",
+      "options": [
+        "Kerak",
+        "Kerak emas"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 31,
+      "text": "Sizningcha, bugungi kunda chekishga nima sabab bo'lmoqda?",
+      "options": [
+        "Arzon sigaretlarning keng tanlovi",
+        "Moda",
+        "Ko'cha, televideniye va radio orqali reklama",
+        "Surunkali stress"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 32,
+      "text": "Siz “qimor o'yinlariga qaramlik” tushunchasi bilan tanishmisiz?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 33,
+      "text": "Qimor o'yinlariga qaramlik quyidagilar bilan bog'liq bo'lishi mumkin deb hisoblaysizmi?",
+      "options": [
+        "Qimor o'yinlari",
+        "Internet",
+        "Kompyuter o'yinlari",
+        "Birjada qimmatli qog'ozlar savdosi",
+        "Yuqoridagilarning barchasi"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 34,
+      "text": "Kompyuterda ishlash qoidalarini bilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 35,
+      "text": "Sizningcha, aholi kasalliklarning oldini olish bo'yicha ma'lumotni qayerdan olishi kerak?",
+      "options": [
+        "Tibbiyot xodimlaridan",
+        "Ommaviy axborot vositalaridan",
+        "O'qish jarayonida (maktab, kollej, OTM)",
+        "Yuqoridagi barcha manbalardan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 36,
+      "text": "Dori-darmonlarni qanday xarid qilasiz?",
+      "options": [
+        "Faqat shifokor ko'rsatmasi bo'yicha",
+        "OAV yoki internetdagi reklamalarga asoslanib",
+        "Do'stlar, tanishlar yoki qarindoshlar maslahati bilan",
+        "Yuqoridagi barcha manbalar bo'yicha"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 37,
+      "text": "Siz chekasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 38,
+      "text": "Kuniga nechta sigaret chekasiz?",
+      "options": [
+        "1–10 ta",
+        "11–20 ta",
+        "20 tadan ortiq"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 39,
+      "text": "Chekish staji (yillarda)",
+      "options": [
+        "5 yilgacha",
+        "10 yilgacha",
+        "20 yilgacha",
+        "20 yildan ortiq"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 40,
+      "text": "Agar cheksangiz, odatda qayerda chekasiz?",
+      "options": [
+        "Ishda",
+        "Uyda",
+        "Ko'chada",
+        "Do'stlar davrasida",
+        "Yuqoridagi barcha joylarda"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 41,
+      "text": "Agar cheksangiz (yoki ilgari chekkan bo'lsangiz), quyidagi holatlardan qaysi biri sizga mos?",
+      "options": [
+        "Chekishni tashlagansiz",
+        "Tashlashga uringansiz, lekin muvaffaqiyatli bo'lmagan",
+        "Tashlashga urinmagansiz"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 42,
+      "text": "“Chekish yoki chekmaslik” — bu qanday masala deb hisoblaysiz?",
+      "options": [
+        "Shaxsiy masala",
+        "Ijtimoiy ahamiyatga ega masala",
+        "Kasbiy ahamiyatga ega masala",
+        "Shaxsiy, ijtimoiy va kasbiy ahamiyatga ega masala"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 43,
+      "text": "Oilangizda chekadigan odamlar bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 44,
+      "text": "Cheksangiz, chekishni tashlashga nima to'sqinlik qiladi?",
+      "options": [
+        "Stressni kamaytirishga yordam beradi (dam olish uchun)",
+        "Atrofdagilar ta'siri, “kompaniya uchun”",
+        "Menga zavq bag'ishlaydi",
+        "Tashlashga kuchim yetmaydi"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 45,
+      "text": "Chekishni tashlash uchun sizga yordam kerakmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 46,
+      "text": "Spirtli ichimliklarni iste'mol qilasizmi?",
+      "options": [
+        "Har kuni",
+        "Dam olish va bayram kunlarida",
+        "Hech qachon iste'mol qilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 47,
+      "text": "Agar spirtli ichimlik iste'mol qilsangiz, qaysi turini afzal ko'rasiz?",
+      "options": [
+        "Kuchli ichimliklar",
+        "Vino",
+        "Pivo",
+        "Kam alkogolli kokteyllar",
+        "Energetik ichimliklar"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 48,
+      "text": "Oilangizda spirtli ichimlikni suiiste'mol qiladigan odamlar bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 49,
+      "text": "Ota-bobolaringiz orasida spirtli ichimlikni suiiste'mol qilganlar bo'lganmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 50,
+      "text": "Siz qimor o'ynaysizmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Ba'zan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 51,
+      "text": "Siz qimor o'yinlariga qaramlikdan aziyat chekasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 52,
+      "text": "Giyohvandlikka yoki toksikomaniyaga olib keluvchi moddalardan foydalanasizmi (yoki ilgari foydalangansizmi)?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 53,
+      "text": "Siz kun davomida ovqatni necha marta iste'mol qilasiz?",
+      "options": [
+        "Bir marta",
+        "Ikki marta",
+        "Uch–to'rt marta",
+        "To'rt martadan ortiq"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 54,
+      "text": "Nonushta, tushlik va kechki ovqatni qat'iy belgilangan vaqtda qilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 55,
+      "text": "Ovqat tayyorlash uchun qaysi turdagi suvdan foydalanasiz?",
+      "options": [
+        "To'g'ridan-to'g'ri jo'mrak suvi",
+        "Filtrlangan suv",
+        "Shishaga solingan suv"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 56,
+      "text": "Kun davomida issiq ovqatni necha marta iste'mol qilasiz?",
+      "options": [
+        "1 marta",
+        "2–3 marta",
+        "4–5 marta"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 57,
+      "text": "Ovqatingizga tatib ko'rmasdan tuz qo'shish odatingiz bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 58,
+      "text": "Siz yog'li mahsulotlar orasida qaysi turdagi sut mahsulotlarini afzal ko'rasiz?",
+      "options": [
+        "Yuqori yog'li mahsulotlar",
+        "Kam yog'li yoki yog'siz mahsulotlar"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 59,
+      "text": "Uyda ovqat tayyorlashda ko'proq qaysi turdagi yog'dan foydalanasiz?",
+      "options": [
+        "O'simlik yog'i (kungaboqar, paxta, zaytun va boshqalar)",
+        "Hayvon yog'i (sariyog', qo'y yog'i, mol yog'i)",
+        "Margarин",
+        "Aralash turdagi yog'lar",
+        "Boshqa (ko'rsating): ______________________"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 60,
+      "text": "Siz bir kunda qancha suyuqlik iste'mol qilasiz?",
+      "options": [
+        "1,5–2 litr",
+        "2 litrdan ko'p",
+        "1 litr yoki undan kam",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 61,
+      "text": "Ovqatlanish xarakteri:",
+      "options": [],
+      "section": "Umumiy qism",
+      "type": "matrix",
+      "rows": [
+        "Uyda nonushta qilaman",
+        "Ishda nonushta qilaman",
+        "Uyda tushlik qilaman",
+        "Ishda tushlik qilaman",
+        "Kechki ovqat qilaman"
+      ],
+      "columns": [
+        "Har kuni",
+        "Haftasiga 5–6 kun",
+        "Haftasiga 3–4 kun",
+        "Haftasiga 1–2 kun",
+        "Kamdan-kam",
+        "Hech qachon"
+      ],
+      "description": "Hafta davomida qayerda va qanchalik tez-tez ovqatlanasiz? (Har bir qator bo'yicha bitta ustun tanlang)"
+    },
+    {
+      "id": 62,
+      "text": "Quyidagi mahsulotlarni qanchalik tez-tez iste'mol qilasiz?",
+      "options": [],
+      "section": "Umumiy qism",
+      "type": "matrix",
+      "rows": [
+        "Don mahsulotlari (grechka, guruch va boshqalar)",
+        "Sut",
+        "Tvorog",
+        "Pishloq",
+        "Go'sht (mol, tovuq, qo'y)",
+        "Kolbasa, sosiska",
+        "Baliq",
+        "Sabzavotlar",
+        "Kartoshka",
+        "Mevalar",
+        "Sharbat",
+        "Tuxum",
+        "Makaron mahsulotlari",
+        "Shirinliklar (konfet, pirojniy)"
+      ],
+      "columns": [
+        "Kuniga bir martadan ko'p",
+        "Kuniga 1 marta",
+        "Haftasiga 2–3 marta",
+        "Haftasiga 1 marta",
+        "Kamdan-kam",
+        "Hech qachon"
+      ],
+      "description": "Quyidagi mahsulotlarni qanchalik tez-tez iste'mol qilasiz? (Har bir qator bo'yicha bitta ustun tanlang)"
+    },
+    {
+      "id": 63,
+      "text": "Quyidagi preparatlarni qanchalik tez-tez qabul qilasiz?",
+      "options": [],
+      "section": "Umumiy qism",
+      "type": "matrix",
+      "rows": [
+        "Vitaminlar",
+        "Vitamin va mikroelement komplekslari",
+        "Biologik faol qo'shimchalar (BAA/BAD)"
+      ],
+      "columns": [
+        "Har oy",
+        "Yiliga 4–6 marta",
+        "Yiliga 2 marta",
+        "Kamdan-kam",
+        "Faqat kasallanganda",
+        "Hech qachon"
+      ],
+      "description": "Quyidagi preparatlarni qanchalik tez-tez qabul qilasiz? (Har bir qator bo'yicha bitta ustun tanlang)"
+    },
+    {
+      "id": 64,
+      "text": "Siz uyda ertalabki badantarbiya qilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Ba'zan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 65,
+      "text": "Siz ochiq havoda (ko'chada, hovlida, bog'da) piyoda sayr qilasizmi?",
+      "options": [
+        "Har kuni 1 soatdan ko'p",
+        "Muntazam ravishda 1 soatdan ko'p",
+        "Sayr qilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 66,
+      "text": "Siz sport seksiyalariga borasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 67,
+      "text": "Siz ishlayotgan muassasada jismoniy mashg'ulotlar uchun zarur sharoit mavjudmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 68,
+      "text": "Siz uyda jismoniy mashqlar bilan shug'ullanasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 69,
+      "text": "Sizga jismoniy mashqlar bilan shug'ullanishga nima to'sqinlik qiladi?",
+      "options": [
+        "Dangasalik",
+        "Mablag' yetishmasligi",
+        "Ishdagi bandlik",
+        "Ish joyi yoki uy yaqinida mashg'ulot uchun sharoit yo'qligi"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 70,
+      "text": "Siz o'z jismoniy faolligingizni qanday baholaysiz?",
+      "options": [
+        "Yetarli",
+        "Yetarli emas"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 71,
+      "text": "Ish vaqtida asosan qanday holatda bo'lasiz?",
+      "options": [
+        "Asosan o'tirib ishlayman",
+        "Asosan tik turaman yoki yuraman",
+        "O'tirish va harakatni navbatma-navbat bajaraman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 72,
+      "text": "Bo'sh vaqtingizda odatda nima bilan shug'ullanasiz?",
+      "options": [
+        "Gazeta, jurnal, badiiy adabiyot o'qiyman",
+        "Teatr, muzey, kino, sport tadbirlari, kafe, restoranlarga boraman; oila, do'stlar bilan muloqot qilaman",
+        "Jismoniy mashqlar, sport bilan shug'ullanaman, piyoda sayr qilaman",
+        "Televizor ko'raman",
+        "Kompyuterda vaqt o'tkazaman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 73,
+      "text": "Siz kuniga nechta soat uxleysiz?",
+      "options": [
+        "7 soatdan kam",
+        "7 soatdan ko'p"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 74,
+      "text": "Sizga uxlab qolish qiyin bo'ladimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 75,
+      "text": "Siz odatda tunda uyg'onib ketmay uxlaysizmi?",
+      "options": [
+        "Odatda ha",
+        "Odatda yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 76,
+      "text": "Siz o'z sog'lig'ingizni qanday baholaysiz?",
+      "options": [
+        "Amalda sog'lomman",
+        "Ba'zan o'tkir kasalliklarga chalinaman",
+        "Tez-tez o'tkir kasalliklarga chalinaman",
+        "Menda surunkali kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 77,
+      "text": "O'tgan yil davomida qancha marta kasallangansiz?",
+      "options": [
+        "Kasallanmaganman",
+        "1–2 marta",
+        "3–5 marta",
+        "5 martadan ko'p"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 78,
+      "text": "Kasallanganda odatda qaysi usulni tanlaysiz?",
+      "options": [
+        "Shifokorga murojaat qilaman",
+        "O'zim mustaqil davo qilaman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 79,
+      "text": "Dispanser ko'rigi uchun poliklinikaga borasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Ha, lekin muntazam emas"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 80,
+      "text": "Sizda irsiy kasalliklar mavjudmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 81,
+      "text": "Sizni quyidagi sog'liq bilan bog'liq shikoyatlar bezovta qiladimi?",
+      "options": [],
+      "section": "Umumiy qism",
+      "type": "matrix",
+      "rows": [
+        "Bosh og'rishi",
+        "Yig'loqilik, kayfiyatning tez-tez o'zgarishi, qo'rquvlar",
+        "Ish smenasidan keyin kuchsizlanish, charchash",
+        "Ortib borayotgan asabiylik (tez jahllanish)",
+        "Ishdan keyin odamlar bilan muloqot qilish istagining yo'qligi",
+        "Uyquning buzilishi",
+        "Ko'p terlash",
+        "Bosh aylanishi",
+        "Hushdan ketish holatlari",
+        "Harakatsizlikda o'tirib turolmaslik, ortiqcha bezovtalik",
+        "Shishlar (oteklar)",
+        "Yurak sohasida og'riq, noqulaylik, yurak urishining tezlashishi yoki uzilishlari",
+        "Arterial bosimning ko'tarilishi",
+        "Tez-tez burun oqishi (yiliga 4 martadan ko'p)",
+        "Tez-tez yo'tal (yiliga 4 martadan ko'p)",
+        "Tez-tez tomoq og'rig'i, xirillash, ovozning yo'qolishi (yiliga 4 martadan ko'p)",
+        "Qorin og'rig'i",
+        "Ko'ngil aynishi, jig'ildon qaynashi, kekirish",
+        "Ich qotishi",
+        "Ich ketishi",
+        "Bel og'rig'i",
+        "Peshob chiqarishda og'riq yoki achishish",
+        "Allergiya: oziq-ovqat, hidlar, gullar, chang, dorilar, hayvon yungi (shish, nafas qiyinlishi, toshma)",
+        "Tish og'rig'i"
+      ],
+      "columns": [
+        "Ha",
+        "Yo'q"
+      ],
+      "description": "Quyidagi sog'liq bilan bog'liq shikoyatlar sizni bezovta qiladimi?"
+    },
+    {
+      "id": 82,
+      "text": "Tayanch-harakat apparati holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, tekshiruvga muhtojman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 83,
+      "text": "Nafas olish tizimi holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, tekshiruvga muhtojman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 84,
+      "text": "Ovqat hazm qilish tizimi holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, tekshiruvga muhtojman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 85,
+      "text": "Yurak-qon tomir tizimi holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, tekshiruvga muhtojman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 86,
+      "text": "Ichki sekretsiya (endokrin) tizimi holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, tekshiruvga muhtojman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 87,
+      "text": "Teri qoplamlari holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, ammo tibbiy yordamga muhtoj emasman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 88,
+      "text": "Siydik-jinsiy tizimi holatini qanday baholaysiz?",
+      "options": [
+        "Kasallik belgilari yo'q",
+        "Belgilar bor, tekshiruvga muhtojman",
+        "Kasallik mavjud"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 89,
+      "text": "Pastki oyoqlarda vena kengayishi kuzatiladimi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Bilmayman, tekshiruvga muhtojman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 90,
+      "text": "Tana vazningizni qanday baholaysiz?",
+      "options": [
+        "Normal",
+        "Me'yordan yuqori",
+        "Me'yordan past",
+        "Javob berishga qiynalaman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 91,
+      "text": "Tana vazningizni qanchalik tez-tez o'lchaysiz?",
+      "options": [
+        "Odatda o'lchamayman",
+        "Yiliga 1 martadan ko'p emas (dispanserizatsiya vaqtida)",
+        "Oyiga kamida 1 marta",
+        "Haftasiga kamida 1 marta"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 92,
+      "text": "Sizningcha ortiqcha vazn sog'liq uchun zararlimi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Javob berishga qiynalaman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 93,
+      "text": "Arterial bosimingizni nazorat qilasizmi?",
+      "options": [
+        "Muntazam",
+        "Faqat o'zingizni yomon his qilganda yoki shifokor ko'rigida"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 94,
+      "text": "Normal holatda sizga xos arterial bosim ko'rsatkichlari qaysi?",
+      "options": [
+        "110/70 dan past",
+        "110/70 – 129/84",
+        "130/85 – 139/89",
+        "140/90 – 159/99",
+        "160/100 – 179/109",
+        "180/110 dan yuqori",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 95,
+      "text": "Sizda arterial bosimning odatdagidan yuqori ko'tarilishi bo'ladimi?",
+      "options": [
+        "Ha, tez-tez",
+        "Ha, kamdan-kam",
+        "Yo'q",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 96,
+      "text": "Normal arterial bosimni saqlashga nima yordam beradi deb hisoblaysiz?",
+      "options": [
+        "Ratsional ovqatlanish",
+        "Ichiladigan suyuqlik miqdorini kamaytirish",
+        "Dorilar qabul qilish",
+        "Mehnat va dam olish tartibiga rioya qilish",
+        "Chekishni tashlash",
+        "Alkogolni to'xtatish",
+        "Yuqoridagilarning barchasi"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 97,
+      "text": "Qondagi glyukoza darajangiz qanday?",
+      "options": [
+        "3,5 mmol/l dan past",
+        "3,3–5,5 mmol/l",
+        "5,5 mmol/l dan yuqori",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 98,
+      "text": "Qondagi xolesterin darajangiz qanday?",
+      "options": [
+        "3,6 mmol/l dan past",
+        "3,6–5 mmol/l",
+        "5 mmol/l dan yuqori",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 99,
+      "text": "Zarur dori vositalari siz uchun narx jihatidan mavjudmi?",
+      "options": [
+        "Ha, shifokor tavsiya qilganlarning barchasini sotib olaman",
+        "Qisman",
+        "Mavjud emas",
+        "Arzonroq analoglarini sotib olaman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 100,
+      "text": "Sizda kasbga oid professional kasallik mavjudmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Bilmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 101,
+      "text": "Siz chiniqish (zakalivanie) muolajalarini bajarasizmi?",
+      "options": [
+        "Ha, har kuni",
+        "Ba'zan",
+        "Bajar mayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 102,
+      "text": "Ishdan keyin to'liq dam olish imkoniyati bormi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Qisman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 103,
+      "text": "Siz uyda ishlaysizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 104,
+      "text": "Asosiy ish bilan birga qo'shimcha (o'rindosh) ish qilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 105,
+      "text": "Qo'shimcha ish qilishingizning sababi?",
+      "options": [
+        "Moliyaviy ta'minotni oshirish uchun",
+        "Kasbiy mahoratni oshirish uchun",
+        "Qiziqish uchun (“jon-dildan”)"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 106,
+      "text": "Qo'shimcha ish sifatida siz:",
+      "options": [
+        "O'qituvchi bo'lib ishlaysiz",
+        "Amaliyotchi mutaxassis sifatida ishlaysiz",
+        "Ma'muriy ishda ishlaysiz",
+        "Mutaxassisligingizga aloqasi bo'lmagan ishlarda ishlaysiz"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 107,
+      "text": "Siz kechasi ishlaysizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 108,
+      "text": "Ish kuni davomida sizda kamida 30 daqiqalik ovqatlanish va dam olish tanaffusi bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 109,
+      "text": "Sizning haqiqiy haftalik pedagogik yuklamangiz:",
+      "options": [
+        "Haftasiga 36 soatdan ko'p",
+        "Haftasiga 36 soatdan kam"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 110,
+      "text": "Talabalar bilan qo'shimcha ishlash uchun ishda qolib ketasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 111,
+      "text": "Asosiy ish joyingizda quyidagi omillarning ta'sirida bo'lasizmi?",
+      "options": [
+        "Havoning yuqori harorati",
+        "Havoning past harorati",
+        "Shamollatish (skvozyak)",
+        "Shovqin",
+        "Vibratsiya",
+        "Elektromagnit maydonlar",
+        "Tabiiy yoritilishning yetishmasligi",
+        "Ish joyining kam yoritilishi",
+        "Og'ir yuklarni ko'tarish va tashish",
+        "Uzoq vaqt davomida diqqatni jamlash zarurati",
+        "Emotsional zo'riqish",
+        "Yuqumli kasalliklar bilan zararlanish xavfi",
+        "O'quv yuklamasining normadan oshib ketishi",
+        "Xos hidlar",
+        "Dezinfeksiya vositalari bilan to'g'ridan-to'g'ri kontakt",
+        "Majburiy noqulay ish holati",
+        "Tezda diqqatni boshqa ishga qaratish zarurati",
+        "Ovoza yuklamasining yuqoriligi",
+        "Tezkor qaror qabul qilish zarurati",
+        "Qabul qilingan qarorlar uchun yuqori darajadagi kasbiy javobgarlik",
+        "Ish davomida ko'p odamlar bilan muloqot qilish zarurati",
+        "Telefonden tez-tez foydalanish zarurati",
+        "Kompyuterda uzoq ishlash",
+        "Yuqoridagilarning hech biri ta'sir qilmaydi",
+        "Boshqa (ko'rsating): __________________"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 112,
+      "text": "Qo'shimcha ish joyingizda quyidagi omillarning ta'siri mavjudmi?",
+      "options": [
+        "Havoning yuqori harorati",
+        "Havoning past harorati",
+        "Shamollatish",
+        "Shovqin",
+        "Vibratsiya",
+        "Elektromagnit maydonlar",
+        "Tabiiy yoritilish yetishmasligi",
+        "Ish joyining kam yoritilishi",
+        "Og'ir yuklarni ko'tarish va tashish",
+        "Uzoq davom etuvchi diqqat talabi",
+        "Emotsional zo'riqish",
+        "Yuqumli kasalliklar xavfi",
+        "O'quv yuklamasining normadan oshishi",
+        "Xos hidlar",
+        "Dezinfeksiyalovchi vositalar bilan kontakt",
+        "Noqulay ish holati",
+        "Diqqatni tezda almashtirish zarurati",
+        "Ovoz yuklamasining yuqoriligi",
+        "Tezkor qarorlar qabul qilish zarurati",
+        "Kasbiy qarorlarga yuqori mas'uliyat",
+        "Ish davomida ko'p bemorlar bilan muloqot qilish zarurati",
+        "Telefonden tez-tez foydalanish zarurati",
+        "Kompyuter (PÉVM) bilan ishlash",
+        "Yuqoridagilar ta'sir qilmaydi",
+        "Boshqa (ko'rsating): __________________"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 113,
+      "text": "Ish sharoitlari haqida ma'lumotni qayerdan olasiz?",
+      "options": [
+        "Shaxsiy kuzatuvlardan",
+        "Ma'muriyat xabarlaridan",
+        "Mehnat muhofazasi bo'yicha yo'riqnoma orqali"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 114,
+      "text": "Siz mehnat jamoasidagi munosabatlardan qoniqasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 115,
+      "text": "Siz uchun ish — bu:",
+      "options": [
+        "Hayotning bir qismi yoki uning ma'nosi",
+        "Quvonch, zavq, sevimli mashg'ulot",
+        "Azob, qiynoq, og'ir majburiyat",
+        "O'zini namoyon qilish vositasi",
+        "Avvalo mehnat",
+        "“Doimo yoqimli bo'lmagan” majburiyat",
+        "Shunchaki ish, boshqa narsa emas",
+        "O'z ustida ishlash va yangi bilim olish imkoniyati",
+        "Mustaqillik, munosib daromad",
+        "Bandlik va barqarorlik",
+        "Hamkasblar bilan muloqot"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 116,
+      "text": "Sizda odatda ish vaqtida kayfiyat qanday bo'ladi?",
+      "options": [
+        "Yaxshi",
+        "Yomon"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 117,
+      "text": "Sizda professional kuyib ketish sindromi kuzatiladi deb o'ylaysizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 118,
+      "text": "Ish joyingizda dam olish joylari mavjudmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 119,
+      "text": "Siz odatda ishda qayerda ovqatlanasiz?",
+      "options": [
+        "Oshxonada (bufetda)",
+        "Ish joyida",
+        "Maxsus ajratilgan joyda",
+        "Ishda ovqatlanmayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 120,
+      "text": "Ishda odatda nima iste'mol qilasiz?",
+      "options": [
+        "Buterbrodlar",
+        "Tayyor sovuq taomlar",
+        "Issiq taomlar",
+        "Konder mahsulotlari",
+        "Mevalar"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 121,
+      "text": "Ishda o'zingiz olib kelgan ovqatni isitish imkoniyati bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 122,
+      "text": "Sog'lig'ingiz sababli dietik ovqatlanishga muhtojmisiz?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 123,
+      "text": "Ishda dietik ovqatlanish imkoniyati bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 124,
+      "text": "Zararli mehnat sharoitlari sababli davolovchi-profilaktik ovqatlanishga muhtojmisiz?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 125,
+      "text": "Ishda davolovchi-profilaktik ovqatlanishdan foydalanish imkoniyati bormi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 126,
+      "text": "Oila a'zolaringizga sog'lom turmush tarzini singdirishga harakat qilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 127,
+      "text": "Klinik amaliyotingiz bo'lsa, bemorlarga sog'lom turmush tarzini tavsiya qilasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Ba'zan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 128,
+      "text": "Siz aholiga sog'lom turmush tarzi bo'yicha tavsiyalar berasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q",
+        "Ba'zan"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 129,
+      "text": "Sizningcha, sog'liqni baholash uchun tibbiy profilaktik ko'riklar foydalimi?",
+      "options": [
+        "Ha, foydali",
+        "Yo'q",
+        "Foydali, lekin har doim samarali emas"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 130,
+      "text": "So'nggi 3 yil ichida profilaktik tibbiy ko'rikdan o'tgansizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 131,
+      "text": "Profilaktik tibbiy ko'rik davomida sizda kasallik aniqlanganmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 132,
+      "text": "Siz dispanserizatsiyadan o'tgansizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 133,
+      "text": "Agar dispanserizatsiyadan o'tgan bo'lsangiz, so'nggi marta qachon bo'lgan?",
+      "options": [
+        "So'nggi 1 yil ichida",
+        "1 yil va undan ko'p vaqt oldin"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 134,
+      "text": "Mammologga (ayollar uchun) qanchalik tez murojaat qilasiz?",
+      "options": [
+        "Yiliga kamida 1 marta",
+        "Zarurat tug'ilganda",
+        "Umuman bormayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 135,
+      "text": "Ginekolog (ayollar) yoki urolog (erkaklar) ko'rigiga qanchalik tez borasiz?",
+      "options": [
+        "Yiliga kamida 1 marta",
+        "Zarurat tug'ilganda",
+        "Umuman bormayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 136,
+      "text": "Stomatologga qanchalik tez murojaat qilasiz?",
+      "options": [
+        "Yiliga 1–2 marta (profilaktika va davolash uchun)",
+        "Yiliga 1 martadan kam",
+        "Faqat tish og'rig'i bo'lsa",
+        "Umuman bormayman"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 137,
+      "text": "Sog'lig'ingizni saqlash bo'yicha profilaktik dastur sizni qiziqtiradimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 138,
+      "text": "Siz profilaktik dasturda qatnasha olasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 139,
+      "text": "Siz muntazam ravishda emlash (vaksinatsiya)dan o'tasizmi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 140,
+      "text": "Sizni ijtimoiy ahamiyatli infeksiyalar profilaktikasi bo'yicha ma'lumotlar qiziqtiradimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 141,
+      "text": "Sizni turli qaramlik kasalliklari profilaktikasi qiziqtiradimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 142,
+      "text": "Sizni keng tarqalgan noinfeksion kasalliklar profilaktikasi qiziqtiradimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 143,
+      "text": "Sizni noto'g'ri ovqatlanish bilan bog'liq kasalliklar (alimentar kasalliklar) profilaktikasi qiziqtiradimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 144,
+      "text": "Sizni kamharakatlilik (gipodinamiya) tufayli kelib chiqadigan kasalliklar profilaktikasi qiziqtiradimi?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 145,
+      "text": "Siz quyidagi fikrlardan qaysi biriga qo'shilasiz?",
+      "options": [
+        "Shifokorga faqat kasal bo'lganda murojaat qilish kerak",
+        "Sog'lom odamning ham shifokorga muntazam borishi sog'liqni saqlashga yordam beradi"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 146,
+      "text": "Siz yashaydigan hududdagi “Salomatlik markazi” haqida xabardormisiz?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    },
+    {
+      "id": 147,
+      "text": "Siz “Salomatlik markazi”ga murojaat qilganmisiz?",
+      "options": [
+        "Ha",
+        "Yo'q"
+      ],
+      "section": "Umumiy qism",
+      "type": "single_choice",
+      "rows": [],
+      "columns": [],
+      "description": null
+    }
+  ]
+}

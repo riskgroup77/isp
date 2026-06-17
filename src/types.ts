@@ -84,6 +84,63 @@ export interface HealthJournalEntry {
   qaydlar: string;
 }
 
+export type AnketaQuestionType =
+  | 'single_choice'
+  | 'single_choice_with_text'
+  | 'multiple_choice'
+  | 'matrix';
+
+export interface AnketaQuestion {
+  id: number;
+  text: string;
+  options: string[];
+  section: string;
+  type: AnketaQuestionType;
+  rows: string[];
+  columns: string[];
+  description: string | null;
+}
+
+export interface AnketaSchema {
+  version: string;
+  title: string;
+  totalQuestions: number;
+  questions: AnketaQuestion[];
+}
+
+export type AnketaAnswerValue = string | string[] | Record<string, string>;
+export type AnketaAnswers = Record<string, AnketaAnswerValue>;
+
+export interface AnketaTahlil {
+  riskFoizi: number;
+  zona: 'yashil' | 'sariq' | 'qizil';
+  tmi?: number;
+  tmiKategoriya?: string;
+  faktorlar?: FactorImportance[];
+  shaxsiyTavsiyalar: RiskAnalysisResult['shaxsiyTavsiyalar'];
+  klinikXulosa: string;
+  answeredSignals?: Record<string, unknown>;
+}
+
+export interface AnketaResponseRecord {
+  id: string;
+  userId: string;
+  version: string;
+  answers: AnketaAnswers;
+  fish?: string;
+  lavozim?: string;
+  toldirilganSana?: string;
+  izoh?: string;
+  answeredCount: number;
+  yaratilganSana: string;
+  riskFoizi?: number;
+  zona?: 'yashil' | 'sariq' | 'qizil';
+  klinikXulosa?: string;
+  shaxsiyTavsiyalar?: RiskAnalysisResult['shaxsiyTavsiyalar'];
+  tahlil?: AnketaTahlil | null;
+  aiXato?: string | null;
+}
+
 export type UserRole = 'admin' | 'shifokor' | 'foydalanuvchi';
 
 export interface ScreeningHistoryEntry {

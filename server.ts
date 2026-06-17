@@ -18,6 +18,7 @@ import {
   migratePlainPasswords,
   type AuthedRequest,
 } from "./server/auth";
+import { registerAnketaRoutes } from "./server/anketa";
 
 dotenv.config();
 
@@ -264,6 +265,8 @@ function saveAdvices(advices: PatientAdvice[]) {
 
 const requireAuth = authMiddleware(getUsers);
 
+registerAnketaRoutes(app, requireAuth, { aiClient });
+
 // ----------------------------------------------------
 // Authentication API Endpoints
 // ----------------------------------------------------
@@ -315,6 +318,7 @@ app.post("/api/auth/register", (req, res) => {
     return res.status(201).json({
       success: true,
       token,
+      accessToken: token,
       user: sanitizeUser(newUser),
     });
   } catch (err: any) {
@@ -341,7 +345,7 @@ app.post("/api/auth/login", (req, res) => {
     }
 
     const token = createSession(user.id);
-    return res.json({ success: true, token, user: sanitizeUser(user) });
+    return res.json({ success: true, token, accessToken: token, user: sanitizeUser(user) });
   } catch (err) {
     console.error("Login error:", err);
     return res.status(500).json({ error: "Tizimga kirishda xatolik yuz berdi." });

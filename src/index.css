@@ -1100,6 +1100,510 @@ body {
   font-size: 0.6875rem;
 }
 
+/* ─── Anketa form ─── */
+.anketa-form-root {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.anketa-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem;
+  color: var(--ios-text-muted);
+  font-size: 0.875rem;
+}
+
+.anketa-form-header {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.6));
+  border: 1px solid rgba(59, 130, 246, 0.12);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.anketa-form-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.anketa-form-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  margin: 0;
+}
+
+.anketa-form-subtitle {
+  font-size: 0.75rem;
+  color: var(--ios-text-muted);
+  margin: 0.15rem 0 0;
+}
+
+.anketa-progress-block {
+  margin-top: 0.875rem;
+}
+
+.anketa-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ios-text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.anketa-progress-bar {
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.anketa-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--ios-accent), #22c55e);
+  transition: width 0.35s var(--ios-ease);
+}
+
+.anketa-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.875rem;
+}
+
+.anketa-step-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(15, 23, 42, 0.15);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s var(--ios-ease);
+}
+
+.anketa-step-dot.active {
+  width: 1.25rem;
+  border-radius: 99px;
+  background: var(--ios-accent);
+}
+
+.anketa-step-dot.done {
+  background: rgba(34, 197, 94, 0.55);
+}
+
+.anketa-step-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ios-text-muted);
+  margin: 0.5rem 0 0;
+}
+
+.anketa-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+}
+
+.anketa-alert-error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #b91c1c;
+}
+
+.anketa-alert-success {
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: #15803d;
+}
+
+.anketa-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.anketa-questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.anketa-question-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 0.875rem;
+  transition: border-color 0.2s var(--ios-ease);
+}
+
+.anketa-question-card:focus-within {
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.anketa-question-head {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.anketa-question-num {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  background: var(--ios-accent-muted);
+  color: var(--ios-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.anketa-question-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ios-text-primary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.anketa-question-desc {
+  font-size: 0.75rem;
+  color: var(--ios-text-muted);
+  margin: 0.35rem 0 0;
+  line-height: 1.4;
+}
+
+.anketa-options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .anketa-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.anketa-option-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--ios-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s var(--ios-ease);
+}
+
+.anketa-option-card:hover {
+  border-color: rgba(59, 130, 246, 0.25);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.anketa-option-card-active {
+  border-color: var(--ios-accent-border);
+  background: var(--ios-accent-muted);
+  color: var(--ios-accent);
+  font-weight: 600;
+}
+
+.anketa-option-input {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  accent-color: var(--ios-accent);
+}
+
+.anketa-other-input {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  font-size: 0.8125rem;
+}
+
+.anketa-matrix-wrap {
+  margin-top: 0.25rem;
+}
+
+.anketa-matrix-scroll {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.anketa-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.6875rem;
+  min-width: 520px;
+}
+
+.anketa-matrix-col-head {
+  padding: 0.5rem 0.35rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ios-text-muted);
+  background: rgba(15, 23, 42, 0.04);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.anketa-matrix-row-label {
+  padding: 0.5rem 0.65rem;
+  font-weight: 600;
+  color: var(--ios-text-secondary);
+  background: rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  max-width: 180px;
+  line-height: 1.35;
+}
+
+.anketa-matrix-cell {
+  text-align: center;
+  padding: 0.35rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.anketa-matrix-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.anketa-matrix-radio input {
+  accent-color: var(--ios-accent);
+}
+
+.anketa-meta-panel {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.12);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.anketa-meta-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  margin: 0 0 0.75rem;
+}
+
+.anketa-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .anketa-meta-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.anketa-meta-field label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ios-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.anketa-meta-input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: white;
+  font-size: 0.8125rem;
+  font-family: inherit;
+}
+
+.anketa-summary-box {
+  padding: 0.75rem;
+  border-radius: 10px;
+  background: white;
+  border: 1px dashed rgba(59, 130, 246, 0.25);
+  font-size: 0.8125rem;
+  color: var(--ios-text-secondary);
+}
+
+.anketa-form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.anketa-alert-warn {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #b45309;
+}
+
+.anketa-tahlil-root {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.anketa-tahlil-hero {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(59, 130, 246, 0.06));
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.anketa-tahlil-score {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.anketa-tahlil-ring {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  border: 4px solid currentColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.anketa-zone-yashil { color: #16a34a; }
+.anketa-zone-sariq { color: #d97706; }
+.anketa-zone-qizil { color: #dc2626; }
+
+.anketa-tahlil-pct {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.anketa-tahlil-pct-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.anketa-tahlil-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--ios-text-primary);
+}
+
+.anketa-tahlil-zone {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}
+
+.anketa-tahlil-meta {
+  font-size: 0.75rem;
+  color: var(--ios-text-muted);
+  margin: 0.15rem 0 0;
+}
+
+.anketa-tahlil-block {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  padding: 0.875rem;
+}
+
+.anketa-tahlil-block-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ios-text-secondary);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.anketa-tahlil-text {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ios-text-primary);
+  margin: 0;
+}
+
+.anketa-tahlil-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ios-text-secondary);
+}
+
+.anketa-tahlil-list li + li {
+  margin-top: 0.35rem;
+}
+
+.anketa-tahlil-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .anketa-tahlil-columns {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.anketa-faktor-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.anketa-faktor-card {
+  background: rgba(59, 130, 246, 0.04);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--ios-text-secondary);
+}
+
+.anketa-faktor-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.anketa-faktor-score {
+  color: var(--ios-accent);
+}
+
+.anketa-tahlil-effect {
+  background: rgba(34, 197, 94, 0.06);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
 /* ─── Print overrides ─── */
 @media print {
   .ios-shell,
