@@ -12,7 +12,8 @@ import {
   RefreshCw,
   Search,
   UserPlus,
-  Pencil
+  Pencil,
+  BarChart3
 } from 'lucide-react';
 import { t } from '../lib/lang';
 import MedicalDisclaimer from './MedicalDisclaimer';
@@ -25,6 +26,7 @@ import {
 import { useToast } from './ui/Toast';
 import AdminCreateUserPanel from './admin/AdminCreateUserPanel';
 import AdminEditUserPanel from './admin/AdminEditUserPanel';
+import AdminStatisticsPanel from './admin/AdminStatisticsPanel';
 import AppShell from './ui/AppShell';
 import LanguageSwitcher from './ui/LanguageSwitcher';
 
@@ -49,6 +51,7 @@ export default function AdminDashboard({
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [showCreatePanel, setShowCreatePanel] = useState(false);
   const [editUser, setEditUser] = useState<SafeUserProfile | null>(null);
+  const [mainTab, setMainTab] = useState<'users' | 'statistics'>('statistics');
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -187,6 +190,32 @@ export default function AdminDashboard({
         </div>
       </div>
 
+      {/* Main navigation tabs */}
+      <div className="admin-main-tabs">
+        <button
+          type="button"
+          className={`admin-main-tab ${mainTab === 'statistics' ? 'active' : ''}`}
+          onClick={() => setMainTab('statistics')}
+        >
+          <BarChart3 className="w-4 h-4" />
+          {t("Statistika va hisobotlar", language)}
+        </button>
+        <button
+          type="button"
+          className={`admin-main-tab ${mainTab === 'users' ? 'active' : ''}`}
+          onClick={() => setMainTab('users')}
+        >
+          <Users className="w-4 h-4" />
+          {t("Foydalanuvchilar boshqaruvi", language)}
+        </button>
+      </div>
+
+      {mainTab === 'statistics' && (
+        <AdminStatisticsPanel language={language} />
+      )}
+
+      {mainTab === 'users' && (
+      <>
       {/* KPI Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 ios-stagger">
         
@@ -428,6 +457,9 @@ export default function AdminDashboard({
         </div>
 
       </div>
+
+      </>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 mt-8">
         <MedicalDisclaimer language={language} variant="card" />

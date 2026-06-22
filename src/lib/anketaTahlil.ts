@@ -44,6 +44,12 @@ function normalizeFaktorlar(raw: unknown): FactorImportance[] {
     });
 }
 
+function toStringArray(val: unknown): string[] {
+  if (Array.isArray(val)) return val.map((item) => String(item)).filter(Boolean);
+  if (typeof val === 'string' && val.trim()) return [val.trim()];
+  return [];
+}
+
 function normalizeShaxsiy(raw: unknown): AnketaTahlil['shaxsiyTavsiyalar'] {
   if (!raw || typeof raw !== 'object') return { ...EMPTY_SHAXSIY };
 
@@ -54,10 +60,10 @@ function normalizeShaxsiy(raw: unknown): AnketaTahlil['shaxsiyTavsiyalar'] {
       : null;
 
   return {
-    kritikOmillar: asArray<string>(s.kritikOmillar),
-    ovqatlanish: asArray<string>(s.ovqatlanish),
-    jismoniyMashq: asArray<string>(s.jismoniyMashq),
-    tibbiyReja: asArray<string>(s.tibbiyReja),
+    kritikOmillar: toStringArray(s.kritikOmillar),
+    ovqatlanish: toStringArray(s.ovqatlanish),
+    jismoniyMashq: toStringArray(s.jismoniyMashq),
+    tibbiyReja: toStringArray(s.tibbiyReja),
     kutilayotganEffekt: asArray<{ ozgarish: string; kamayadiganXavf: number }>(
       s.kutilayotganEffekt
     ),

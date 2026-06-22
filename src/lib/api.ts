@@ -11,6 +11,8 @@ export class ApiError extends Error {
 
 type ApiFetchOptions = RequestInit & {
   skipAuth?: boolean;
+  /** Submit/AI so'rovlari uchun 180000 ms tavsiya etiladi */
+  timeoutMs?: number;
 };
 
 function resolveApiUrl(path: string): string {
@@ -63,7 +65,23 @@ export async function apiFetch(
   }
 
   try {
-    const response = await fetch(resolveApiUrl(path), { ...options, headers });
+    const timeoutMs = options.timeoutMs;
+    let signal = options.signal;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    if (timeoutMs && timeoutMs > 0 && !signal) {
+      const controller = new AbortController();
+      signal = controller.signal;
+      timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    }
+
+    const response = await fetch(resolveApiUrl(path), {
+      ...options,
+      headers,
+      signal,
+    });
+
+    if (timeoutId) clearTimeout(timeoutId);
 
     if (response.status === 401 && !options.skipAuth) {
       clearAuthSession();
@@ -72,13 +90,15 @@ export async function apiFetch(
 
     return response;
   } catch (err) {
-    const msg =
-      err instanceof Error && err.message.includes('Failed to fetch')
+    const aborted = err instanceof Error && err.name === 'AbortError';
+    const msg = aborted
+      ? "So'rov vaqti tugadi. AI tahlil uzoq davom etishi mumkin — biroz kutib qayta urinib ko'ring."
+      : err instanceof Error && err.message.includes('Failed to fetch')
         ? "Tarmoq xatosi: serverga ulanib bo'lmadi yoki ulanish vaqt tugadi (timeout)."
         : err instanceof Error
           ? err.message
           : "Tarmoq xatosi";
-    throw new ApiError(msg, 0);
+    throw new ApiError(msg, aborted ? 408 : 0);
   }
 }
 

@@ -1,0 +1,162 @@
+{
+  "title": "Jadval 1. Etalon epidemiologik ko'rsatkichlar (20–29 yosh)",
+  "source": "Novosibirsk viloyati, 20–29 yoshli aholi so'rovnomasi (referens ma'lumot)",
+  "ageGroup": "20-29",
+  "sampleSizes": {
+    "novosibirsk": { "sigma": 263, "erkak": 135, "ayol": 128 },
+    "boshqaShaharlar": { "sigma": 102, "erkak": 53, "ayol": 49 },
+    "qishloq": { "sigma": 98, "erkak": 50, "ayol": 48 }
+  },
+  "indicators": [
+    {
+      "id": "obesity",
+      "label": "TMI ≥ 30 kg/m² (ortiqcha vazn)",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 8.4, "erkak": 6.7, "ayol": 10.2 },
+        "boshqaShaharlar": { "sigma": 5.9, "erkak": 3.8, "ayol": 8.2 },
+        "qishloq": { "sigma": 12.5, "erkak": 10.0, "ayol": 14.6 }
+      }
+    },
+    {
+      "id": "hypertension",
+      "label": "Yuqori arterial bosim (shifokor aytgan)",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 4.2, "erkak": 3.7, "ayol": 4.7 },
+        "boshqaShaharlar": { "sigma": 2.0, "erkak": 1.9, "ayol": 2.0 },
+        "qishloq": { "sigma": 3.1, "erkak": 2.0, "ayol": 4.2 }
+      }
+    },
+    {
+      "id": "ihd",
+      "label": "Yurak ishemiyasi / stenokardiya",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 0.4, "erkak": 0.7, "ayol": 0.0 },
+        "boshqaShaharlar": { "sigma": 0.0, "erkak": 0.0, "ayol": 0.0 },
+        "qishloq": { "sigma": 1.0, "erkak": 2.0, "ayol": 0.0 }
+      }
+    },
+    {
+      "id": "diabetes",
+      "label": "Qandli diabet yoki yuqori qand",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 1.1, "erkak": 1.5, "ayol": 0.8 },
+        "boshqaShaharlar": { "sigma": 1.0, "erkak": 0.0, "ayol": 2.0 },
+        "qishloq": { "sigma": 0.0, "erkak": 0.0, "ayol": 0.0 }
+      }
+    },
+    {
+      "id": "family_cvd",
+      "label": "Oilada yosh yoshda yurak xuruji/bor",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 18.6, "erkak": 17.0, "ayol": 20.3 },
+        "boshqaShaharlar": { "sigma": 15.7, "erkak": 13.2, "ayol": 18.4 },
+        "qishloq": { "sigma": 22.4, "erkak": 20.0, "ayol": 25.0 }
+      }
+    },
+    {
+      "id": "family_cancer",
+      "label": "Oilada yosh yoshda saraton kasalligi",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 12.2, "erkak": 10.4, "ayol": 14.1 },
+        "boshqaShaharlar": { "sigma": 9.8, "erkak": 7.5, "ayol": 12.2 },
+        "qishloq": { "sigma": 14.3, "erkak": 12.0, "ayol": 16.7 }
+      }
+    },
+    {
+      "id": "smoking_current",
+      "label": "Hozir chekuvchilar (kuniga 1+ sigaret)",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 42.2, "erkak": 52.6, "ayol": 31.3 },
+        "boshqaShaharlar": { "sigma": 38.2, "erkak": 47.2, "ayol": 28.6 },
+        "qishloq": { "sigma": 45.9, "erkak": 56.0, "ayol": 35.4 }
+      }
+    },
+    {
+      "id": "smoking_quit",
+      "label": "Chekishni tashlaganlar",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 8.7, "erkak": 10.4, "ayol": 6.3 },
+        "boshqaShaharlar": { "sigma": 6.9, "erkak": 9.4, "ayol": 4.1 },
+        "qishloq": { "sigma": 5.1, "erkak": 6.0, "ayol": 4.2 }
+      }
+    },
+    {
+      "id": "low_activity",
+      "label": "Kuniga 30 daqiqadan kam piyoda yurish",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 34.6, "erkak": 31.1, "ayol": 38.3 },
+        "boshqaShaharlar": { "sigma": 37.3, "erkak": 35.8, "ayol": 38.8 },
+        "qishloq": { "sigma": 41.8, "erkak": 38.0, "ayol": 45.8 }
+      }
+    },
+    {
+      "id": "low_fruit_veg",
+      "label": "Kuniga 400 g dan kam meva/sabzavot",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 62.4, "erkak": 58.5, "ayol": 66.4 },
+        "boshqaShaharlar": { "sigma": 65.7, "erkak": 62.3, "ayol": 69.4 },
+        "qishloq": { "sigma": 71.4, "erkak": 68.0, "ayol": 75.0 }
+      }
+    },
+    {
+      "id": "salt_habit",
+      "label": "Tatib ko'rmasdan tuz qo'shish odatı",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 28.5, "erkak": 32.6, "ayol": 24.2 },
+        "boshqaShaharlar": { "sigma": 31.4, "erkak": 34.0, "ayol": 28.6 },
+        "qishloq": { "sigma": 35.7, "erkak": 38.0, "ayol": 33.3 }
+      }
+    },
+    {
+      "id": "high_sugar",
+      "label": "Kuniga 6+ qoshiq shakar/shirinlik",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 22.1, "erkak": 18.5, "ayol": 25.8 },
+        "boshqaShaharlar": { "sigma": 24.5, "erkak": 20.8, "ayol": 28.6 },
+        "qishloq": { "sigma": 26.5, "erkak": 22.0, "ayol": 31.3 }
+      }
+    },
+    {
+      "id": "alcohol_relax",
+      "label": "Dam olish uchun alkogol iste'moli",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 18.3, "erkak": 24.4, "ayol": 11.7 },
+        "boshqaShaharlar": { "sigma": 15.7, "erkak": 20.8, "ayol": 10.2 },
+        "qishloq": { "sigma": 20.4, "erkak": 28.0, "ayol": 12.5 }
+      }
+    },
+    {
+      "id": "substance_use",
+      "label": "Giyohvand moddalar (hozir yoki ilgari)",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 3.8, "erkak": 5.9, "ayol": 1.6 },
+        "boshqaShaharlar": { "sigma": 2.9, "erkak": 3.8, "ayol": 2.0 },
+        "qishloq": { "sigma": 4.1, "erkak": 6.0, "ayol": 2.1 }
+      }
+    },
+    {
+      "id": "alcohol_family",
+      "label": "Oilada alkogol suiiste'moli",
+      "unit": "percent",
+      "values": {
+        "novosibirsk": { "sigma": 26.6, "erkak": 28.9, "ayol": 24.2 },
+        "boshqaShaharlar": { "sigma": 23.5, "erkak": 26.4, "ayol": 20.4 },
+        "qishloq": { "sigma": 30.6, "erkak": 34.0, "ayol": 27.1 }
+      }
+    }
+  ]
+}

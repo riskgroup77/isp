@@ -19,6 +19,8 @@ import {
   type AuthedRequest,
 } from "./server/auth";
 import { registerAnketaRoutes } from "./server/anketa";
+import { registerAdminStatisticsRoutes } from "./server/adminStatistics";
+import { registerSurveyRoutes } from "./server/surveyRoutes";
 
 dotenv.config();
 
@@ -26,7 +28,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // Initialize Google Gen AI
 let aiClient: GoogleGenAI | null = null;
@@ -266,6 +268,8 @@ function saveAdvices(advices: PatientAdvice[]) {
 const requireAuth = authMiddleware(getUsers);
 
 registerAnketaRoutes(app, requireAuth, { aiClient });
+registerAdminStatisticsRoutes(app, requireAuth);
+registerSurveyRoutes(app, requireAuth, { aiClient });
 
 // ----------------------------------------------------
 // Authentication API Endpoints

@@ -88,7 +88,8 @@ export type AnketaQuestionType =
   | 'single_choice'
   | 'single_choice_with_text'
   | 'multiple_choice'
-  | 'matrix';
+  | 'matrix'
+  | 'text';
 
 export interface AnketaQuestion {
   id: number;
@@ -105,6 +106,7 @@ export interface AnketaSchema {
   version: string;
   title: string;
   totalQuestions: number;
+  audience?: string;
   questions: AnketaQuestion[];
 }
 
@@ -139,6 +141,7 @@ export interface AnketaResponseRecord {
   shaxsiyTavsiyalar?: RiskAnalysisResult['shaxsiyTavsiyalar'];
   tahlil?: AnketaTahlil | null;
   aiXato?: string | null;
+  surveyType?: 'student' | 'pedagog';
 }
 
 export type UserRole = 'admin' | 'shifokor' | 'foydalanuvchi';

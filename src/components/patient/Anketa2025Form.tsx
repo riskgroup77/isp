@@ -17,17 +17,32 @@ import {
   submitAnketa,
   type AnketaSubmitPayload,
 } from '../../lib/anketaApi';
+import {
+  fetchSurveyQuestions,
+  reanalyzeSurvey,
+  submitSurvey,
+  SURVEY_LABELS,
+  type SurveyKind,
+} from '../../lib/surveyApi';
 import { ApiError } from '../../lib/api';
 import { extractTahlilFromSubmit } from '../../lib/anketaTahlil';
 import AnketaTahlilPanel from './AnketaTahlilPanel';
 
 const QUESTIONS_PER_STEP = 12;
-const ANKETA_STORAGE_KEY = 'soglik_anketa_2025_draft';
+
+type FormSurveyKind = 'anketa' | SurveyKind;
+
+const STORAGE_KEYS: Record<FormSurveyKind, string> = {
+  anketa: 'soglik_anketa_2025_draft',
+  student: 'soglik_student_survey_draft',
+  pedagog: 'soglik_pedagog_survey_draft',
+};
 
 interface Anketa2025FormProps {
   user: SafeUserProfile;
   language?: AppLanguage;
   onSubmitted?: () => void;
+  surveyKind?: FormSurveyKind;
 }
 
 function chunkQuestions<T>(items: T[], size: number): T[][] {
@@ -124,6 +139,19 @@ function QuestionField({
 }) {
   const qId = String(question.id);
 
+  if (question.type === 'text') {
+    const textVal = typeof value === 'string' ? value : '';
+    return (
+      <input
+        type="text"
+        className="anketa-text-input"
+        value={textVal}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={t('Javobingizni yozing...', language)}
+      />
+    );
+  }
+
   if (question.type === 'matrix') {
     return (
       <MatrixQuestion
@@ -202,7 +230,11 @@ export default function Anketa2025Form({
   user,
   language = 'lotin',
   onSubmitted,
+  surveyKind = 'anketa',
 }: Anketa2025FormProps) {
+  const storageKey = STORAGE_KEYS[surveyKind];
+  const isAnketa = surveyKind === 'anketa';
+  const surveyLabels = !isAnketa ? SURVEY_LABELS[surveyKind] : null;
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -210,13 +242,20 @@ export default function Anketa2025Form({
   const [tahlilResult, setTahlilResult] = useState<AnketaTahlil | null>(null);
   const [aiXato, setAiXato] = useState<string | null>(null);
   const [lastResponseId, setLastResponseId] = useState<string | null>(null);
+  const [lastResponse, setLastResponse] = useState<{
+    riskFoizi?: number;
+    zona?: string;
+    klinikXulosa?: string;
+  } | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [reanalyzing, setReanalyzing] = useState(false);
   const [schema, setSchema] = useState<Awaited<ReturnType<typeof fetchAnketaQuestions>> | null>(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<AnketaAnswers>({});
   const [fish, setFish] = useState(user.ism ?? '');
-  const [lavozim, setLavozim] = useState('');
+  const [lavozim, setLavozim] = useState(
+    surveyKind === 'student' ? 'Talaba' : surveyKind === 'pedagog' ? 'Pedagog' : ''
+  );
   const [toldirilganSana, setToldirilganSana] = useState(
     new Date().toISOString().split('T')[0]
   );
@@ -224,7 +263,7 @@ export default function Anketa2025Form({
 
   const loadDraft = useCallback(() => {
     try {
-      const raw = localStorage.getItem(ANKETA_STORAGE_KEY);
+      const raw = localStorage.getItem(storageKey);
       if (!raw) return;
       const parsed = JSON.parse(raw) as {
         answers?: AnketaAnswers;
@@ -243,7 +282,7 @@ export default function Anketa2025Form({
     } catch {
       /* ignore */
     }
-  }, []);
+  }, [storageKey]);
 
   useEffect(() => {
     let cancelled = false;
@@ -251,7 +290,9 @@ export default function Anketa2025Form({
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchAnketaQuestions();
+        const data = isAnketa
+          ? await fetchAnketaQuestions()
+          : await fetchSurveyQuestions(surveyKind);
         if (!cancelled) {
           setSchema(data);
           loadDraft();
@@ -268,15 +309,15 @@ export default function Anketa2025Form({
     return () => {
       cancelled = true;
     };
-  }, [loadDraft]);
+  }, [loadDraft, isAnketa, surveyKind]);
 
   useEffect(() => {
     if (!schema) return;
     localStorage.setItem(
-      ANKETA_STORAGE_KEY,
+      storageKey,
       JSON.stringify({ answers, fish, lavozim, toldirilganSana, izoh, step })
     );
-  }, [answers, fish, lavozim, toldirilganSana, izoh, step, schema]);
+  }, [answers, fish, lavozim, toldirilganSana, izoh, step, schema, storageKey]);
 
   const questionSteps = useMemo(
     () => (schema ? chunkQuestions(schema.questions, QUESTIONS_PER_STEP) : []),
@@ -319,14 +360,21 @@ export default function Anketa2025Form({
         toldirilganSana,
         izoh: izoh.trim() || undefined,
       };
-      const result = await submitAnketa(payload);
+      const result = isAnketa
+        ? await submitAnketa(payload)
+        : await submitSurvey(surveyKind, payload);
       const tahlil = extractTahlilFromSubmit(result.tahlil, result.response);
       setTahlilResult(tahlil);
-      setAiXato(result.response.aiXato ?? null);
+      setAiXato(result.response.aiXato ?? (result.tahlil == null ? "AI tahlil vaqtincha mavjud emas" : null));
       setLastResponseId(result.response.id);
+      setLastResponse({
+        riskFoizi: result.response.riskFoizi,
+        zona: result.response.zona,
+        klinikXulosa: result.response.klinikXulosa,
+      });
       setSuccess(result.message);
-      setShowResults(Boolean(tahlil));
-      localStorage.removeItem(ANKETA_STORAGE_KEY);
+      setShowResults(true);
+      localStorage.removeItem(storageKey);
       onSubmitted?.();
     } catch (err) {
       let msg = err instanceof Error ? err.message : "Yuborishda xatolik";
@@ -345,11 +393,18 @@ export default function Anketa2025Form({
     setReanalyzing(true);
     setError(null);
     try {
-      const result = await reanalyzeAnketa(lastResponseId);
+      const result = isAnketa
+        ? await reanalyzeAnketa(lastResponseId)
+        : await reanalyzeSurvey(surveyKind, lastResponseId);
       const tahlil = extractTahlilFromSubmit(result.tahlil, result.response);
       setTahlilResult(tahlil);
       setAiXato(result.response.aiXato ?? null);
-      setShowResults(Boolean(tahlil));
+      setLastResponse({
+        riskFoizi: result.response.riskFoizi,
+        zona: result.response.zona,
+        klinikXulosa: result.response.klinikXulosa,
+      });
+      setShowResults(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Qayta tahlilda xatolik");
     } finally {
@@ -361,6 +416,7 @@ export default function Anketa2025Form({
     setShowResults(false);
     setTahlilResult(null);
     setAiXato(null);
+    setLastResponse(null);
     setSuccess(null);
     setStep(0);
     setAnswers({});
@@ -371,7 +427,7 @@ export default function Anketa2025Form({
     return (
       <div className="anketa-loading">
         <Loader2 className="w-6 h-6 animate-spin text-[var(--ios-accent)]" />
-        <span>{t("Anketa savollari yuklanmoqda...", language)}</span>
+        <span>{t("So'rovnoma savollari yuklanmoqda...", language)}</span>
       </div>
     );
   }
@@ -385,7 +441,7 @@ export default function Anketa2025Form({
     );
   }
 
-  if (showResults && tahlilResult) {
+  if (showResults) {
     return (
       <div className="anketa-form-root">
         {success && (
@@ -394,19 +450,42 @@ export default function Anketa2025Form({
             <span>{t(success, language)}</span>
           </div>
         )}
-        <AnketaTahlilPanel tahlil={tahlilResult} aiXato={aiXato} language={language} />
+        {tahlilResult ? (
+          <AnketaTahlilPanel tahlil={tahlilResult} aiXato={aiXato} language={language} />
+        ) : (
+          <div className="anketa-tahlil-root">
+            <div className="anketa-alert anketa-alert-warn">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>
+                {t("AI tahlil vaqtincha mavjud emas. So'rovnoma saqlandi.", language)}
+                {aiXato ? ` ${aiXato}` : ''}
+              </span>
+            </div>
+            {lastResponse?.riskFoizi != null && (
+              <div className="anketa-summary-box mt-3">
+                <p>
+                  {t('Bazaviy xavf', language)}: <strong>{lastResponse.riskFoizi}%</strong>
+                  {lastResponse.zona ? ` (${lastResponse.zona})` : ''}
+                </p>
+                {lastResponse.klinikXulosa && (
+                  <p className="text-sm mt-2">{lastResponse.klinikXulosa}</p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         <div className="anketa-form-actions">
           <button type="button" onClick={handleNewAnketa} className="ios-btn ios-btn-frost ios-btn-sm">
-            {t("Yangi anketa to'ldirish", language)}
+            {t("Yangi so'rovnoma to'ldirish", language)}
           </button>
-          {aiXato && lastResponseId && (
+          {lastResponseId && (!tahlilResult || aiXato) && (
             <button
               type="button"
               onClick={handleReanalyze}
               disabled={reanalyzing}
               className="ios-btn ios-btn-primary ios-btn-sm"
             >
-              {reanalyzing ? t('Tahlil...', language) : t('AI tahlilni qayta ishga tushirish', language)}
+              {reanalyzing ? t('AI tahlil qilinmoqda...', language) : t('Qayta tahlil', language)}
             </button>
           )}
         </div>
@@ -420,9 +499,15 @@ export default function Anketa2025Form({
         <div className="anketa-form-title-row">
           <ClipboardList className="w-5 h-5 text-[var(--ios-accent)] shrink-0" />
           <div>
-            <h3 className="anketa-form-title">{t("Anketa", language)}</h3>
+            <h3 className="anketa-form-title">
+              {t(surveyLabels?.title ?? schema.title ?? 'Anketa', language)}
+            </h3>
             <p className="anketa-form-subtitle">
-              {t("Umumiy sog'lom turmush tarzi so'rovnomasi", language)} — {schema.totalQuestions} {t("savol", language)}
+              {t(
+                surveyLabels?.subtitle ?? "Umumiy sog'lom turmush tarzi so'rovnomasi",
+                language
+              )}{' '}
+              — {schema.totalQuestions} {t('savol', language)}
             </p>
           </div>
         </div>
@@ -576,12 +661,12 @@ export default function Anketa2025Form({
               {submitting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  {t("Tahlil qilinmoqda...", language)}
+                  {t("AI tahlil qilinmoqda, iltimos kuting...", language)}
                 </>
               ) : (
                 <>
                   <Send className="w-4 h-4" />
-                  {t("Anketani yuborish", language)}
+                  {t("So'rovnomani yuborish", language)}
                 </>
               )}
             </button>

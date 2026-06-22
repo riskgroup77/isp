@@ -28,12 +28,14 @@ export async function submitAnketa(payload: AnketaSubmitPayload): Promise<Anketa
   return apiJson<AnketaSubmitResponse>('/api/anketa/submit', {
     method: 'POST',
     body: JSON.stringify(payload),
+    timeoutMs: 180_000,
   });
 }
 
 export async function reanalyzeAnketa(id: string): Promise<AnketaSubmitResponse> {
   return apiJson<AnketaSubmitResponse>(`/api/anketa/responses/${encodeURIComponent(id)}/analyze`, {
     method: 'POST',
+    timeoutMs: 180_000,
   });
 }
 

@@ -31,7 +31,9 @@ import {
   Volume2,
   Pencil,
   Menu,
-  X
+  X,
+  GraduationCap,
+  Presentation
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -354,7 +356,7 @@ export default function PatientPortal({
   }, []);
 
   // Form mode: standardized vs AI Complaint
-  const [intakeMode, setIntakeMode] = useState<'standard' | 'complaint'>('standard');
+  const [intakeMode, setIntakeMode] = useState<'standard' | 'student' | 'pedagog' | 'complaint'>('standard');
   const [showDoctorReport, setShowDoctorReport] = useState<boolean>(false);
   
   // State for forms
@@ -1486,31 +1488,43 @@ export default function PatientPortal({
             {/* INPUT SECTION вЂ” to'liq kenglik */}
             <div className="w-full space-y-6 print:hidden">
               
-              {/* TWO CHANNEL SWITCHER CONTAINER */}
+              {/* FOUR CHANNEL SWITCHER */}
               <div className="ios-card shadow-sm overflow-hidden">
-                <div className="p-1.5 bg-slate-100 flex gap-1">
+                <div className="p-1.5 bg-slate-100 flex flex-wrap gap-1 intake-mode-tabs">
                   <button
                     onClick={() => setIntakeMode('standard')}
-                    className={`flex-1 py-2.5 px-4 rounded-lg font-bold text-xs md:text-sm text-center transition-all flex items-center justify-center gap-1.5 ${
-                      intakeMode === 'standard'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                    className={`intake-mode-tab ${intakeMode === 'standard' ? 'active' : ''}`}
                     id="btn-intake-standard"
+                    type="button"
                   >
-                    <FileText className="w-4 h-4 text-emerald-600" />
+                    <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
                     Standart So'rovnoma
                   </button>
                   <button
-                    onClick={() => setIntakeMode('complaint')}
-                    className={`flex-1 py-2.5 px-4 rounded-lg font-bold text-xs md:text-sm text-center transition-all flex items-center justify-center gap-1.5 ${
-                      intakeMode === 'complaint'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                    id="btn-intake-complaint"
+                    onClick={() => setIntakeMode('student')}
+                    className={`intake-mode-tab ${intakeMode === 'student' ? 'active' : ''}`}
+                    id="btn-intake-student"
+                    type="button"
                   >
-                    <Sparkles className="w-4 h-4 text-blue-600 animate-pulse" />
+                    <GraduationCap className="w-4 h-4 text-indigo-600 shrink-0" />
+                    Talaba
+                  </button>
+                  <button
+                    onClick={() => setIntakeMode('pedagog')}
+                    className={`intake-mode-tab ${intakeMode === 'pedagog' ? 'active' : ''}`}
+                    id="btn-intake-pedagog"
+                    type="button"
+                  >
+                    <Presentation className="w-4 h-4 text-violet-600 shrink-0" />
+                    Pedagog
+                  </button>
+                  <button
+                    onClick={() => setIntakeMode('complaint')}
+                    className={`intake-mode-tab ${intakeMode === 'complaint' ? 'active' : ''}`}
+                    id="btn-intake-complaint"
+                    type="button"
+                  >
+                    <Sparkles className="w-4 h-4 text-blue-600 shrink-0 animate-pulse" />
                     AI Erkin Shikoyat
                   </button>
                 </div>
@@ -1609,7 +1623,21 @@ export default function PatientPortal({
                 {/* Anketa — Standart So'rovnoma */}
                 {intakeMode === 'standard' && (
                   <div className="p-4 md:p-5">
-                    <Anketa2025Form user={currentUser} language={language} />
+                    <Anketa2025Form user={currentUser} language={language} surveyKind="anketa" />
+                  </div>
+                )}
+
+                {/* Talaba so'rovnomasi */}
+                {intakeMode === 'student' && (
+                  <div className="p-4 md:p-5">
+                    <Anketa2025Form user={currentUser} language={language} surveyKind="student" />
+                  </div>
+                )}
+
+                {/* Pedagog so'rovnomasi */}
+                {intakeMode === 'pedagog' && (
+                  <div className="p-4 md:p-5">
+                    <Anketa2025Form user={currentUser} language={language} surveyKind="pedagog" />
                   </div>
                 )}
 
