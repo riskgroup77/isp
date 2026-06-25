@@ -120,3 +120,18 @@ export async function apiJson<T>(
 
   return data as T;
 }
+
+/** Excel, fayl yuklab olish uchun blob javob */
+export async function apiBlob(
+  path: string,
+  options: ApiFetchOptions = {}
+): Promise<Blob> {
+  const res = await apiFetch(path, options);
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new ApiError(parseApiError(data, res.status), res.status);
+  }
+
+  return res.blob();
+}

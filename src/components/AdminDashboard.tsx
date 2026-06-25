@@ -13,7 +13,8 @@ import {
   Search,
   UserPlus,
   Pencil,
-  BarChart3
+  BarChart3,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { t } from '../lib/lang';
 import MedicalDisclaimer from './MedicalDisclaimer';
@@ -27,6 +28,7 @@ import { useToast } from './ui/Toast';
 import AdminCreateUserPanel from './admin/AdminCreateUserPanel';
 import AdminEditUserPanel from './admin/AdminEditUserPanel';
 import AdminStatisticsPanel from './admin/AdminStatisticsPanel';
+import { downloadUsersExcel } from '../lib/adminExport';
 import AppShell from './ui/AppShell';
 import LanguageSwitcher from './ui/LanguageSwitcher';
 
@@ -302,6 +304,19 @@ export default function AdminDashboard({
               <option value="shifokor">Shifokorlar (shifokor)</option>
               <option value="foydalanuvchi">Foydalanuvchi / Bemor (foydalanuvchi)</option>
             </select>
+
+            <button
+              type="button"
+              onClick={() => {
+                downloadUsersExcel(filteredUsers);
+                showToast(t('Excel fayl yuklab olindi.', language), 'success');
+              }}
+              disabled={filteredUsers.length === 0}
+              className="ios-btn ios-btn-primary ios-btn-sm"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              Excel
+            </button>
           </div>
         </div>
 

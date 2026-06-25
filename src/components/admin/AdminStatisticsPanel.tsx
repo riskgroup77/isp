@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   BarChart3,
   Download,
+  FileSpreadsheet,
   FileText,
   Loader2,
   PieChart as PieChartIcon,
@@ -31,8 +32,16 @@ import {
   type QuestionStatRow,
   type SurveyZoneStats,
 } from '../../lib/adminStatisticsApi';
-import { downloadAdminReportWord, printAdminReport } from '../../lib/adminExport';
+import {
+  downloadAdminReportExcel,
+  downloadAdminReportWord,
+  downloadFastApiAdminExcel,
+  downloadFastApiAdminWord,
+  printAdminReport,
+  printFastApiAdminReport,
+} from '../../lib/adminExport';
 import { useToast } from '../ui/Toast';
+import FastApiStatisticsPanel from './FastApiStatisticsPanel';
 
 type StatsTab = 'overview' | 'epidemiology' | 'questions' | 'responses';
 
@@ -124,6 +133,33 @@ function fmtPct(v: number | null | undefined): string {
   return `${v.toFixed(1)}%`;
 }
 
+function StatsExportActions({
+  onPrint,
+  onWord,
+  onExcel,
+}: {
+  onPrint: () => void;
+  onWord: () => void;
+  onExcel: () => void;
+}) {
+  return (
+    <>
+      <button type="button" className="ios-btn ios-btn-secondary ios-btn-sm" onClick={onPrint}>
+        <Printer className="w-3.5 h-3.5" />
+        PDF
+      </button>
+      <button type="button" className="ios-btn ios-btn-secondary ios-btn-sm" onClick={onWord}>
+        <Download className="w-3.5 h-3.5" />
+        Word
+      </button>
+      <button type="button" className="ios-btn ios-btn-primary ios-btn-sm" onClick={onExcel}>
+        <FileSpreadsheet className="w-3.5 h-3.5" />
+        Excel
+      </button>
+    </>
+  );
+}
+
 function QuestionStatCard({ q, language }: { q: QuestionStatRow; language: AppLanguage }) {
   const topOptions = q.options.filter((o) => o.count > 0).slice(0, 6);
   return (
@@ -208,14 +244,37 @@ export default function AdminStatisticsPanel({ language = 'lotin' }: AdminStatis
   }, [stats, questionSearch]);
 
   const handlePrint = () => {
-    if (!stats) return;
-    printAdminReport(stats);
+    if (stats) {
+      printAdminReport(stats);
+      return;
+    }
+    if (fastApiSurveys) {
+      printFastApiAdminReport(fastApiSurveys);
+    }
   };
 
   const handleWord = () => {
-    if (!stats) return;
-    downloadAdminReportWord(stats);
-    showToast(t('Word fayl yuklab olindi.', language), 'success');
+    if (stats) {
+      downloadAdminReportWord(stats);
+      showToast(t('Word fayl yuklab olindi.', language), 'success');
+      return;
+    }
+    if (fastApiSurveys) {
+      downloadFastApiAdminWord(fastApiSurveys);
+      showToast(t('Word fayl yuklab olindi.', language), 'success');
+    }
+  };
+
+  const handleExcel = () => {
+    if (stats) {
+      downloadAdminReportExcel(stats);
+      showToast(t('Excel fayl yuklab olindi.', language), 'success');
+      return;
+    }
+    if (fastApiSurveys) {
+      downloadFastApiAdminExcel(fastApiSurveys);
+      showToast(t('Excel fayl yuklab olindi.', language), 'success');
+    }
   };
 
   if (loading && !statsResult) {
@@ -237,23 +296,10 @@ export default function AdminStatisticsPanel({ language = 'lotin' }: AdminStatis
 
   if (isFastApi && !stats) {
     return (
-      <div className="admin-stat-root" id="admin-statistics-export">
-        <div className="admin-stat-toolbar">
-          <div className="admin-stat-tabs">
-            <button type="button" className="admin-stat-tab active">
-              <BarChart3 className="w-3.5 h-3.5" />
-              {t('Umumiy', language)}
-            </button>
-          </div>
-          <div className="admin-stat-actions">
-            <button type="button" className="ios-btn ios-btn-secondary ios-btn-sm" onClick={loadStats}>
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-              {t('Yangilash', language)}
-            </button>
-          </div>
-        </div>
-        <FastApiOverview surveys={fastApiSurveys ?? {}} language={language} />
-      </div>
+      <FastApiStatisticsPanel
+        language={language}
+        initialSurveys={fastApiSurveys}
+      />
     );
   }
 
@@ -303,14 +349,11 @@ export default function AdminStatisticsPanel({ language = 'lotin' }: AdminStatis
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             {t('Yangilash', language)}
           </button>
-          <button type="button" className="ios-btn ios-btn-secondary ios-btn-sm" onClick={handlePrint}>
-            <Printer className="w-3.5 h-3.5" />
-            PDF
-          </button>
-          <button type="button" className="ios-btn ios-btn-primary ios-btn-sm" onClick={handleWord}>
-            <Download className="w-3.5 h-3.5" />
-            Word
-          </button>
+          <StatsExportActions
+            onPrint={handlePrint}
+            onWord={handleWord}
+            onExcel={handleExcel}
+          />
         </div>
       </div>
 
