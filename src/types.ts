@@ -1,3 +1,11 @@
+export interface DiseaseRiskPrognosis {
+  id: string;
+  nomi: string;
+  xavfFoizi: number;
+  zona: 'yashil' | 'sariq' | 'qizil';
+  izoh: string;
+}
+
 export interface QuestionnaireData {
   yosh: number;
   jins: 'erkak' | 'ayol';
@@ -57,6 +65,7 @@ export interface RiskAnalysisResult {
     };
   };
   klinikXulosa: string;
+  kasallikPrognozlari?: DiseaseRiskPrognosis[];
 }
 
 export interface TextAnalysisResponse {
@@ -82,6 +91,12 @@ export interface HealthJournalEntry {
   alomatlar: string[]; // ['ogriq', 'nafas_qisilishi', 'bosh_aylanishi', 'yurak_oynashi', 'shishlar', 'holsizlik']
   dorilar: { nomi: string; doza: string; ichildi: boolean }[];
   qaydlar: string;
+  /** Kunlik yurilgan masofa (metr) */
+  yurilganMetr?: number | '';
+  /** Kunlik ichilgan suyuqlik (litr) */
+  suvLitrlar?: number | '';
+  /** Uyqu davomiyligi (soat) */
+  uyquSoati?: number | '';
 }
 
 export type AnketaQuestionType =
@@ -121,6 +136,7 @@ export interface AnketaTahlil {
   faktorlar?: FactorImportance[];
   shaxsiyTavsiyalar: RiskAnalysisResult['shaxsiyTavsiyalar'];
   klinikXulosa: string;
+  kasallikPrognozlari?: DiseaseRiskPrognosis[];
   answeredSignals?: Record<string, unknown>;
 }
 

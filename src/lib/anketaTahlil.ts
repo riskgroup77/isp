@@ -92,6 +92,9 @@ export function normalizeAnketaTahlil(
     faktorlar: normalizeFaktorlar(raw.faktorlar),
     shaxsiyTavsiyalar: normalizeShaxsiy(raw.shaxsiyTavsiyalar),
     klinikXulosa: typeof raw.klinikXulosa === 'string' ? raw.klinikXulosa : '',
+    kasallikPrognozlari: Array.isArray(raw.kasallikPrognozlari)
+      ? raw.kasallikPrognozlari
+      : undefined,
     answeredSignals:
       raw.answeredSignals && typeof raw.answeredSignals === 'object'
         ? raw.answeredSignals

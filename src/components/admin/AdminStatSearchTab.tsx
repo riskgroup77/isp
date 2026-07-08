@@ -137,7 +137,8 @@ export default function AdminStatSearchTab({ language = 'lotin' }: AdminStatSear
         results.excelUrl || undefined,
         kind,
         filters,
-        results
+        results,
+        { preferLocal: source === 'fallback' }
       );
       showToast(
         t(

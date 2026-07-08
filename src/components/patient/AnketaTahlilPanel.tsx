@@ -3,6 +3,7 @@ import { Activity, AlertTriangle, Heart, Sparkles } from 'lucide-react';
 import type { AnketaTahlil } from '../../types';
 import { t, type AppLanguage } from '../../lib/lang';
 import { normalizeAnketaTahlil } from '../../lib/anketaTahlil';
+import DiseaseRiskPrognosisPanel from './DiseaseRiskPrognosisPanel';
 
 interface AnketaTahlilPanelProps {
   tahlil: AnketaTahlil;
@@ -85,6 +86,15 @@ export default function AnketaTahlilPanel({
             {t('Klinik xulosa', language)}
           </h5>
           <p className="anketa-tahlil-text">{t(tahlil.klinikXulosa, language)}</p>
+        </div>
+      )}
+
+      {tahlil.kasallikPrognozlari && tahlil.kasallikPrognozlari.length > 0 && (
+        <div className="anketa-tahlil-block">
+          <DiseaseRiskPrognosisPanel
+            prognoses={tahlil.kasallikPrognozlari}
+            language={language}
+          />
         </div>
       )}
 

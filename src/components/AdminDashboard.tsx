@@ -15,6 +15,7 @@ import {
   Pencil,
   BarChart3,
   FileSpreadsheet,
+  FileText,
 } from 'lucide-react';
 import { t } from '../lib/lang';
 import MedicalDisclaimer from './MedicalDisclaimer';
@@ -28,6 +29,7 @@ import { useToast } from './ui/Toast';
 import AdminCreateUserPanel from './admin/AdminCreateUserPanel';
 import AdminEditUserPanel from './admin/AdminEditUserPanel';
 import AdminStatisticsPanel from './admin/AdminStatisticsPanel';
+import AdminAnketaEditor from './admin/AdminAnketaEditor';
 import { downloadUsersExcel } from '../lib/adminExport';
 import AppShell from './ui/AppShell';
 import LanguageSwitcher from './ui/LanguageSwitcher';
@@ -53,7 +55,7 @@ export default function AdminDashboard({
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [showCreatePanel, setShowCreatePanel] = useState(false);
   const [editUser, setEditUser] = useState<SafeUserProfile | null>(null);
-  const [mainTab, setMainTab] = useState<'users' | 'statistics'>('statistics');
+  const [mainTab, setMainTab] = useState<'users' | 'statistics' | 'anketa'>('statistics');
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -204,6 +206,14 @@ export default function AdminDashboard({
         </button>
         <button
           type="button"
+          className={`admin-main-tab ${mainTab === 'anketa' ? 'active' : ''}`}
+          onClick={() => setMainTab('anketa')}
+        >
+          <FileText className="w-4 h-4" />
+          {t("Anketa tahriri", language)}
+        </button>
+        <button
+          type="button"
           className={`admin-main-tab ${mainTab === 'users' ? 'active' : ''}`}
           onClick={() => setMainTab('users')}
         >
@@ -214,6 +224,10 @@ export default function AdminDashboard({
 
       {mainTab === 'statistics' && (
         <AdminStatisticsPanel language={language} />
+      )}
+
+      {mainTab === 'anketa' && (
+        <AdminAnketaEditor language={language} />
       )}
 
       {mainTab === 'users' && (

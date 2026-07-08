@@ -279,4 +279,93 @@ export function registerAnketaRoutes(
       return res.status(500).json({ error: "Anketani o'chirishda xatolik." });
     }
   });
+
+  app.get(
+    "/api/admin/anketa/questions",
+    requireAuth,
+    requireRoles("admin"),
+    (_req, res) => {
+      try {
+        return res.json(loadAnketaSchema());
+      } catch (err) {
+        console.error("Admin anketa questions error:", err);
+        return res.status(500).json({ error: "Anketa savollarini yuklashda xatolik." });
+      }
+    }
+  );
+
+  app.put(
+    "/api/admin/anketa/questions",
+    requireAuth,
+    requireRoles("admin"),
+    (req: AuthedRequest, res) => {
+      try {
+        const body = req.body as AnketaSchema;
+        if (!body?.questions || !Array.isArray(body.questions)) {
+          return res.status(400).json({ error: "questions massivi talab qilinadi." });
+        }
+        const schema: AnketaSchema = {
+          version: body.version || "2025",
+          title: body.title || "Anketa",
+          totalQuestions: body.questions.length,
+          questions: body.questions,
+        };
+        ensureDataDir();
+        fs.writeFileSync(ANKETA_FILE, JSON.stringify(schema, null, 2), "utf8");
+        return res.json(schema);
+      } catch (err) {
+        console.error("Admin anketa save error:", err);
+        return res.status(500).json({ error: "Anketani saqlashda xatolik." });
+      }
+    }
+  );
+
+  app.patch(
+    "/api/admin/anketa/questions/:id",
+    requireAuth,
+    requireRoles("admin"),
+    (req: AuthedRequest, res) => {
+      try {
+        const questionId = Number(req.params.id);
+        if (!Number.isFinite(questionId)) {
+          return res.status(400).json({ error: "Noto'g'ri savol ID." });
+        }
+        const schema = loadAnketaSchema();
+        const idx = schema.questions.findIndex((q) => q.id === questionId);
+        if (idx === -1) {
+          return res.status(404).json({ error: "Savol topilmadi." });
+        }
+
+        const patch = req.body as {
+          text?: string;
+          section?: string;
+          options?: string[];
+          description?: string | null;
+        };
+
+        const current = schema.questions[idx];
+        schema.questions[idx] = {
+          ...current,
+          text: typeof patch.text === "string" ? patch.text.trim() : current.text,
+          section:
+            typeof patch.section === "string" ? patch.section.trim() : current.section,
+          options: Array.isArray(patch.options) ? patch.options : current.options,
+          description:
+            patch.description === null
+              ? null
+              : typeof patch.description === "string"
+                ? patch.description.trim()
+                : current.description,
+        };
+        schema.totalQuestions = schema.questions.length;
+
+        ensureDataDir();
+        fs.writeFileSync(ANKETA_FILE, JSON.stringify(schema, null, 2), "utf8");
+        return res.json(schema.questions[idx]);
+      } catch (err) {
+        console.error("Admin anketa patch error:", err);
+        return res.status(500).json({ error: "Savolni saqlashda xatolik." });
+      }
+    }
+  );
 }

@@ -64,6 +64,9 @@ export function normalizeRiskResult(
     riskFoizi: raw.riskFoizi ?? EMPTY_RISK.riskFoizi,
     zona: raw.zona ?? EMPTY_RISK.zona,
     klinikXulosa: raw.klinikXulosa ?? EMPTY_RISK.klinikXulosa,
+    kasallikPrognozlari: Array.isArray(raw.kasallikPrognozlari)
+      ? raw.kasallikPrognozlari
+      : undefined,
     hududiyStatistika: {
       ...EMPTY_RISK.hududiyStatistika,
       ...raw.hududiyStatistika,

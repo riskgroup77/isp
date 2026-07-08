@@ -55,6 +55,7 @@ import {
   UserProfile,
 } from '../../types';
 import Anketa2025Form from './Anketa2025Form';
+import DiseaseRiskPrognosisPanel from './DiseaseRiskPrognosisPanel';
 import MedicalDisclaimer from '../MedicalDisclaimer';
 import { translateContent } from '../../lib/disclaimer';
 import { t, type AppLanguage } from '../../lib/lang';
@@ -195,6 +196,9 @@ export default function PatientPortal({
     vazn: '' as number | '',
     uyqu: 'yaxshi' as 'yaxshi' | 'ortacha' | 'yomon',
     stress: 'past' as 'past' | 'ortacha' | 'yuqori',
+    yurilganMetr: '' as number | '',
+    suvLitrlar: '' as number | '',
+    uyquSoati: '' as number | '',
     alomatlar: [] as string[],
     dorilar: [
       { nomi: 'Lisinopril', doza: '10 mg', ichildi: false },
@@ -602,6 +606,9 @@ export default function PatientPortal({
       vazn: journalForm.vazn !== '' ? Number(journalForm.vazn) : '',
       uyqu: journalForm.uyqu,
       stress: journalForm.stress,
+      yurilganMetr: journalForm.yurilganMetr !== '' ? Number(journalForm.yurilganMetr) : '',
+      suvLitrlar: journalForm.suvLitrlar !== '' ? Number(journalForm.suvLitrlar) : '',
+      uyquSoati: journalForm.uyquSoati !== '' ? Number(journalForm.uyquSoati) : '',
       alomatlar: [...journalForm.alomatlar],
       dorilar: journalForm.dorilar.map(d => ({ ...d })),
       qaydlar: journalForm.qaydlar
@@ -621,6 +628,9 @@ export default function PatientPortal({
       vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit', hour12: false }),
       glyukoza: '',
       vazn: '',
+      yurilganMetr: '',
+      suvLitrlar: '',
+      uyquSoati: '',
       alomatlar: [],
       dorilar: prev.dorilar.map(d => ({ ...d, ichildi: false })),
       qaydlar: ''
@@ -653,6 +663,9 @@ export default function PatientPortal({
       "Vazn (kg)",
       "Uyqu sifati",
       "Stress darajasi",
+      "Kunlik yurilgan masofa (metr)",
+      "Ichilgan suyuqlik (litr)",
+      "Uyqu davomiyligi (soat)",
       "Alomatlar",
       "Qabul qilingan dorilar",
       "Qaydlar"
@@ -685,6 +698,9 @@ export default function PatientPortal({
         e.vazn !== '' ? e.vazn : "Kiritilmagan",
         e.uyqu === 'yaxshi' ? 'Yaxshi' : (e.uyqu === 'ortacha' ? 'O\'rtacha' : 'Yomon'),
         e.stress === 'past' ? 'Past' : (e.stress === 'ortacha' ? 'O\'rtacha' : 'Yuqori'),
+        e.yurilganMetr !== '' && e.yurilganMetr != null ? e.yurilganMetr : "Kiritilmagan",
+        e.suvLitrlar !== '' && e.suvLitrlar != null ? e.suvLitrlar : "Kiritilmagan",
+        e.uyquSoati !== '' && e.uyquSoati != null ? e.uyquSoati : "Kiritilmagan",
         `"${alomatlarStr}"`,
         `"${dorilarStr}"`,
         `"${(e.qaydlar || "").replace(/"/g, '""')}"`
@@ -1761,6 +1777,15 @@ export default function PatientPortal({
                             </p>
                           </div>
 
+                          {riskResult.kasallikPrognozlari &&
+                            riskResult.kasallikPrognozlari.length > 0 && (
+                              <DiseaseRiskPrognosisPanel
+                                prognoses={riskResult.kasallikPrognozlari}
+                                language={language}
+                                compact
+                              />
+                          )}
+
                           <div className="grid grid-cols-2 gap-3 text-xs">
                             <div className="bg-slate-100 p-2.5 rounded-lg">
                               <span className="text-slate-500 uppercase text-[9px] font-bold">Sizning TMI ko'rsatkichingiz</span>
@@ -2599,6 +2624,68 @@ export default function PatientPortal({
                       </div>
                     </div>
 
+                    {/* Faollik, suyuqlik va uyqu */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                          {t('Kunlik yurilgan masofa (metr)', language)}
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="100"
+                          value={journalForm.yurilganMetr}
+                          onChange={(e) =>
+                            setJournalForm({
+                              ...journalForm,
+                              yurilganMetr: e.target.value === '' ? '' : Number(e.target.value),
+                            })
+                          }
+                          placeholder="Masalan: 5000"
+                          className="w-full text-xs rounded border border-slate-300 p-2 text-slate-800 bg-slate-50 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                          {t('Ichilgan suyuqlik (litr)', language)}
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.1"
+                          value={journalForm.suvLitrlar}
+                          onChange={(e) =>
+                            setJournalForm({
+                              ...journalForm,
+                              suvLitrlar: e.target.value === '' ? '' : Number(e.target.value),
+                            })
+                          }
+                          placeholder="Masalan: 2.0"
+                          className="w-full text-xs rounded border border-slate-300 p-2 text-slate-800 bg-slate-50 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                          {t('Uyqu davomiyligi (soat)', language)}
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          max="24"
+                          step="0.5"
+                          value={journalForm.uyquSoati}
+                          onChange={(e) =>
+                            setJournalForm({
+                              ...journalForm,
+                              uyquSoati: e.target.value === '' ? '' : Number(e.target.value),
+                            })
+                          }
+                          placeholder="Masalan: 7.5"
+                          className="w-full text-xs rounded border border-slate-300 p-2 text-slate-800 bg-slate-50 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        />
+                      </div>
+                    </div>
+
                     {/* CARDIAC SYMPTOMS */}
                     <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                       <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wide">
@@ -3025,22 +3112,45 @@ export default function PatientPortal({
                               <div>
                                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Yurak Puls</span>
                                 <span className="text-sm font-black text-slate-800 font-mono">
-                                  вќ¤пёЏ {entry.puls} <span className="text-[10px] text-slate-500 font-sans">/daqiqa</span>
+                                  {entry.puls} <span className="text-[10px] text-slate-500 font-sans">/daqiqa</span>
                                 </span>
                               </div>
                               <div>
                                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Qondagi qand</span>
                                 <span className="text-sm font-bold text-slate-800 font-mono">
-                                  {entry.glyukoza ? `рџ©ё ${entry.glyukoza} mmol/l` : 'Kiritilmagan'}
+                                  {entry.glyukoza ? `${entry.glyukoza} mmol/l` : 'Kiritilmagan'}
                                 </span>
                               </div>
                               <div>
                                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Sog'lom vazn</span>
                                 <span className="text-sm font-bold text-slate-800 font-mono">
-                                  вљ–пёЏ {entry.vazn ? `${entry.vazn} kg` : 'Kiritilmagan'}
+                                  {entry.vazn ? `${entry.vazn} kg` : 'Kiritilmagan'}
                                 </span>
                               </div>
                             </div>
+
+                            {(entry.yurilganMetr || entry.suvLitrlar || entry.uyquSoati) && (
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-emerald-50/60 border border-emerald-100 rounded-lg p-2.5">
+                                {entry.yurilganMetr !== '' && entry.yurilganMetr != null && (
+                                  <div>
+                                    <span className="text-[10px] text-emerald-700 font-bold uppercase block">Yurilgan</span>
+                                    <span className="font-bold text-slate-800">{entry.yurilganMetr} m</span>
+                                  </div>
+                                )}
+                                {entry.suvLitrlar !== '' && entry.suvLitrlar != null && (
+                                  <div>
+                                    <span className="text-[10px] text-emerald-700 font-bold uppercase block">Suyuqlik</span>
+                                    <span className="font-bold text-slate-800">{entry.suvLitrlar} L</span>
+                                  </div>
+                                )}
+                                {entry.uyquSoati !== '' && entry.uyquSoati != null && (
+                                  <div>
+                                    <span className="text-[10px] text-emerald-700 font-bold uppercase block">Uyqu</span>
+                                    <span className="font-bold text-slate-800">{entry.uyquSoati} soat</span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
 
                             {/* symptoms & medications */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

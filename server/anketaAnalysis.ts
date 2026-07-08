@@ -6,6 +6,7 @@ import type {
   AnketaTahlil,
   FactorImportance,
 } from "../src/types";
+import { computeDiseaseRisksFromAnketa } from "../src/lib/diseaseRiskPrognosis";
 
 function strAnswer(answers: AnketaAnswers, id: number): string {
   const v = answers[String(id)];
@@ -225,6 +226,7 @@ export function analyzeAnketaAnswers(
       },
     },
     klinikXulosa,
+    kasallikPrognozlari: computeDiseaseRisksFromAnketa(answers),
     answeredSignals: {
       yosh,
       jins,

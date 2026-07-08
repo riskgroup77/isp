@@ -385,16 +385,30 @@ export async function downloadSearchStatisticsExcel(
   excelUrl: string | undefined,
   kind: SurveyKind,
   filters: AnswerFilter[],
-  fallbackData?: StatisticsSearchResponse
+  fallbackData?: StatisticsSearchResponse,
+  options?: { preferLocal?: boolean }
 ): Promise<'api' | 'fallback'> {
-  if (excelUrl) {
+  const preferLocal = options?.preferLocal ?? false;
+
+  const exportLocal = async (): Promise<'fallback'> => {
+    if (!fallbackData) {
+      throw new ApiError('Excel uchun natijalar mavjud emas', 400);
+    }
+    const { downloadSearchStatisticsExcel: localExport } = await import('./adminExport');
+    localExport(fallbackData, kind);
+    return 'fallback';
+  };
+
+  if (preferLocal && fallbackData) {
+    return exportLocal();
+  }
+
+  if (excelUrl && excelUrl.trim()) {
     try {
       await downloadAuthenticatedFile(excelUrl, `${kind}_qidiruv_statistika.xlsx`);
       return 'api';
-    } catch (err) {
-      if (!(err instanceof ApiError) || (err.status !== 404 && err.status !== 405)) {
-        throw err;
-      }
+    } catch {
+      if (fallbackData) return exportLocal();
     }
   }
 
@@ -411,10 +425,8 @@ export async function downloadSearchStatisticsExcel(
     URL.revokeObjectURL(url);
     return 'api';
   } catch (err) {
-    if (fallbackData && err instanceof ApiError && (err.status === 404 || err.status === 405)) {
-      const { downloadSearchStatisticsExcel: localExport } = await import('./adminExport');
-      localExport(fallbackData, kind);
-      return 'fallback';
+    if (fallbackData) {
+      return exportLocal();
     }
     throw err;
   }

@@ -21,6 +21,7 @@ import {
 import { registerAnketaRoutes } from "./server/anketa";
 import { registerAdminStatisticsRoutes } from "./server/adminStatistics";
 import { registerSurveyRoutes } from "./server/surveyRoutes";
+import { computeDiseaseRisksFromQuestionnaire } from "./src/lib/diseaseRiskPrognosis";
 
 dotenv.config();
 
@@ -898,7 +899,28 @@ Birlamchi hisoblangan kardiologik xavfli ball / xavf foizi: ${riskFoizi}% (Xavf 
           maslahat: complianceAdvice
         }
       },
-      klinikXulosa
+      klinikXulosa,
+      kasallikPrognozlari: computeDiseaseRisksFromQuestionnaire({
+        yosh,
+        jins,
+        boy,
+        vazn,
+        sistolik,
+        diastolik,
+        glyukoza: glyukoza ?? '',
+        xolesterin: xolesterin ?? '',
+        tuzIstemi,
+        shakarVaXamir,
+        sabzavotMeva,
+        jismoniyFaollik,
+        chekish,
+        nosvoy,
+        oiladaKasallik,
+        tibbiyotXodimi,
+        nazariyBilimDarajasi,
+        realKomplayens,
+        shaharTuman,
+      }),
     };
 
     return res.json(result);

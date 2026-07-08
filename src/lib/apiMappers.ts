@@ -188,6 +188,12 @@ export function mapApiJournalEntry(raw: Record<string, unknown>, index = 0): Hea
       ? (raw.dorilar as HealthJournalEntry['dorilar'])
       : [],
     qaydlar: (raw.qaydlar as string) || '',
+    yurilganMetr:
+      raw.yurilganMetr === '' || raw.yurilganMetr == null ? '' : Number(raw.yurilganMetr),
+    suvLitrlar:
+      raw.suvLitrlar === '' || raw.suvLitrlar == null ? '' : Number(raw.suvLitrlar),
+    uyquSoati:
+      raw.uyquSoati === '' || raw.uyquSoati == null ? '' : Number(raw.uyquSoati),
   };
 }
 
@@ -268,6 +274,9 @@ export function mapJournalEntryToApi(entry: HealthJournalEntry): Record<string, 
     alomatlar: entry.alomatlar,
     dorilar: entry.dorilar,
     qaydlar: entry.qaydlar,
+    yurilganMetr: entry.yurilganMetr === '' ? null : entry.yurilganMetr,
+    suvLitrlar: entry.suvLitrlar === '' ? null : entry.suvLitrlar,
+    uyquSoati: entry.uyquSoati === '' ? null : entry.uyquSoati,
   };
 }
 
