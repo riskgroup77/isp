@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config';
+import { buildApiUrl } from './config';
 import { clearAuthSession, getAuthToken } from './auth';
 
 export class ApiError extends Error {
@@ -14,11 +14,6 @@ type ApiFetchOptions = RequestInit & {
   /** Submit/AI so'rovlari uchun 180000 ms tavsiya etiladi */
   timeoutMs?: number;
 };
-
-function resolveApiUrl(path: string): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`;
-  return `${API_BASE_URL}${normalized}`;
-}
 
 function parseApiError(data: unknown, status: number): string {
   if (!data || typeof data !== 'object') {
@@ -75,7 +70,7 @@ export async function apiFetch(
       timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     }
 
-    const response = await fetch(resolveApiUrl(path), {
+    const response = await fetch(buildApiUrl(path), {
       ...options,
       headers,
       signal,

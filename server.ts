@@ -26,10 +26,43 @@ import { computeDiseaseRisksFromQuestionnaire } from "./src/lib/diseaseRiskProgn
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-app.use(cors());
+
+// nginx/Caddy orqasida req.protocol va req.secure X-Forwarded-Proto dan olinadi
+app.set("trust proxy", true);
+
+// Anketa 147 ta savoldan iborat — standart 100kb chegarasi yetmasligi mumkin
+app.use(express.json({ limit: "5mb" }));
+
+const allowedOrigins = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Same-origin so'rovlar va serverdan-serverga so'rovlarda Origin bo'lmaydi
+      if (!origin || allowedOrigins.length === 0) return callback(null, true);
+      return callback(null, allowedOrigins.includes(origin));
+    },
+    credentials: true,
+  })
+);
 
 const PORT = Number(process.env.PORT) || 3000;
+const HOST = process.env.HOST || "0.0.0.0";
+
+function isSecureRequest(req: express.Request): boolean {
+  return req.secure || req.headers["x-forwarded-proto"] === "https";
+}
+
+// Sertifikat sozlangandan keyin FORCE_HTTPS=true qilinadi; aks holda HTTP ham ishlayveradi
+if (process.env.FORCE_HTTPS === "true") {
+  app.use((req, res, next) => {
+    if (isSecureRequest(req)) return next();
+    return res.redirect(308, `https://${req.headers.host}${req.originalUrl}`);
+  });
+}
 
 // Initialize Google Gen AI
 let aiClient: GoogleGenAI | null = null;
@@ -56,6 +89,21 @@ if (apiKey && apiKey !== "MY_GEMINI_API_KEY") {
 // ----------------------------------------------------
 // Endpoints
 // ----------------------------------------------------
+
+// Deploy holatini tekshirish uchun: protokol, proxy sarlavhalari, AI holati
+app.get("/api/health", (req, res) => {
+  return res.json({
+    ok: true,
+    env: process.env.NODE_ENV || "development",
+    protocol: req.protocol,
+    secure: isSecureRequest(req),
+    forwardedProto: req.headers["x-forwarded-proto"] || null,
+    host: req.headers.host || null,
+    aiConfigured: Boolean(aiClient),
+    forceHttps: process.env.FORCE_HTTPS === "true",
+    time: new Date().toISOString(),
+  });
+});
 
 // ----------------------------------------------------
 // Persistent Database (JSON File-based)
@@ -1240,6 +1288,14 @@ Salomatligingiz bo'yicha yana qanday batafsil maslahat kerak? Masalan, palovni p
 // ----------------------------------------------------
 
 async function start() {
+  // Noma'lum /api/* yo'llari SPA sahifasini emas, JSON xatolik qaytarishi kerak,
+  // aks holda frontend HTML ni JSON deb o'qishga urinadi
+  app.use("/api", (req, res) => {
+    return res.status(404).json({
+      error: `API yo'li topilmadi: ${req.method} /api${req.path}`,
+    });
+  });
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -1248,16 +1304,25 @@ async function start() {
     app.use(vite.middlewares);
     console.log("Mounted Vite development middleware.");
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
+    const distPath = path.join(process.cwd(), "dist");
+    const indexFile = path.join(distPath, "index.html");
+
+    if (!fs.existsSync(indexFile)) {
+      console.error(
+        `XATO: ${indexFile} topilmadi. Avval "npm run build" ni ishga tushiring.`
+      );
+    }
+
     app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    app.get("*", (_req, res) => {
+      res.sendFile(indexFile);
     });
     console.log(`Mounted production build directory: ${distPath}`);
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+  app.listen(PORT, HOST, () => {
+    console.log(`Server running on http://${HOST}:${PORT}`);
+    console.log(`Health check: http://${HOST}:${PORT}/api/health`);
   });
 }
 

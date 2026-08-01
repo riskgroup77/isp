@@ -1,19 +1,18 @@
 import type { AnswerFilter, SurveyKind } from './adminStatisticsApi';
 import { SEARCH_PRESETS } from './statisticsFallback';
 
-export interface NaturalLanguageParseSuccess {
-  ok: true;
+export interface NaturalLanguageParseResult {
+  ok: boolean;
   kind: SurveyKind;
   filters: AnswerFilter[];
   summary: string;
-}
-
-export interface NaturalLanguageParseFailure {
-  ok: false;
+  /** `ok: false` bo'lganda foydalanuvchiga ko'rsatiladigan izoh */
   message: string;
 }
 
-export type NaturalLanguageParseResult = NaturalLanguageParseSuccess | NaturalLanguageParseFailure;
+function parseFailure(message: string): NaturalLanguageParseResult {
+  return { ok: false, kind: 'anketa', filters: [], summary: '', message };
+}
 
 function normalize(input: string): string {
   return input
@@ -53,10 +52,9 @@ const EXAMPLE_HINTS = [
 export function parseNaturalLanguageQuery(input: string): NaturalLanguageParseResult {
   const q = normalize(input);
   if (!q) {
-    return {
-      ok: false,
-      message: `Buyruq yozing. Masalan: ${EXAMPLE_HINTS.slice(0, 3).map((h) => `"${h}"`).join(', ')}`,
-    };
+    return parseFailure(
+      `Buyruq yozing. Masalan: ${EXAMPLE_HINTS.slice(0, 3).map((h) => `"${h}"`).join(', ')}`
+    );
   }
 
   for (const preset of SEARCH_PRESETS) {
@@ -66,6 +64,7 @@ export function parseNaturalLanguageQuery(input: string): NaturalLanguageParseRe
         kind: 'anketa',
         filters: preset.filters,
         summary: preset.label,
+        message: '',
       };
     }
   }
@@ -116,10 +115,9 @@ export function parseNaturalLanguageQuery(input: string): NaturalLanguageParseRe
 
   const unique = dedupeFilters(filters);
   if (unique.length === 0) {
-    return {
-      ok: false,
-      message: `Buyruq tushunilmadi. Masalan: ${EXAMPLE_HINTS.map((h) => `"${h}"`).join(', ')}`,
-    };
+    return parseFailure(
+      `Buyruq tushunilmadi. Masalan: ${EXAMPLE_HINTS.map((h) => `"${h}"`).join(', ')}`
+    );
   }
 
   return {
@@ -127,6 +125,7 @@ export function parseNaturalLanguageQuery(input: string): NaturalLanguageParseRe
     kind: 'anketa',
     filters: unique,
     summary: describeFilters(unique),
+    message: '',
   };
 }
 

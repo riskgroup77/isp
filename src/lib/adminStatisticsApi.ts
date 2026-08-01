@@ -1,5 +1,5 @@
 import { apiBlob, apiJson, ApiError } from './api';
-import { API_BASE_URL } from './config';
+import { resolveExternalUrl } from './config';
 import { getAuthToken } from './auth';
 import type { AdminStatisticsPayload } from '../../server/adminStatistics';
 import { buildQuestionStatisticsFromResponses } from './questionStatisticsBuilder';
@@ -132,15 +132,9 @@ export const SURVEY_KIND_LABELS: Record<SurveyKind, string> = {
   pedagog: 'Pedagog',
 };
 
-function resolveApiUrl(url: string): string {
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  const normalized = url.startsWith('/') ? url : `/${url}`;
-  return `${API_BASE_URL}${normalized}`;
-}
-
 function filenameFromUrl(url: string, fallback: string): string {
   try {
-    const path = new URL(resolveApiUrl(url)).pathname;
+    const path = new URL(resolveExternalUrl(url), window.location.origin).pathname;
     const base = path.split('/').pop();
     if (base && base.includes('.')) return base;
   } catch {
@@ -155,7 +149,7 @@ export async function downloadAuthenticatedFile(
   fallbackFilename: string
 ): Promise<void> {
   const token = getAuthToken();
-  const fullUrl = resolveApiUrl(url);
+  const fullUrl = resolveExternalUrl(url);
   const res = await fetch(fullUrl, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });

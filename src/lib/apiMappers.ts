@@ -107,7 +107,7 @@ function pickQuestionnaire(raw: Record<string, unknown>): QuestionnaireData {
   const data = {} as QuestionnaireData;
   for (const key of QUESTIONNAIRE_KEYS) {
     if (raw[key] !== undefined && raw[key] !== null) {
-      (data as Record<string, unknown>)[key] = raw[key];
+      (data as unknown as Record<string, unknown>)[key] = raw[key];
     }
   }
   if (raw.data && typeof raw.data === 'object') {
