@@ -5,6 +5,7 @@ import {
   Filter,
   Loader2,
   RefreshCw,
+  Upload,
   User,
 } from 'lucide-react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
@@ -20,6 +21,7 @@ import {
   type SurveyZoneStats,
 } from '../../lib/adminStatisticsApi';
 import { useToast } from '../ui/Toast';
+import AdminStatExcelTab from './AdminStatExcelTab';
 import AdminStatSearchTab from './AdminStatSearchTab';
 import AdminStatUserTab from './AdminStatUserTab';
 
@@ -31,7 +33,7 @@ const ZONE_COLORS = {
 
 const SURVEY_KINDS: SurveyKind[] = ['anketa', 'student', 'pedagog'];
 
-type MainStatTab = 'general' | 'user' | 'search';
+type MainStatTab = 'general' | 'user' | 'search' | 'excel';
 
 interface FastApiStatisticsPanelProps {
   language?: AppLanguage;
@@ -235,6 +237,7 @@ export default function FastApiStatisticsPanel({
           ['general', t('Umumiy statistika', language), BarChart3],
           ['user', t('Foydalanuvchi', language), User],
           ['search', t('Filter qidiruv', language), Filter],
+          ['excel', t('Excel tahlil', language), Upload],
         ] as const).map(([id, label, Icon]) => (
           <button
             key={id}
@@ -251,6 +254,8 @@ export default function FastApiStatisticsPanel({
       {mainTab === 'user' && <AdminStatUserTab language={language} />}
 
       {mainTab === 'search' && <AdminStatSearchTab language={language} />}
+
+      {mainTab === 'excel' && <AdminStatExcelTab language={language} />}
 
       {mainTab === 'general' && (
         <>

@@ -9,6 +9,7 @@ import {
 } from './statisticsFallback';
 import { getAdminUsers } from './apiServices';
 import type { SafeUserProfile } from './auth';
+import type { AnketaTahlil } from '../types';
 
 export type SurveyKind = 'anketa' | 'student' | 'pedagog';
 
@@ -118,6 +119,51 @@ export interface StatisticsSearchResponse {
   jami: number;
   excelUrl: string;
   natijalar: SearchResultItem[];
+}
+
+export interface ExcelSheetInfo {
+  nomi: string;
+  qatorlarSoni: number;
+  ustunlar: string[];
+}
+
+export interface ExcelSectionSummary {
+  boLim: string;
+  asosiyKoRsatkichlar: string[];
+  xulosa: string;
+}
+
+export interface ExcelFormulaItem {
+  nomi: string;
+  formula: string;
+  izoh: string;
+  qoLlanilganQism: string;
+}
+
+export type ExcelSourceType =
+  | 'milliy_standart'
+  | 'xalqaro'
+  | 'ilmiy_adabiyot'
+  | 'statistika'
+  | 'gemini_tahlil'
+  | string;
+
+export interface ExcelSourceItem {
+  nomi: string;
+  turi: ExcelSourceType;
+  havola: string | null;
+  izoh: string;
+}
+
+export interface ExcelAnalyzeResponse {
+  faylNomi: string;
+  varaqlar: ExcelSheetInfo[];
+  umumiyXulosa: string;
+  statistikaXulosasi: ExcelSectionSummary[];
+  tahlil: AnketaTahlil | null;
+  formulalar: ExcelFormulaItem[];
+  manbalar: ExcelSourceItem[];
+  aiXato: string | null;
 }
 
 export interface AdminStatisticsResult {
@@ -424,6 +470,37 @@ export async function downloadSearchStatisticsExcel(
     }
     throw err;
   }
+}
+
+const MAX_EXCEL_BYTES = 30 * 1024 * 1024;
+
+/** Admin Excel yuklash + AI tahlil (multipart, 180s timeout) */
+export async function analyzeExcelStatistics(
+  file: File,
+  izoh?: string
+): Promise<ExcelAnalyzeResponse> {
+  if (!file.name.toLowerCase().endsWith('.xlsx')) {
+    throw new ApiError("Faqat .xlsx fayl qabul qilinadi.", 400);
+  }
+  if (file.size > MAX_EXCEL_BYTES) {
+    throw new ApiError("Fayl 30 MB dan katta bo'lishi mumkin emas.", 400);
+  }
+
+  const form = new FormData();
+  form.append('file', file);
+
+  const query = izoh?.trim()
+    ? `?izoh=${encodeURIComponent(izoh.trim())}`
+    : '';
+
+  return apiJson<ExcelAnalyzeResponse>(
+    `/api/admin/statistics/excel/analyze${query}`,
+    {
+      method: 'POST',
+      body: form,
+      timeoutMs: 180_000,
+    }
+  );
 }
 
 export type { AdminStatisticsPayload, QuestionStatRow, EpidemiologyIndicatorRow } from '../../server/adminStatistics';

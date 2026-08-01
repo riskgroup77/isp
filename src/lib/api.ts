@@ -48,8 +48,15 @@ export async function apiFetch(
   options: ApiFetchOptions = {}
 ): Promise<Response> {
   const headers = new Headers(options.headers || {});
-  if (!headers.has('Content-Type') && options.body) {
+  const isFormData =
+    typeof FormData !== 'undefined' && options.body instanceof FormData;
+
+  // FormData uchun Content-Type qo'yilmasin — brauzer boundary ni o'zi qo'shadi
+  if (!headers.has('Content-Type') && options.body && !isFormData) {
     headers.set('Content-Type', 'application/json');
+  }
+  if (isFormData && headers.has('Content-Type')) {
+    headers.delete('Content-Type');
   }
 
   if (!options.skipAuth) {
